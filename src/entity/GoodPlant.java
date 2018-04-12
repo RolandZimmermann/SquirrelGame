@@ -4,8 +4,8 @@ import general.XY;
 
 public class GoodPlant extends Entity{
 
-    public GoodPlant(int id, XY position, int energy) {
-        super(id, position, energy);
+    public GoodPlant(int id, XY position) {
+        super(id, position, 100);
         // TODO Auto-generated constructor stub
     }
 
@@ -14,5 +14,10 @@ public class GoodPlant extends Entity{
         // TODO Auto-generated method stub
         
     }
+    
+    @Override
+	public String toString() {
+		return "GoodPlant " + super.toString();
+	}
 
 }

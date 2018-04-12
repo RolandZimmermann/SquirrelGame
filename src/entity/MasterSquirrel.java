@@ -4,8 +4,8 @@ import general.XY;
 
 public class MasterSquirrel extends Squirrel {
 
-    public MasterSquirrel(int id, XY position, int energy) {
-        super(id, position, energy);
+    public MasterSquirrel(int id, XY position) {
+        super(id, position, 1000);
 
     }
 
@@ -24,5 +24,10 @@ public class MasterSquirrel extends Squirrel {
         // TODO Auto-generated method stub
         
     }
+    
+    @Override
+	public String toString() {
+		return "MasterSquirrel " + super.toString();
+	}
 
 }

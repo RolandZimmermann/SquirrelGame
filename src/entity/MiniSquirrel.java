@@ -10,15 +10,16 @@ public class MiniSquirrel extends Squirrel{
         this.master=master;
     }
 
-    public int getID() {
-    	return id;
-    }
-
     @Override
     public void nextStep() {
         // TODO Auto-generated method stub
         
     }
+    
+    @Override
+	public String toString() {
+		return "MiniSquirrel " + super.toString();
+	}
     
     
 }

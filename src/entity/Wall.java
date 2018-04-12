@@ -4,8 +4,8 @@ import general.XY;
 
 public class Wall extends Entity {
 
-    public Wall(int id, XY position, int energy) {
-        super(id, position, energy);
+    public Wall(int id, XY position) {
+        super(id, position, -10);
         // TODO Auto-generated constructor stub
     }
 
@@ -14,5 +14,10 @@ public class Wall extends Entity {
         // TODO Auto-generated method stub
         
     }
+    
+    @Override
+	public String toString() {
+		return "Wall " + super.toString();
+	}
 
 }

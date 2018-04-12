@@ -1,59 +1,59 @@
 package entity;
 
-import general.Direction;
 import general.XY;
 
 public abstract class Entity {
 
-    private int id;
-    private XY position;
-    private int energy;
-    
-    test;
-    
-    public Entity(int id, int X, int Y, int energy) {
+	private final int id;
+	private XY position;
+	private int energy;
 
-        this.id = id;
-        XY position = new XY (X, Y);
-        this.energy = energy;
-    }
-    
-    public Entity(int id, XY position, int energy) {
+	public Entity(int id, int X, int Y, int energy) {
 
-        this.id = id;
-        this.position = position;
-        this.energy = energy;
-    }
+		this.id = id;
+		this.position = new XY(X, Y);
+		this.energy = energy;
+	}
 
-    public int getEnergy() {
-        return energy;
-    }
+	public Entity(int id, XY position, int energy) {
 
-    public void updateEnergy(int energy) {
-        this.energy +=energy;
-    }
+		this.id = id;
+		this.position = position;
+		this.energy = energy;
+	}
+	
+	public static boolean isSameEntity(Entity entity1, Entity entity2) {
+		if(entity1.equals(entity2)) {
+			return true;
+		}
+		return false;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public void updateEnergy(int energy) {
+		this.energy += energy;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setPositionXY(int deltaX, int deltaY) {
+		position.move(deltaX, deltaY);
+	}
 
-    public void setPositionXY(int deltaX, int deltaY) {
-        position.move(deltaX, deltaY);
-    }
+	@Override
+	public String toString() {
+		return "\t[id: " + id + ",\t position: " + position.toString() + ",\t energy: " + energy + "]";
+	}
 
-    @Override
-    public String toString() {
-        return "Entity [id=" + id + ", position=" + position + ", energy=" + energy + "]";
-    }
+	public abstract void nextStep();
 
-    public XY getPositionXY() {
-        return position;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public abstract void nextStep();
+	public int getEnergy() {
+		return energy;
+	}
+
+	public XY getPositionXY() {
+		return position;
+	}
 
 }
