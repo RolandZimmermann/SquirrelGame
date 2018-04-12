@@ -1,8 +1,8 @@
-package entity;
+package de.hsa.games.squirrelgame.entity;
 
-import general.XY;
+import de.hsa.games.squirrelgame.gamestats.XY;
 
-public class MiniSquirrel extends Squirrel{
+public class MiniSquirrel extends PlayerEntity{
     MasterSquirrel master;
 
     public MiniSquirrel(int id, XY position, int energy, MasterSquirrel master) {

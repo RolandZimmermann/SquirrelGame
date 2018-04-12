@@ -1,6 +1,7 @@
-package general;
+package de.hsa.games.squirrelgame.general;
 
-import entity.*;
+import de.hsa.games.squirrelgame.entity.*;
+import de.hsa.games.squirrelgame.gamestats.XY;
 
 public class Main {
 

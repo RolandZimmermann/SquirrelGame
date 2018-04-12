@@ -1,8 +1,6 @@
-package general;
+package de.hsa.games.squirrelgame.gamestats;
 
 import java.util.Random;
-
-import gameStats.Direction;
 
 public final class XY {
 
