@@ -1,4 +1,4 @@
-package de.hsa.game.SquirrelGame.core.entity.playerentity;
+package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
 import de.hsa.game.SquirrelGame.gamestats.XY;
 

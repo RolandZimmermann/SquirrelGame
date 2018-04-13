@@ -1,8 +1,8 @@
-package de.hsa.game.SquirrelGame.core.entity;
+package de.hsa.game.SquirrelGame.core.entity.character;
 
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
-public class GoodBeast extends Entity {
+public class GoodBeast extends Character {
 
     public GoodBeast(int id, XY position) {
         super(id, position, 200);

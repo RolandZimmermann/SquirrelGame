@@ -11,6 +11,10 @@ public class FlattenBoard implements BoardView {
 		this.database = database;
 	}
 	
+	public void update() {
+		this.cells = this.database.flatten();
+	}
+	
 	
 	
 	

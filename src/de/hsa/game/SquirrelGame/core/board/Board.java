@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import de.hsa.game.SquirrelGame.core.entity.BadBeast;
-import de.hsa.game.SquirrelGame.core.entity.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.EntitySet;
-import de.hsa.game.SquirrelGame.core.entity.GoodBeast;
-import de.hsa.game.SquirrelGame.core.entity.GoodPlant;
-import de.hsa.game.SquirrelGame.core.entity.Wall;
-import de.hsa.game.SquirrelGame.core.entity.playerentity.HandOperatedMasterSquirrel;
-import de.hsa.game.SquirrelGame.core.entity.playerentity.MasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class Board {
