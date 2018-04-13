@@ -12,8 +12,4 @@ public class BadPlant extends Entity {
    public void nextStep() {
        
    }
-   @Override
-	public String toString() {
-		return "BadPlant " + super.toString();
-	}
-}
+  

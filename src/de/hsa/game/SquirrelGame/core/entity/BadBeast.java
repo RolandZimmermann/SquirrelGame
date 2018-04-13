@@ -14,9 +14,4 @@ public class BadBeast extends Entity {
 		getPositionXY().randomMove();
 	}
 
-	@Override
-	public String toString() {
-		return "BadBeast " + super.toString();
-	}
-
 }

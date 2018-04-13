@@ -1,5 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity;
 
+import de.hsa.game.SquirrelGame.core.entity.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class EntitySet {

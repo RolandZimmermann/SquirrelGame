@@ -13,9 +13,5 @@ public class GoodBeast extends Entity {
     public void nextStep() {
         getPositionXY().randomMove();          
     }
-    @Override
-	public String toString() {
-		return "GoodBeast " + super.toString();
-	}
-
+    
 }

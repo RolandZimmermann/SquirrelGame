@@ -1,5 +1,6 @@
-package de.hsa.game.SquirrelGame.core.entity;
+package de.hsa.game.SquirrelGame.core.entity.playerentity;
 
+import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class MasterSquirrel extends PlayerEntity {
@@ -25,9 +26,4 @@ public class MasterSquirrel extends PlayerEntity {
         
     }
     
-    @Override
-	public String toString() {
-		return "MasterSquirrel " + super.toString();
-	}
-
 }

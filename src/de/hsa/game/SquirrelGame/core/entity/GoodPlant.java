@@ -15,9 +15,6 @@ public class GoodPlant extends Entity{
         
     }
     
-    @Override
-	public String toString() {
-		return "GoodPlant " + super.toString();
-	}
+    
 
 }

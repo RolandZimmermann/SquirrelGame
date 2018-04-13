@@ -1,4 +1,4 @@
-package de.hsa.game.SquirrelGame.core.entity;
+package de.hsa.game.SquirrelGame.core.entity.playerentity;
 
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
@@ -16,10 +16,6 @@ public class MiniSquirrel extends PlayerEntity{
         
     }
     
-    @Override
-	public String toString() {
-		return "MiniSquirrel " + super.toString();
-	}
     
     
 }

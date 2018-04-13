@@ -1,98 +1,127 @@
 package de.hsa.game.SquirrelGame.core.board;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import de.hsa.game.SquirrelGame.core.entity.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.BadPlant;
+import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.EntitySet;
 import de.hsa.game.SquirrelGame.core.entity.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.GoodPlant;
-import de.hsa.game.SquirrelGame.core.entity.HandOperatedMasterSquirrel;
-import de.hsa.game.SquirrelGame.core.entity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.Wall;
+import de.hsa.game.SquirrelGame.core.entity.playerentity.HandOperatedMasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.gamestats.XY;
-import de.hsa.game.SquirrelGames.squirrelgame.entity.*;
 
 public class Board {
 
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
-
-	private char[][] boardEnvironment;
+	
 	private int id;
 
-	private EntitySet entitySet = new EntitySet();
+	
+	private LinkedList<Entity> entitySet = new LinkedList<>();
 
 	Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
 			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
 
+		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
+				+ countMastersquirrel + countWall;
+
+		List<XY> randomlocations = generateRandomLocations(counter);
+		
+		for(int i = 0; i < countBadPlant; i++) {
+			entitySet.add(new BadPlant(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		
+		for(int i = 0; i < countGoodPlant; i++) {
+			entitySet.add(new GoodPlant(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		
+		for(int i = 0; i < countBadBeast; i++) {
+			entitySet.add(new BadBeast(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for(int i = 0; i < countGoodBeast; i++) {
+			entitySet.add(new GoodBeast(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for(int i = 0; i < countWall; i++) {
+			entitySet.add(new Wall(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for(int i = 0; i < countHandOperatedMastersquirrel; i++) {
+			entitySet.add(new HandOperatedMasterSquirrel(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for(int i = 0; i < countMastersquirrel; i++) {
+			entitySet.add(new MasterSquirrel(id++,randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		
+		for(int i = 0; i < boardHeight; i++) {
+			entitySet.add(new Wall(id++, new XY(0,i)));
+		}
+		for(int i = 0; i < boardWidth; i++) {
+			entitySet.add(new Wall(id++, new XY(i,0)));
+		}
+		for(int i = boardHeight; i >= 0; i--) {
+			entitySet.add(new Wall(id++, new XY(boardWidth,i)));
+		}
+		for(int i = boardWidth; i >= 0; i--) {
+			entitySet.add(new Wall(id++, new XY(i,boardWidth)));
+		}
+
 		this.BOARD_HEIGHT = boardHeight;
 		this.BOARD_WIDTH = boardWidth;
 
-		this.boardEnvironment = new char[boardHeight][boardWidth];
-		initialize(countBadPlant, countGoodPlant, countBadBeast, countGoodBeast, countHandOperatedMastersquirrel,
-				countMastersquirrel, countWall);
+	
 
 	}
 
-	private void initialize(int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
-			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
-
+	private ArrayList<XY> generateRandomLocations(int count) {
+		
+		ArrayList<XY> randomLocations = new ArrayList<>();
 		Random a = new Random();
-
-		for (int i = 0; i < countBadPlant; i++) {
-			entitySet.insert(
-					new BadPlant(id++, new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-
-		for (int i = 0; i < countGoodPlant; i++) {
-			entitySet.insert(
-					new GoodPlant(id++, new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-		for (int i = 0; i < countBadBeast; i++) {
-			entitySet.insert(
-					new BadBeast(id++, new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-		for (int i = 0; i < countGoodBeast; i++) {
-			entitySet.insert(
-					new GoodBeast(id++, new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-		for (int i = 0; i < countWall; i++) {
-			entitySet.insert(new Wall(id++, new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-
-		for (int i = 0; i < countHandOperatedMastersquirrel; i++) {
-			entitySet.insert(new HandOperatedMasterSquirrel(id++,
-					new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-		for (int i = 0; i < countMastersquirrel; i++) {
-			entitySet.insert(
-					new MasterSquirrel(id++, new XY(a.nextInt(BOARD_WIDTH - 1) + 1, a.nextInt(BOARD_HEIGHT - 1) + 1)));
-		}
-
-		for (int y = 0; y < boardEnvironment.length; y++) {
-			for (int x = 0; x < boardEnvironment[0].length; x++) {
-				if (y == 0 || x == 0 || x == BOARD_WIDTH - 1 || y == BOARD_HEIGHT - 1) {
-					boardEnvironment[y][x] = '#';
-
+		
+		boolean inserted = false;
+		
+		for (int i = 0; i<count; i++) {
+			XY xy = new XY(a.nextInt(BOARD_WIDTH-1)+1,a.nextInt(BOARD_HEIGHT-1)+1);
+			for (int j = 0; j < randomLocations.size(); j++) {
+				if(!XY.equalPosition(randomLocations.get(j), xy)) {
+					randomLocations.add(xy);
+					inserted = true;
 				}
-
 			}
-
+			if(!inserted) {
+				count++;
+			}
 		}
+		return randomLocations;
 	}
+	
+	
+	public Entity [][] flatten(){
+		
+		Entity [][] entityarry = new Entity[BOARD_HEIGHT][BOARD_WIDTH];
+		
+		for (Entity e : entitySet) {
+			entityarry[e.getPositionXY().getY()][e.getPositionXY().getX()]=e;
+		}
+		
+		return entityarry;
+	}
+	
 
 	public String toString() {
-		String s = "";
-		for (int y = 0; y < BOARD_HEIGHT; y++) {
-			for (int x = 0; x < BOARD_WIDTH; x++) {
-				s += boardEnvironment[y][x];
-
-			}
-			s += "\n";
-		}
-
-		return s;
+		return entitySet.toString();
 	}
 
 }

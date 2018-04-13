@@ -39,7 +39,7 @@ public abstract class Entity {
 
 	@Override
 	public String toString() {
-		return "\t[id: " + id + ",\t position: " + position.toString() + ",\t energy: " + energy + "]";
+		return getClass().getSimpleName() + "\t[id: " + id + ",\t position: " + position.toString() + ",\t energy: " + energy + "]";
 	}
 
 	public abstract void nextStep();
