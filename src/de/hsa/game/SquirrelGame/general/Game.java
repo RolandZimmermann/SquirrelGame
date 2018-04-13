@@ -1,11 +1,11 @@
-package de.hsa.games.squirrelgame.general;
+package de.hsa.game.SquirrelGame.general;
 
 public class Game {
 	public void run() {
 	    while (true) {
 	        render();
 	        processInput();
-	        update();
+	       // update();
 	    }
 	}
 	

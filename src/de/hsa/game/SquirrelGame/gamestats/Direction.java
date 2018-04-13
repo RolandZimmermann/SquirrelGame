@@ -1,4 +1,4 @@
-package de.hsa.games.squirrelgame.gamestats;
+package de.hsa.game.SquirrelGame.gamestats;
 
 public enum Direction {
 	UP(new XY(0,-1)),

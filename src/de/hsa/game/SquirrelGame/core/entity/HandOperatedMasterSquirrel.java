@@ -1,8 +1,8 @@
-package de.hsa.games.squirrelgame.entity;
+package de.hsa.game.SquirrelGame.core.entity;
 
-import de.hsa.games.squirrelgame.gamestats.Direction;
-import de.hsa.games.squirrelgame.gamestats.XY;
-import de.hsa.games.squirrelgames.UI.Input;
+import de.hsa.game.SquirrelGame.gamestats.Direction;
+import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.ui.Input;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel{
 

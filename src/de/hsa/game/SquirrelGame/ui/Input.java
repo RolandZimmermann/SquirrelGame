@@ -1,4 +1,4 @@
-package de.hsa.games.squirrelgames.UI;
+package de.hsa.game.SquirrelGame.ui;
 
 import java.util.Scanner;
 

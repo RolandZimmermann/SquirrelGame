@@ -1,4 +1,4 @@
-package de.hsa.games.squirrelgame.gamestats;
+package de.hsa.game.SquirrelGame.gamestats;
 
 import java.util.Random;
 
@@ -12,7 +12,7 @@ public final class XY {
         this.y = y;
     }
 
-    
+ 
 
     public void move(int deltaX, int deltaY) {
         this.x += deltaX;

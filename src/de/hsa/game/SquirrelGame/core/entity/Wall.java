@@ -1,6 +1,6 @@
-package de.hsa.games.squirrelgame.entity;
+package de.hsa.game.SquirrelGame.core.entity;
 
-import de.hsa.games.squirrelgame.gamestats.XY;
+import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class Wall extends Entity {
 
