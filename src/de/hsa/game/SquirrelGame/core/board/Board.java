@@ -88,12 +88,13 @@ public class Board {
 		ArrayList<XY> randomLocations = new ArrayList<>();
 		Random a = new Random();
 		
-		boolean inserted = false;
+		
 		
 		XY b = new XY(0,0);
 		randomLocations.add(b);
 		
 		for (int i = 0; i<count; i++) {
+			boolean inserted = false;
 			XY xy = new XY(a.nextInt(BOARD_WIDTH-1)+1,a.nextInt(BOARD_HEIGHT-1)+1);
 			for (XY positions : randomLocations) {
 				if(!XY.equalPosition(positions, xy)) {
