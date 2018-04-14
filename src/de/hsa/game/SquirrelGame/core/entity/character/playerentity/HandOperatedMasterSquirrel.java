@@ -2,7 +2,7 @@ package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
 import de.hsa.game.SquirrelGame.gamestats.Direction;
 import de.hsa.game.SquirrelGame.gamestats.XY;
-import de.hsa.game.SquirrelGame.ui.InputSinglePlayerMode;
+import de.hsa.game.SquirrelGame.ui.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.UI;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel{
@@ -13,7 +13,7 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel{
     }
     
     public void nextStep() {
-    	UI ui = new InputSinglePlayerMode();
+    	UI ui = new ConsoleUI();
     	
     	char input = ui.charinput();    	
     	

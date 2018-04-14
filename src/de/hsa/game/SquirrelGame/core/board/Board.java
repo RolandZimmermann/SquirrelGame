@@ -29,6 +29,9 @@ public class Board {
 	Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
 			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
 
+		this.BOARD_HEIGHT = boardHeight;
+		this.BOARD_WIDTH = boardWidth;
+		
 		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
 				+ countMastersquirrel + countWall;
 
@@ -71,17 +74,12 @@ public class Board {
 		for(int i = 0; i < boardWidth; i++) {
 			entitySet.add(new Wall(id++, new XY(i,0)));
 		}
-		for(int i = boardHeight; i >= 0; i--) {
-			entitySet.add(new Wall(id++, new XY(boardWidth,i)));
+		for(int i = boardHeight; i > 0; i--) {
+			entitySet.add(new Wall(id++, new XY(boardWidth-1,i-1)));
 		}
-		for(int i = boardWidth; i >= 0; i--) {
-			entitySet.add(new Wall(id++, new XY(i,boardWidth)));
+		for(int i = boardWidth; i  > 0; i--) {
+			entitySet.add(new Wall(id++, new XY(i-1,boardHeight-1)));
 		}
-
-		this.BOARD_HEIGHT = boardHeight;
-		this.BOARD_WIDTH = boardWidth;
-
-	
 
 	}
 
@@ -92,18 +90,23 @@ public class Board {
 		
 		boolean inserted = false;
 		
+		XY b = new XY(0,0);
+		randomLocations.add(b);
+		
 		for (int i = 0; i<count; i++) {
 			XY xy = new XY(a.nextInt(BOARD_WIDTH-1)+1,a.nextInt(BOARD_HEIGHT-1)+1);
-			for (int j = 0; j < randomLocations.size(); j++) {
-				if(!XY.equalPosition(randomLocations.get(j), xy)) {
+			for (XY positions : randomLocations) {
+				if(!XY.equalPosition(positions, xy)) {
 					randomLocations.add(xy);
 					inserted = true;
+					break;
 				}
 			}
 			if(!inserted) {
 				count++;
 			}
 		}
+		randomLocations.remove(b);
 		return randomLocations;
 	}
 	
