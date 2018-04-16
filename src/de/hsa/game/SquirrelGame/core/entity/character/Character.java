@@ -1,5 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity.character;
 
+import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
@@ -10,6 +11,6 @@ public abstract class Character extends Entity {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public abstract void nextStep();
+	public abstract void nextStep(EntityContext entityContext);
 
 }

@@ -5,15 +5,44 @@ import java.util.Scanner;
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.*;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.*;
+import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.core.entity.character.*;
 import de.hsa.game.SquirrelGame.core.entity.*;
 
 public class ConsoleUI implements UI {
-	public char charinput() {
+	public MoveCommand getCommand() {
 		Scanner s = new Scanner(System.in);
 
 		char h = s.next().charAt(0);
-		return h;
+		switch (h) {
+		case 'w':
+		case 'W':
+			return MoveCommand.UP;
+		case 'a':
+		case 'A':
+			return MoveCommand.LEFT;
+		case 's':
+		case 'S':
+			return MoveCommand.DOWN;
+		case 'd':
+		case 'D':
+			return MoveCommand.RIGHT;
+		case 'q':
+		case 'Q':
+			return MoveCommand.UPLEFT;
+		case 'e':
+		case 'E':
+			return MoveCommand.UPRIGHT;
+		case 'y':
+		case 'Y':
+			return MoveCommand.DOWNLEFT;
+		case 'x':
+		case 'X':
+			return MoveCommand.DOWNRIGHT;
+
+		default:
+			return null;
+		}
 	}
 
 	public void render(BoardView boardView) {

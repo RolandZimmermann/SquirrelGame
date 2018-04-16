@@ -1,5 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity.character;
 
+import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class GoodBeast extends Character {
@@ -10,8 +11,9 @@ public class GoodBeast extends Character {
     }
 
     @Override
-    public void nextStep() {
-        getPositionXY().randomMove();          
+    public void nextStep(EntityContext entityContext) {
+    	XY moveDirection = XY.randomMove();
+    	entityContext.tryMove(this, moveDirection);
     }
     
 }

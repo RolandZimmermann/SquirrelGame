@@ -4,8 +4,8 @@ import java.util.Random;
 
 public final class XY {
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public XY(int x, int y) {
         this.x = x;
@@ -14,53 +14,49 @@ public final class XY {
 
  
 
-    public void move(int deltaX, int deltaY) {
-        this.x += deltaX;
-        this.y += deltaY;
+    public XY move(int deltaX, int deltaY) {
+    	int x = this.x + deltaX;
+        int y = this.y + deltaY;
+        return new XY(x,y);
     }
     
-    public void move(Direction direction) {
-    	move(direction.xy.getX(),direction.xy.getY());
+    public XY move(XY moveDirection) {
+    	return move(moveDirection.getX(), moveDirection.getY());
     }
     
-    public void randomMove () {
+    public static XY randomMove() {
        Random random = new Random();
        int direct = random.nextInt(8);
        
        switch (direct) {
        case 0:
-           move(Direction.UP);
-           break;
+           return MoveCommand.UP.xy;
            
        case 1:
-    	   move(Direction.DOWN);
-           break;
+    	   return MoveCommand.DOWN.xy;
            
        case 2:
-    	   move(Direction.LEFT);
-           break;
+    	   return MoveCommand.LEFT.xy;
            
        case 3:
-    	   move(Direction.RIGHT);
-           break;
+    	   return MoveCommand.RIGHT.xy;
            
        case 4:
-    	   move(Direction.UPLEFT);
-           break;
+    	   return MoveCommand.UPLEFT.xy;
            
        case 5:
-    	   move(Direction.UPRIGHT);
-           break;
+    	   return MoveCommand.UPRIGHT.xy;
            
        case 6:
-    	   move(Direction.DOWNLEFT);
-           break;
+    	   return MoveCommand.DOWNLEFT.xy;
            
        case 7:
-    	   move(Direction.DOWNRIGHT);
-           break;      
-           
+    	   return MoveCommand.DOWNRIGHT.xy;     
+       default:
+    	   return MoveCommand.UP.xy;
        }
+       
+       
     }
     
     public static boolean equalPosition(XY xy1, XY xy2) {

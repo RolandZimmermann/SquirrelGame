@@ -1,5 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
+import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class MiniSquirrel extends PlayerEntity{
@@ -11,8 +12,10 @@ public class MiniSquirrel extends PlayerEntity{
     }
 
     @Override
-    public void nextStep() {
-        // TODO Auto-generated method stub
+    public void nextStep(EntityContext entityContext) {
+    	//TODO: make move
+    	XY moveDirection = null;
+    	entityContext.tryMove(this, moveDirection);
         
     }
     

@@ -1,5 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity;
 
+import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public abstract class Entity {
@@ -34,7 +35,7 @@ public abstract class Entity {
 	}
 
 	public void setPositionXY(int deltaX, int deltaY) {
-		position.move(deltaX, deltaY);
+		position = position.move(deltaX, deltaY);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public abstract class Entity {
 		return getClass().getSimpleName() + "\t[id: " + id + ",\t position: " + position.toString() + ",\t energy: " + energy + "]";
 	}
 
-	public abstract void nextStep();
+	public abstract void nextStep(EntityContext entityContext);
 
 	public int getId() {
 		return id;

@@ -128,4 +128,8 @@ public class Board {
 		return entitySet.toString();
 	}
 
+	public LinkedList<Entity> getEntitySet() {
+		return entitySet;
+	}
+
 }

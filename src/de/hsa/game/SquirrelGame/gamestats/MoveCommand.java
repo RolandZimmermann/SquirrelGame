@@ -1,6 +1,6 @@
 package de.hsa.game.SquirrelGame.gamestats;
 
-public enum Direction {
+public enum MoveCommand {
 	UP(new XY(0,-1)),
 	DOWN(new XY(0,1)),
 	LEFT(new XY(-1,0)),
@@ -12,7 +12,7 @@ public enum Direction {
 	
 	public XY xy;
 	
-	private Direction(XY xy) {
+	private MoveCommand(XY xy) {
 		this.xy = xy;
 	}
 }
