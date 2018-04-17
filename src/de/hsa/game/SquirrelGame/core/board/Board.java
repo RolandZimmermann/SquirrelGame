@@ -90,6 +90,10 @@ public class Board {
 	        entitySet.add(new GoodPlant(id++,))
 	    }
 	}
+	
+	public void kill(Entity entity) {
+		entitySet.remove(entity);
+	}
 
 	private ArrayList<XY> generateRandomLocations(int count) {
 		
@@ -144,10 +148,6 @@ public class Board {
 
 	public String toString() {
 		return entitySet.toString();
-	}
-
-	public LinkedList<Entity> getEntitySet() {
-		return entitySet;
 	}
 
 }

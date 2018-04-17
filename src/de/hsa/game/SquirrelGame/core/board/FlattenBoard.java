@@ -209,14 +209,14 @@ public class FlattenBoard implements BoardView, EntityContext {
 
     @Override
     public void kill(Entity entity) {
-        database.getEntitySet().remove(entity);
+        database.kill(entity);
 
     }
 
     @Override
     public void killandReplace(Entity entity) {
         Entity insert = entity;
-        database.getEntitySet().remove(entity);
+        database.kill(entity);
         database.killandReplace();
 
     }
