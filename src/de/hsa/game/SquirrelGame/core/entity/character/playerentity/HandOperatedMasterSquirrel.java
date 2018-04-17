@@ -8,7 +8,9 @@ import de.hsa.game.SquirrelGame.ui.UI;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel{
 
-	XY move;
+	private XY move;
+	private int wallCounter = 0;
+	
 	
     public HandOperatedMasterSquirrel(int id, XY position) {
         super(id, position);
@@ -17,23 +19,29 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel{
     
     public void nextStep(EntityContext entityContext) {
     	// delete after task 2
-    	
+    	/*
     	UI ConsoleUI = new ConsoleUI ();
     	MoveCommand moveCommand = ConsoleUI.getCommand();
     	super.setPositionXY(moveCommand.xy.getX(), moveCommand.xy.getY());
-    	//return;
-    	
+    	return;
+    	*/
     	if(this.getEnergy()<= 0) {
     		this.updateEnergy(-this.getEnergy());
     	}
-    	
-    	   	if(move != null) {
-    	   		entityContext.tryMove(this, move);
-    	   	}
+    	   	if(wallCounter == 0) {
+    	        entityContext.tryMove(this, move);
+    	        } else {
+    	            wallCounter--;
+    	        }
     }
     
     public void getMove(MoveCommand moveCommand) {
     	this.move = moveCommand.xy;
+    }
+    
+    
+    public void wallCollison() {
+        wallCounter = 4;
     }
 
     

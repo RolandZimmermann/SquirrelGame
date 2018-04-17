@@ -9,6 +9,5 @@ public abstract class NonCharacter extends Entity{
 		super(id, position, energy);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public abstract void nextStep(EntityContext entityContext);
+
 }

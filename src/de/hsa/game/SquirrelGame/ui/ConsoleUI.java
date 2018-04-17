@@ -41,7 +41,7 @@ public class ConsoleUI implements UI {
 			return MoveCommand.DOWNRIGHT;
 
 		default:
-			return null;
+			return MoveCommand.NON;
 		}
 	}
 

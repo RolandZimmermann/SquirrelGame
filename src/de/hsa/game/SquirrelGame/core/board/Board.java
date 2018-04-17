@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.EntitySet;
-import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
-import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
+import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.core.entity.character.*;
+import de.hsa.game.SquirrelGame.core.entity.character.Character;
 
 public class Board {
 
@@ -82,6 +84,12 @@ public class Board {
 		}
 
 	}
+	
+	public void killandReplace(Entity entity) {
+	    if(entity instanceof GoodPlant) {
+	        entitySet.add(new GoodPlant(id++,))
+	    }
+	}
 
 	private ArrayList<XY> generateRandomLocations(int count) {
 		
@@ -123,6 +131,16 @@ public class Board {
 		return entityarry;
 	}
 	
+	public void update(MoveCommand moveCommand, EntityContext entityContext) {
+	    for(Entity c : entitySet) {
+	        if(c instanceof Character) {
+	            if(c instanceof HandOperatedMasterSquirrel) {
+	              ((HandOperatedMasterSquirrel) c).getMove(moveCommand);
+	            }
+	            c.nextStep(entityContext);
+	        }
+	    }
+	}
 
 	public String toString() {
 		return entitySet.toString();

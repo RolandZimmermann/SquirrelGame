@@ -10,13 +10,6 @@ public class GoodPlant extends NonCharacter{
         super(id, position, 100);
         // TODO Auto-generated constructor stub
     }
-
-	@Override
-	public void nextStep(EntityContext entityContext) {
-		// TODO Auto-generated method stub
-		
-	}
-    
     
 
 }
