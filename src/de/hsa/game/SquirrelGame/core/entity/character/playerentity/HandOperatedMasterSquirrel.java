@@ -16,6 +16,10 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel{
     }
     
     public void nextStep(EntityContext entityContext) {
+    	UI ConsoleUI = new ConsoleUI ();
+    	MoveCommand moveCommand = ConsoleUI.getCommand();
+    	super.setPositionXY(moveCommand.xy.getX(), moveCommand.xy.getY());
+    	
     	   	if(move != null) {
     	   		entityContext.tryMove(this, move);
     	   	}

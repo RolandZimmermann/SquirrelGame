@@ -8,6 +8,8 @@ import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
@@ -35,7 +37,6 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public void tryMove(MiniSquirrel miniSquirrel, XY moveDirection) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -46,38 +47,119 @@ public class FlattenBoard implements BoardView, EntityContext {
 		int moveX = 0;
 		int moveY = 0;
 		PlayerEntity playerEntity = nearestPlayerEntity(goodBeast.getPositionXY());
-	
-		if (Math.abs(playerEntity.getPositionXY().getX() - x) < 6 && Math.abs(playerEntity.getPositionXY().getY() - y) < 6 ) {
-			if(playerEntity.getPositionXY().getX() < x) {
+
+		if (Math.abs(playerEntity.getPositionXY().getX() - x) < 6
+				&& Math.abs(playerEntity.getPositionXY().getY() - y) < 6) {
+			if (playerEntity.getPositionXY().getX() < x) {
 				moveX = 1;
 			}
-			if(playerEntity.getPositionXY().getX() > x) {
+			if (playerEntity.getPositionXY().getX() > x) {
 				moveX = -1;
 			}
-			if(playerEntity.getPositionXY().getY() < y) {
+			if (playerEntity.getPositionXY().getY() < y) {
 				moveY = 1;
 			}
-			if(playerEntity.getPositionXY().getY() > y) {
+			if (playerEntity.getPositionXY().getY() > y) {
 				moveY = -1;
 			}
 			goodBeast.setPositionXY(moveX, moveY);
 		}
-		if(checkCollision(goodBeast, moveDirection) == null) {
-			goodBeast.setPositionXY(moveDirection.getX(), moveDirection.getY());
+		if (checkCollision(goodBeast, moveDirection) == null) {
+			if (moveX != 0 || moveY != 0) {
+				goodBeast.setPositionXY(moveX, moveY);
+			} else {
+				goodBeast.setPositionXY(moveDirection.getX(), moveDirection.getY());
+			}
 		}
-		
-		
+
 	}
 
 	@Override
 	public void tryMove(BadBeast badbeast, XY moveDirection) {
-		// TODO Auto-generated method stub
+
+		int x = badbeast.getPositionXY().getX();
+		int y = badbeast.getPositionXY().getY();
+		int moveX = 0;
+		int moveY = 0;
+		PlayerEntity playerEntity = nearestPlayerEntity(badbeast.getPositionXY());
+
+		if (Math.abs(playerEntity.getPositionXY().getX() - x) < 6
+				&& Math.abs(playerEntity.getPositionXY().getY() - y) < 6) {
+			if (playerEntity.getPositionXY().getX() < x) {
+				moveX = -1;
+			}
+			if (playerEntity.getPositionXY().getX() > x) {
+				moveX = 1;
+			}
+			if (playerEntity.getPositionXY().getY() < y) {
+				moveY = -1;
+			}
+			if (playerEntity.getPositionXY().getY() > y) {
+				moveY = 1;
+			}
+			badbeast.setPositionXY(moveX, moveY);
+		}
+		if (checkCollision(badbeast, moveDirection) == null) {
+			badbeast.setPositionXY(moveDirection.getX(), moveDirection.getY());
+		} else if (checkCollision(badbeast, moveDirection) instanceof PlayerEntity) {
+
+			badbeast.updatebiteCounter();
+			checkCollision(badbeast, moveDirection).updateEnergy(badbeast.getEnergy());
+
+		}
 
 	}
 
 	@Override
 	public void tryMove(MasterSquirrel masterSquirrel, XY moveDirection) {
-		// TODO Auto-generated method stub
+		Entity collided = checkCollision(masterSquirrel,moveDirection);
+		
+		if (collided == null) {
+			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
+
+		} else if (collided instanceof Wall) {
+
+			masterSquirrel.updateEnergy(collided.getEnergy());
+			masterSquirrel.wallCollison();
+
+		} else if (collided instanceof GoodPlant) {
+
+			masterSquirrel.updateEnergy(collided.getEnergy());
+
+			killandReplace(collided);
+			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
+
+		} else if (collided instanceof BadPlant) {
+
+			masterSquirrel.updateEnergy(collided.getEnergy());
+
+			killandReplace(collided);
+			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
+
+		} else if (collided instanceof GoodBeast) {
+
+			masterSquirrel.updateEnergy(collided.getEnergy());
+
+			killandReplace(collided);
+			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
+
+		} else if (collided instanceof BadBeast) {
+
+			masterSquirrel.updateEnergy(collided.getEnergy());
+
+		} else if (collided instanceof MiniSquirrel) {
+
+			if (masterSquirrel.testSquirrel(collided)) {
+				masterSquirrel.updateEnergy(collided.getEnergy());
+				kill(collided);
+			}else {
+				
+				masterSquirrel.updateEnergy(150);
+				kill(collided);
+				
+			}
+			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
+		}
 
 	}
 
@@ -91,12 +173,12 @@ public class FlattenBoard implements BoardView, EntityContext {
 						+ Math.pow(Math.abs(e.getPositionXY().getY() - pos.getY()), 2));
 				double distnearest = Math.sqrt(Math.pow(Math.abs(nearest.getX() - pos.getX()), 2)
 						+ Math.pow(Math.abs(nearest.getY() - pos.getY()), 2));
-				
+
 				if (diste < distnearest) {
 					nearest = e.getPositionXY();
 					output = (PlayerEntity) e;
 				}
-			
+
 			}
 		}
 		return output;

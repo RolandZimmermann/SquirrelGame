@@ -51,7 +51,7 @@ public class EntitySet {
 			if (entitySet[i] == null)
 				continue;
 
-			entitySet[i].nextStep();
+			entitySet[i].nextStep(null);
 			if (entitySet[i] instanceof MasterSquirrel) {
 				for (int j = 0; j < entitySet.length; j++) {
 					if (entitySet[j] instanceof GoodPlant) {

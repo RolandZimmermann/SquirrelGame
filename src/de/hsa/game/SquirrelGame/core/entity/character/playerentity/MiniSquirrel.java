@@ -14,9 +14,19 @@ public class MiniSquirrel extends PlayerEntity{
     @Override
     public void nextStep(EntityContext entityContext) {
     	//TODO: make move
+    	updateEnergy(-1);
     	XY moveDirection = null;
     	entityContext.tryMove(this, moveDirection);
+    	if(getEnergy() <= 0) {
+    		 
+    		entityContext.kill(this);
+    	}
         
+    }
+    
+    public MasterSquirrel getMaster() {
+    	
+    	return master;
     }
     
     
