@@ -4,7 +4,7 @@ import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class GoodBeast extends Character {
-
+	private int turnCounter =4;
     public GoodBeast(int id, XY position) {
         super(id, position, 200);
         // TODO Auto-generated constructor stub
@@ -17,8 +17,16 @@ public class GoodBeast extends Character {
 			super.setPositionXY(randmove.getX(), randmove.getY());
 			return;
 		}
+    	
+    	
+   if(turnCounter == 4) {
+	   turnCounter =0;
     	XY moveDirection = XY.randomMove();
     	entityContext.tryMove(this, moveDirection);
+    }else {
+    	turnCounter ++;
+    }
+   
     }
     
 }

@@ -5,7 +5,7 @@ import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class MasterSquirrel extends PlayerEntity {
-
+	private int wallCounter = 0;
     public MasterSquirrel(int id, XY position) {
         super(id, position, 1000);
 
@@ -25,8 +25,16 @@ public class MasterSquirrel extends PlayerEntity {
     public void nextStep(EntityContext entityContext) {
     	//TODO: ai...
     	XY moveDirection = null;
+    	if(wallCounter == 0) {
     	entityContext.tryMove(this, moveDirection);
-        
+    	} else {
+    		wallCounter--;
+    	}
     }
+    
+    public void wallCollison() {
+    	wallCounter = 4;
+    }
+    
     
 }

@@ -37,6 +37,28 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public void tryMove(MiniSquirrel miniSquirrel, XY moveDirection) {
+		
+		Entity collided = checkCollision(miniSquirrel, moveDirection);
+		if(collided instanceof MasterSquirrel ) {
+			
+			if(((MasterSquirrel) collided).testSquirrel(miniSquirrel)) {
+				collided.updateEnergy(miniSquirrel.getEnergy());
+				kill(miniSquirrel);
+			}else {
+				
+			kill(miniSquirrel);
+				
+			}
+		}else if(collided instanceof MiniSquirrel) {
+			
+			if(!miniSquirrel.getMaster().equals(((MiniSquirrel) collided).getMaster())) {
+				collided.updateEnergy(miniSquirrel.getEnergy());
+				kill(miniSquirrel);
+			}
+		}
+		
+		
+		
 
 	}
 
@@ -186,7 +208,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public void kill(Entity entity) {
-		// TODO Auto-generated method stub
+		database.getEntitySet().remove(entity);
 
 	}
 
