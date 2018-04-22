@@ -8,7 +8,6 @@ public abstract class Character extends Entity {
 
 	public Character(int id, XY position, int energy) {
 		super(id, position, energy);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public abstract void nextStep(EntityContext entityContext);

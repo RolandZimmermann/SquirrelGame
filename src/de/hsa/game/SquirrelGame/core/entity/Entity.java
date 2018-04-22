@@ -43,8 +43,6 @@ public abstract class Entity {
 		return getClass().getSimpleName() + "\t[id: " + id + ",\t position: " + position.toString() + ",\t energy: " + energy + "]";
 	}
 
-	public abstract void nextStep(EntityContext entityContext);
-
 	public int getId() {
 		return id;
 	}

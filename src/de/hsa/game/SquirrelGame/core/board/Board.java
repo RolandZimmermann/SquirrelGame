@@ -26,7 +26,8 @@ public class Board {
 	private int id;
 
 	
-	private LinkedList<Entity> entitySet = new LinkedList<>();
+	private ArrayList<Entity> entitySet = new ArrayList<Entity>();
+	private ArrayList<Entity> removeID = new ArrayList<Entity>();
 
 	Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
 			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
@@ -85,14 +86,23 @@ public class Board {
 
 	}
 	
-	public void killandReplace(Entity entity) {
+	public void killandReplace(Entity entity, XY newPos) {
 	    if(entity instanceof GoodPlant) {
-	        entitySet.add(new GoodPlant(id++,))
+	        entitySet.add(new GoodPlant(id++,new XY(newPos.getX(), newPos.getY())));
+	    }
+	    if(entity instanceof BadPlant) {
+	        entitySet.add(new BadPlant(id++,new XY(newPos.getX(), newPos.getY())));
+	    }
+	    if(entity instanceof GoodBeast) {
+	        entitySet.add(new GoodBeast(id++,new XY(newPos.getX(), newPos.getY())));
+	    }
+	    if(entity instanceof BadBeast) {
+	        entitySet.add(new BadBeast(id++,new XY(newPos.getX(), newPos.getY())));
 	    }
 	}
 	
 	public void kill(Entity entity) {
-		entitySet.remove(entity);
+		removeID.add(entity);
 	}
 
 	private ArrayList<XY> generateRandomLocations(int count) {
@@ -107,7 +117,7 @@ public class Board {
 		
 		for (int i = 0; i<count; i++) {
 			boolean inserted = false;
-			XY xy = new XY(a.nextInt(BOARD_WIDTH-1)+1,a.nextInt(BOARD_HEIGHT-1)+1);
+			XY xy = new XY(a.nextInt(BOARD_WIDTH-2)+1,a.nextInt(BOARD_HEIGHT-2)+1);
 			for (XY positions : randomLocations) {
 				if(!XY.equalPosition(positions, xy)) {
 					randomLocations.add(xy);
@@ -136,14 +146,19 @@ public class Board {
 	}
 	
 	public void update(MoveCommand moveCommand, EntityContext entityContext) {
-	    for(Entity c : entitySet) {
-	        if(c instanceof Character) {
+	    for(int i = 0; i < entitySet.size(); i++) {
+	        Entity c = entitySet.get(i);
+	    	if(c instanceof Character) {
 	            if(c instanceof HandOperatedMasterSquirrel) {
 	              ((HandOperatedMasterSquirrel) c).getMove(moveCommand);
 	            }
-	            c.nextStep(entityContext);
+	            ((Character) c).nextStep(entityContext);
 	        }
 	    }
+	    for(int i = 0; i < removeID.size(); i++) {
+	    	entitySet.remove(removeID.get(i));
+	    }
+	    removeID = new ArrayList<>();
 	}
 
 	public String toString() {
