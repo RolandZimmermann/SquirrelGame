@@ -15,7 +15,7 @@ public class MiniSquirrel extends PlayerEntity{
     public void nextStep(EntityContext entityContext) {
     	//TODO: make move
     	updateEnergy(-1);
-    	XY moveDirection = null;
+    	XY moveDirection = XY.randomMove();
     	entityContext.tryMove(this, moveDirection);
     	if(getEnergy() <= 0) {
     		 

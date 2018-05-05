@@ -13,7 +13,7 @@ public interface CommandTypeInfo {
 	
 	public void help(PrintStream outputStream);
 	public void exit(PrintStream outputStream);
-	public void all(PrintStream outputStream);
+	//public void all(PrintStream outputStream);
 	public MoveCommand up(PrintStream outputStream);
 	public MoveCommand down(PrintStream outputStream);
 	public MoveCommand upleft(PrintStream outputStream);

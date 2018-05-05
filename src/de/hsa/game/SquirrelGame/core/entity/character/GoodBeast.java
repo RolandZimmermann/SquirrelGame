@@ -14,11 +14,7 @@ public class GoodBeast extends Character {
 
 	@Override
 	public void nextStep(EntityContext entityContext) {
-		if (entityContext == null) {
-			XY randmove = XY.randomMove();
-			super.setPositionXY(randmove.getX(), randmove.getY());
-			return;
-		}
+		
 
 		if (turnCounter == 4) {
 			turnCounter = 0;

@@ -27,9 +27,11 @@ public abstract class Game {
     }
     
 	public void run() {
+		render();
 	    while (true) {
-	        render();
-	        processInput();
+	    	processInput();
+	    	render();
+	        
 	        update();
 	    }
 	}

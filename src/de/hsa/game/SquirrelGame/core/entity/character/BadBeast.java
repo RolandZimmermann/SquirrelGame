@@ -16,11 +16,6 @@ public class BadBeast extends Character {
     @Override
     public void nextStep(EntityContext entityContext) {
 
-        if (entityContext == null) {
-            XY randmove = XY.randomMove();
-            super.setPositionXY(randmove.getX(), randmove.getY());
-            return;
-        }
 
         if (biteCounter != 0) {
 

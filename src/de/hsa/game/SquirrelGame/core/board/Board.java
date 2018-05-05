@@ -10,6 +10,7 @@ import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.EntitySet;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
@@ -163,6 +164,11 @@ public class Board {
 
 	public String toString() {
 		return entitySet.toString();
+	}
+	
+	public void spawnMiniSquirrel(MasterSquirrel master, XY xy, int energy) {
+		entitySet.add(new MiniSquirrel(id++, xy, energy, master));
+		
 	}
 
 }

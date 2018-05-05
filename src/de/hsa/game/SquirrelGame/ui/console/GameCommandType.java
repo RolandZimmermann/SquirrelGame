@@ -20,7 +20,7 @@ public enum GameCommandType implements CommandTypeInfo {
 	UP("up", " move up"),
 	W("w", " move up"),
 	A("a", " move left"),
-	S("w", " move down"),
+	S("s", " move down"),
 	D("d", " move right"),
 	Q("q", " move upleft"),
 	E("e", " move upright"),
@@ -80,12 +80,7 @@ public enum GameCommandType implements CommandTypeInfo {
 		
 	}
 
-	@Override
-	public void all(PrintStream outputStream) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public MoveCommand up(PrintStream outputStream) {
 		// TODO Auto-generated method stub
@@ -178,10 +173,43 @@ public enum GameCommandType implements CommandTypeInfo {
 
 	@Override
 	public MoveCommand mini_squirrel(PrintStream outputStream, Integer energy, Integer position) {
+		MoveCommand returnCommand = MoveCommand.NON;
 		if (position == 0) {
 			
+			returnCommand = MoveCommand.MINI_UPLEFT;
+			 returnCommand.setEnergy(energy);
 		}
-		return null;
+		else if (position == 1) {
+			
+			returnCommand = MoveCommand.MINI_UP;
+			 returnCommand.setEnergy(energy);
+		}else if (position == 2) {
+			
+			returnCommand = MoveCommand.MINI_UPRIGHT;
+			 returnCommand.setEnergy(energy);
+		}else if (position == 3) {
+			
+			returnCommand = MoveCommand.MINI_RIGHT;
+			 returnCommand.setEnergy(energy);
+		}else if (position == 4) {
+			
+			returnCommand = MoveCommand.MINI_DOWNRIGHT;
+			 returnCommand.setEnergy(energy);
+		}else if (position == 5) {
+			
+			returnCommand = MoveCommand.MINI_DOWNLEFT;
+			 returnCommand.setEnergy(energy);
+		}else if (position == 6) {
+			
+			returnCommand = MoveCommand.MINI_DOWN;
+			 returnCommand.setEnergy(energy);
+		}
+		else if (position == 7) {
+			
+			returnCommand = MoveCommand.MINI_LEFT;
+			 returnCommand.setEnergy(energy);
+		}
+		return returnCommand;
 		
 	}
 
@@ -195,7 +223,7 @@ public enum GameCommandType implements CommandTypeInfo {
 	@Override
 	public MoveCommand mini(PrintStream outputStream, Integer energy, Integer position) {
 		// TODO Auto-generated method stub
-		return null;
+		return mini_squirrel(outputStream, energy, position);
 	}
 
 	@Override

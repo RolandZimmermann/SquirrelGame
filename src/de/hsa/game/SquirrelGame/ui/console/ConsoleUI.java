@@ -65,7 +65,7 @@ public class ConsoleUI implements UI {
 			for (int x = 0; x < boardView.getSize().getX(); x++) {
 				Entity toInsert = boardView.getEntityType(x, y);
 				if (toInsert == null) {
-					outputStream.println(" ");
+					outputStream.print(" ");
 				} else if (toInsert instanceof Wall) {
 					outputStream.print("#");
 				} else if (toInsert instanceof MasterSquirrel || toInsert instanceof HandOperatedMasterSquirrel) {

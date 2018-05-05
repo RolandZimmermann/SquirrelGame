@@ -58,9 +58,11 @@ public class FlattenBoard implements BoardView, EntityContext {
 				collided.updateEnergy(miniSquirrel.getEnergy());
 				kill(miniSquirrel);
 			}
+		} if (collided == null) {
+			miniSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
 		}
 
-	}
+	} 
 
 	@Override
 	public void tryMove(GoodBeast goodBeast, XY moveDirection) {
@@ -200,5 +202,19 @@ public class FlattenBoard implements BoardView, EntityContext {
 		return cells[entity.getPositionXY().getY() + moveDirection.getY()][moveDirection.getX()
 				+ entity.getPositionXY().getX()];
 	}
+	 public void trySpawnMiniSquirrel( MasterSquirrel master ,XY xy ,int energy) {
+		 Entity location = getEntityType(xy);
+		 if(location == null) {
+			 database.spawnMiniSquirrel(master, xy, energy);
+			 
+		 }
+		 
+	 }
+	
+	
+	
+	
+	
+	
 
 }

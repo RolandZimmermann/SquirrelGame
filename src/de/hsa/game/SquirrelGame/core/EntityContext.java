@@ -15,7 +15,7 @@ public interface EntityContext {
 	public void tryMove(GoodBeast goodBeast, XY moveDirection);
 	public void tryMove(BadBeast badbeast, XY moveDirection);
 	public void tryMove(MasterSquirrel masterSquirrel, XY moveDirection);
-	
+	public void trySpawnMiniSquirrel(MasterSquirrel master, XY xy, int energy );
 	public PlayerEntity nearestPlayerEntity(XY pos);
 	
 	public void kill(Entity entity);
