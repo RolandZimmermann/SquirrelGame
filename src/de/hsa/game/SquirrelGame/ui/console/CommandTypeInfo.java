@@ -30,9 +30,9 @@ public interface CommandTypeInfo {
 	public MoveCommand e(PrintStream outputStream);
 	public MoveCommand y(PrintStream outputStream);
 	public MoveCommand x(PrintStream outputStream);
-	public void master_squirrel(PrintStream outputStream);
+	public MoveCommand master_squirrel(PrintStream outputStream);
 	public MoveCommand mini_squirrel(PrintStream outputStream, Integer energy, Integer position);
-	public void m(PrintStream outputStream);
+	public MoveCommand m(PrintStream outputStream);
 	public MoveCommand mini(PrintStream outputStream, Integer energy, Integer position);
 	
 	

@@ -171,20 +171,24 @@ public enum GameCommandType implements CommandTypeInfo {
 	}
 
 	@Override
-	public void master_squirrel(PrintStream outputStream) {
-		// TODO Auto-generated method stub
+	public MoveCommand master_squirrel(PrintStream outputStream) {
+		return MoveCommand.MASTER;
 		
 	}
 
 	@Override
 	public MoveCommand mini_squirrel(PrintStream outputStream, Integer energy, Integer position) {
-		
+		if (position == 0) {
+			
+		}
 		return null;
+		
 	}
 
 	@Override
-	public void m(PrintStream outputStream) {
-		// TODO Auto-generated method stub
+	public MoveCommand m(PrintStream outputStream) {
+		
+		return MoveCommand.MASTER;
 		
 	}
 
@@ -197,13 +201,13 @@ public enum GameCommandType implements CommandTypeInfo {
 	@Override
 	public MoveCommand right(PrintStream outputStream) {
 		// TODO Auto-generated method stub
-		return null;
+		return MoveCommand.RIGHT;
 	}
 
 	@Override
 	public MoveCommand left(PrintStream outputStream) {
 		// TODO Auto-generated method stub
-		return null;
+		return MoveCommand.LEFT;
 	}
 
 	

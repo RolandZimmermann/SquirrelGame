@@ -17,8 +17,8 @@ public enum MoveCommand {
 	MINI_UPLEFT(new XY(-1,-1), int.class),
 	MINI_UPRIGHT(new XY(1,-1), int.class),
 	MINI_DOWNLEFT(new XY(-1,1), int.class),
-	MINI_DOWNRIGHT(new XY(1,1), int.class);
-	
+	MINI_DOWNRIGHT(new XY(1,1), int.class),
+	MASTER(new XY (0,0) );
 	XY xy;
 	Class<?> energy;
 	private MoveCommand(XY xy) {
