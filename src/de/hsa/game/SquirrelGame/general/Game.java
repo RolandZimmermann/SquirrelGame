@@ -5,10 +5,10 @@ import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.ui.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.UI;
+import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 
-public class Game {
+public abstract class Game {
     private State state;
     private UI ui;
     private BoardView boardView;

@@ -9,11 +9,24 @@ public enum MoveCommand {
 	UPRIGHT(new XY(1,-1)),
 	DOWNLEFT(new XY(-1,1)),
 	DOWNRIGHT(new XY(1,1)),
-    NON(new XY(0,0));
+    NON(new XY(0,0)),
+	MINI_UP(new XY (0,-1), int.class ),
+	MINI_DOWN(new XY(0,1), int.class),
+	MINI_LEFT(new XY(-1,0), int.class),
+	MINI_RIGHT(new XY(1,0), int.class),
+	MINI_UPLEFT(new XY(-1,-1), int.class),
+	MINI_UPRIGHT(new XY(1,-1), int.class),
+	MINI_DOWNLEFT(new XY(-1,1), int.class),
+	MINI_DOWNRIGHT(new XY(1,1), int.class);
 	
-	public XY xy;
-	
+	XY xy;
+	Class<?> energy;
 	private MoveCommand(XY xy) {
 		this.xy = xy;
+	}
+	
+	private MoveCommand(XY xy, Class<?> energy) {
+		this.xy= xy;
+				this.energy = energy;
 	}
 }

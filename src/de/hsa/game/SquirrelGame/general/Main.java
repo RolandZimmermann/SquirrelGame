@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		Board board =  BoardFactory.createBoard();
 		
-		Game game = new Game(new State(board));
+		Game game = new GameImpl(new State(board));
 		game.run();
 	}
 	
