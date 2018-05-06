@@ -1,4 +1,4 @@
-package de.hsa.game.SquirrelGame.ui.consoletest.exceptions;
+package de.hsa.game.SquirrelGame.ui.exceptions;
 
 public class NoSuchCommandException extends ScanException {
 

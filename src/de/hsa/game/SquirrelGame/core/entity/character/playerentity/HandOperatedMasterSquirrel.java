@@ -5,6 +5,7 @@ import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
+import de.hsa.game.SquirrelGame.ui.exceptions.NotEnoughEnergyException;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel{
 
@@ -28,7 +29,13 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel{
     	   				|| move == MoveCommand.MINI_RIGHT || move == MoveCommand.MINI_LEFT
     	   				|| move == MoveCommand.MINI_DOWNRIGHT || move == MoveCommand.MINI_DOWNLEFT
     	   				|| move == MoveCommand.MINI_DOWN) {
-    	   			if (move.energy> this.getEnergy()) {
+    	   			if (move.energy > this.getEnergy()) {
+    	   				try {
+							throw new NotEnoughEnergyException("Not enough energy to spawn miniSquirrel");
+						} catch (NotEnoughEnergyException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
     	   				return;
     	   			}
     	   			entityContext.trySpawnMiniSquirrel(this, new XY(this.getPositionXY().getX()+ move.xy.getX(), 

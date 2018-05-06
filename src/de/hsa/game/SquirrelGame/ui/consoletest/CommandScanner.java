@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import de.hsa.game.SquirrelGame.ui.consoletest.exceptions.NoSuchCommandException;
-import de.hsa.game.SquirrelGame.ui.consoletest.exceptions.ScanException;
-import de.hsa.game.SquirrelGame.ui.consoletest.exceptions.WrongParamCountException;
+import de.hsa.game.SquirrelGame.ui.exceptions.NoSuchCommandException;
+import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
+import de.hsa.game.SquirrelGame.ui.exceptions.WrongParamCountException;
 
 public class CommandScanner {
 

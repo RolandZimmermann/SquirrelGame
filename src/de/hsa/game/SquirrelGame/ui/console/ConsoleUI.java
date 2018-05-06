@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
@@ -13,7 +14,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.playerentity.*;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.*;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.ui.UI;
-import de.hsa.game.SquirrelGame.ui.consoletest.exceptions.ScanException;
+import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
 import de.hsa.game.SquirrelGame.core.entity.character.*;
 import de.hsa.game.SquirrelGame.core.entity.*;
 
@@ -21,6 +22,10 @@ public class ConsoleUI implements UI {
 	private PrintStream outputStream = System.out;
 	private BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
 	private CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader, outputStream);
+
+	private boolean outputMasterEnergy = false;
+	private boolean outputHelp = false;
+	private boolean outputall = false;
 
 	public MoveCommand getCommand() {
 		Command command = null;
@@ -38,21 +43,24 @@ public class ConsoleUI implements UI {
 		Object[] params = command.getParams();
 		GameCommandType commandType = (GameCommandType) command.getCommandType();
 		try {
-			Class[] methodparameters;
+			MoveCommand moveCommand = null;
 			if (params != null) {
-				methodparameters = new Class[] { PrintStream.class, params[0].getClass(), params[1].getClass() };
-				Method method = commandType.getClass().getMethod(commandType.getName(), methodparameters);
-
-				return (MoveCommand) method.invoke(commandType, outputStream, params[0], params[1]);
+				moveCommand = commandType.execute(params[0], params[1]);
 			} else {
-				methodparameters = new Class[] { PrintStream.class };
-				Method method = commandType.getClass().getMethod(commandType.getName(), methodparameters);
-
-				return (MoveCommand) method.invoke(commandType, outputStream);
+				moveCommand = commandType.execute();
 			}
 
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
+			if (moveCommand == MoveCommand.HELP) {
+				outputHelp = true;
+			}
+			else if (moveCommand == MoveCommand.MASTER) {
+				outputMasterEnergy = true;
+			} else if(moveCommand == MoveCommand.ALL) {
+				outputall = true;
+			}
+			
+			return moveCommand;
+		} catch (IllegalArgumentException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -60,6 +68,7 @@ public class ConsoleUI implements UI {
 	}
 
 	public void render(BoardView boardView) {
+		ArrayList<Entity> entitysToOutput = new ArrayList<>();
 		clearConsole();
 		for (int y = 0; y < boardView.getSize().getY(); y++) {
 			for (int x = 0; x < boardView.getSize().getX(); x++) {
@@ -68,26 +77,66 @@ public class ConsoleUI implements UI {
 					outputStream.print(" ");
 				} else if (toInsert instanceof Wall) {
 					outputStream.print("#");
+					if(outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				} else if (toInsert instanceof MasterSquirrel || toInsert instanceof HandOperatedMasterSquirrel) {
 					outputStream.print("@");
+					if (outputMasterEnergy || outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				} else if (toInsert instanceof MiniSquirrel) {
 					outputStream.print("+");
+					if(outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				} else if (toInsert instanceof GoodBeast) {
 					outputStream.print("G");
+					if(outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				} else if (toInsert instanceof BadBeast) {
 					outputStream.print("B");
+					if(outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				} else if (toInsert instanceof GoodPlant) {
 					outputStream.print("g");
+					if(outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				} else if (toInsert instanceof BadPlant) {
 					outputStream.print("b");
+					if(outputall) {
+						entitysToOutput.add(toInsert);
+					}
 				}
+				
 			}
 			outputStream.println();
+		}
+		if (outputMasterEnergy) {
+			for (int i = 0; i < entitysToOutput.size(); i++) {
+				System.out.println(
+						"ID: " + entitysToOutput.get(i).getId() + " | Energy:" + entitysToOutput.get(i).getEnergy());
+			}
+			outputMasterEnergy = false;
+		}
+		else if (outputHelp) {
+			for (GameCommandType commandType : GameCommandType.values()) {
+				outputStream.println(commandType.getName() + ": " + commandType.getHelpText());
+			}
+			outputHelp = false;
+		} else if(outputall) {
+			for (int i = 0; i < entitysToOutput.size(); i++) {
+				System.out.println(entitysToOutput.get(i).toString());
+			}
+			outputall = false;
 		}
 	}
 
 	private void clearConsole() {
-		for (int i = 0; i < 60; i++)
+		for (int i = 0; i < 100; i++)
 			outputStream.println();
 	}
 }

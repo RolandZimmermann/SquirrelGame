@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import de.hsa.game.SquirrelGame.ui.consoletest.exceptions.ScanException;
+import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
 
 public class MyFavoriteCommandTypeProcessor {
 
