@@ -37,9 +37,7 @@ public abstract class Game {
 		ui.render(boardView);
 	}
 
-	public void processInput()
-
-	{
+	public void processInput() {
 		moveCommand = ui.getCommand();
 	}
 

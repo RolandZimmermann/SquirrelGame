@@ -41,7 +41,7 @@ public class ConsoleUI implements UI {
 			return null;
 		}
 		Object[] params = command.getParams();
-		GameCommandType commandType = (GameCommandType) command.getCommandType();
+		Executeable commandType = (GameCommandType) command.getCommandType();
 		try {
 			MoveCommand moveCommand = null;
 			if (params != null) {
