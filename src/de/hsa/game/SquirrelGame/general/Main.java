@@ -18,6 +18,7 @@ public class Main {
 
     }
     
+    
     public static void startGame(Game game) {
         Timer t= new Timer();
         t.schedule(new TimerTask() {
