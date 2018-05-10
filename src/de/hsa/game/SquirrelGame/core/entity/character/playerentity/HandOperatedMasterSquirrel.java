@@ -23,8 +23,9 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 			this.updateEnergy(-this.getEnergy());
 		}
 		if (wallCounter == 0) {
-			if (move == null)
+			if (move == null) {
 				return;
+			}
 			if (move == MoveCommand.MINI_UPRIGHT || move == MoveCommand.MINI_UPLEFT || move == MoveCommand.MINI_UP
 					|| move == MoveCommand.MINI_RIGHT || move == MoveCommand.MINI_LEFT
 					|| move == MoveCommand.MINI_DOWNRIGHT || move == MoveCommand.MINI_DOWNLEFT
@@ -36,7 +37,8 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				return;
+					move = null;
+					return;
 				}
 				if (move.energy > this.getEnergy()) {
 					try {
@@ -45,13 +47,16 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					move = null;
 					return;
 				}
 				entityContext.trySpawnMiniSquirrel(this, new XY(this.getPositionXY().getX() + move.xy.getX(),
 						this.getPositionXY().getY() + move.xy.getY()), move.energy);
+				move = null;
 				return;
 			}
 			entityContext.tryMove(this, move.xy);
+			move = null;
 		} else {
 			wallCounter--;
 		}

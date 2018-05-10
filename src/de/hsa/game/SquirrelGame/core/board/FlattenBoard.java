@@ -178,16 +178,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 		Random a = new Random();
 
 		XY newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
-		for (int i = 0; i < cells.length; i++) {
-			for (int j = 0; j < cells[i].length; j++) {
-				if (cells[i][j] != null) {
-					if (XY.equalPosition(cells[i][j].getPositionXY(), newPos)) {
-						newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
-						i = 0;
-						j = 0;
-					}
-				}
-			}
+		
+		while(cells[newPos.getY()][newPos.getX()] != null) {
+			newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
 		}
 
 		database.killandReplace(insert, newPos);
