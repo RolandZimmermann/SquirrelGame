@@ -15,8 +15,8 @@ public abstract class Game {
     private UI ui;
     private BoardView boardView;
     private EntityContext entityContext;
-    private int FPS = 1;
-    private boolean multi = false;
+    private int FPS = 10;
+    private boolean multi = true;
     
     
 
@@ -88,5 +88,6 @@ public abstract class Game {
     public void update() {
         state.update(moveCommand, entityContext);
         boardView.update();
+        moveCommand = null;
     }
 }

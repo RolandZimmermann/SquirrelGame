@@ -37,7 +37,6 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					move = null;
 					return;
 				}
 				if (move.energy > this.getEnergy()) {
@@ -47,12 +46,10 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					move = null;
 					return;
 				}
 				entityContext.trySpawnMiniSquirrel(this, new XY(this.getPositionXY().getX() + move.xy.getX(),
 						this.getPositionXY().getY() + move.xy.getY()), move.energy);
-				move = null;
 				return;
 			}
 			entityContext.tryMove(this, move.xy);
