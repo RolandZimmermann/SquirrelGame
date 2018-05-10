@@ -17,6 +17,8 @@ public abstract class Game {
     private EntityContext entityContext;
     private int FPS = 1;
     private boolean multi = false;
+    
+    int push;
 
     private MoveCommand moveCommand = null;
 
