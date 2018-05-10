@@ -29,6 +29,7 @@ public class Board {
 	
 	private ArrayList<Entity> entitySet = new ArrayList<Entity>();
 	private ArrayList<Entity> removeID = new ArrayList<Entity>();
+	private ArrayList<Entity> addID = new ArrayList<Entity>();
 
 	Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
 			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
@@ -89,16 +90,16 @@ public class Board {
 	
 	public void killandReplace(Entity entity, XY newPos) {
 	    if(entity instanceof GoodPlant) {
-	        entitySet.add(new GoodPlant(id++,new XY(newPos.getX(), newPos.getY())));
+	        addID.add(new GoodPlant(id++,new XY(newPos.getX(), newPos.getY())));
 	    }
 	    if(entity instanceof BadPlant) {
-	        entitySet.add(new BadPlant(id++,new XY(newPos.getX(), newPos.getY())));
+	        addID.add(new BadPlant(id++,new XY(newPos.getX(), newPos.getY())));
 	    }
 	    if(entity instanceof GoodBeast) {
-	        entitySet.add(new GoodBeast(id++,new XY(newPos.getX(), newPos.getY())));
+	        addID.add(new GoodBeast(id++,new XY(newPos.getX(), newPos.getY())));
 	    }
 	    if(entity instanceof BadBeast) {
-	        entitySet.add(new BadBeast(id++,new XY(newPos.getX(), newPos.getY())));
+	        addID.add(new BadBeast(id++,new XY(newPos.getX(), newPos.getY())));
 	    }
 	}
 	
@@ -159,7 +160,11 @@ public class Board {
 	    for(int i = 0; i < removeID.size(); i++) {
 	    	entitySet.remove(removeID.get(i));
 	    }
+	    for(int i = 0; i < addID.size();i++) {
+	    	entitySet.add(addID.get(i));
+	    }
 	    removeID = new ArrayList<>();
+	    addID = new ArrayList<>();
 	}
 
 	public String toString() {
@@ -167,8 +172,7 @@ public class Board {
 	}
 	
 	public void spawnMiniSquirrel(MasterSquirrel master, XY xy, int energy) {
-		entitySet.add(new MiniSquirrel(id++, xy, energy, master));
-		
+		addID.add(new MiniSquirrel(id++, xy, energy, master));	
 	}
 
 }
