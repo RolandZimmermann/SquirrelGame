@@ -31,7 +31,7 @@ public class FxUI extends Scene implements UI {
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 32;
+	private static final int CELL_SIZE = 128;
 	private static MoveCommand moveCommand;
 
 	private Image sprWall;
@@ -41,6 +41,7 @@ public class FxUI extends Scene implements UI {
 	private Image sprGoodBeast;
 	private Image sprBadBeast;
 	private Image sprMiniSquirrel;
+	private Image sprEmpty;
 
 	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel) {
 		super(parent);
@@ -52,43 +53,49 @@ public class FxUI extends Scene implements UI {
 	private void loadImages() {
 		try {
 			File file = new File("ressource/sprites/Wall.png");
-			sprWall = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprWall = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 
 		try {
 			File file = new File("ressource/sprites/BadPlant.png");
-			sprBadPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprBadPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 
 		try {
 			File file = new File("ressource/sprites/GoodPlant.png");
-			sprGoodPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprGoodPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 
 		try {
 			File file = new File("ressource/spirtes/MasterSquirrel.png");
-			sprMasterSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprMasterSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 
 		try {
 			File file = new File("ressource/spirtes/MiniSquirrel.png");
-			sprMiniSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprMiniSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 
 		try {
 			File file = new File("ressource/spirtes/GoodBeast.png");
-			sprGoodBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprGoodBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 
 		try {
 			File file = new File("ressource/spirtes/BadBeast.png");
-			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/sprites/Empty.png");
+			sprEmpty = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 		}
 	}
@@ -206,6 +213,13 @@ public class FxUI extends Scene implements UI {
 						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
 						gc.drawImage(sprMiniSquirrel, x, y);
+					}
+				} else {
+					if (sprEmpty.isError()) {
+						gc.setFill(Color.GREEN);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprEmpty, x, y);
 					}
 				}
 			}
