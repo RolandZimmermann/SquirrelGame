@@ -1,14 +1,6 @@
 package de.hsa.game.SquirrelGame.botapi;
 
 public enum EntityType {
-
-	BAD_PLANT,
-	GOOD_PANT,
-	BAD_BEAST,
-	GOOD_BEAST,
-	WALL,
-	MINI_SQUIRREL,
-	MASTER_SQUIRREL;
-	
+	 WALL, GOOD_BEAST, BAD_BEAST, GOOD_PLANT, BAD_PLANT, MASTER_SQUIRREL, MINI_SQUIRREL, NONE;
 	
 }
