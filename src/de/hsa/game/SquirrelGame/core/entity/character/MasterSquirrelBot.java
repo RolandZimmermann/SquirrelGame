@@ -22,6 +22,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	public class ControllerContextImpl implements ControllerContext {
 		private EntityContext entityContext;
 		private final int VISION = 31;
+	
 
 		public ControllerContextImpl(EntityContext entityContext) {
 			this.entityContext = entityContext;
@@ -65,7 +66,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 
 		@Override
 		public void move(XY direction) {
-			// TODO Auto-generated method stub
+			setPositionXY(direction.getX(), direction.getY());
 
 		}
 
