@@ -12,7 +12,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
-public class MasterSquirrelBot extends MasterSquirrel {
+public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 	public MasterSquirrelBot(int id, XY position) {
 		super(id, position);
@@ -81,6 +81,17 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			// TODO Auto-generated method stub
 			return this.getEnergy();
 		}
+	}
+
+	@Override
+	public void nextStep(EntityContext entityContext) {
+		this.nextStep(new ControllerContextImpl(entityContext));
+	}
+
+	@Override
+	public void nextStep(ControllerContext view) {
+		// TODO Auto-generated method stub
+		this.setPositionXY(1, 1);
 	}
 
 }

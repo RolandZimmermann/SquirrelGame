@@ -69,7 +69,7 @@ public class Board {
 			randomlocations.remove(0);
 		}
 		for(int i = 0; i < countMastersquirrel; i++) {
-			entitySet.add(new MasterSquirrel(id++,randomlocations.get(0)));
+			entitySet.add(new MasterSquirrelBot(id++,randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		
