@@ -9,8 +9,6 @@ import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -62,7 +60,7 @@ public class Launcher extends Application {
 
 		FxUI fxUI = FxUI.createInstance(BoardConfig.getSize());
 
-		game = new GameImpl(new State(board), new FxUI(new Pane(), new Canvas(), new Label()));
+		game = new GameImpl(new State(board), fxUI);
 		primaryStage.setScene(fxUI);
 		primaryStage.setTitle("MaToRo");
 		fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -76,5 +74,6 @@ public class Launcher extends Application {
 
 		startGame(game);
 	}
+
 
 }
