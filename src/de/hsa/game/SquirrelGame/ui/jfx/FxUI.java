@@ -1,7 +1,5 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
-import javax.swing.text.html.MinimalHTMLWriter;
-
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.*;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
@@ -26,107 +24,130 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class FxUI extends Scene implements UI{
-	
+@SuppressWarnings("restriction")
+public class FxUI extends Scene implements UI {
+
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 16;
-	
+	private static final int CELL_SIZE = 8;
+	private static MoveCommand moveCommand;
+
 	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel) {
-        super(parent);
-        this.boardCanvas = boardCanvas;
-        this.msgLabel = msgLabel;
-    }
-    
-    public static FxUI createInstance(XY boardSize) {
-        Canvas boardCanvas = new Canvas(boardSize.getX() * CELL_SIZE, boardSize.getY() * CELL_SIZE);
-        Label statusLabel = new Label();
-        VBox top = new VBox();
-        
-        top.getChildren().add(boardCanvas);
-        top.getChildren().add(statusLabel);
-        statusLabel.setText("Hier könnte Ihre Werbung stehen");
-        
-        final FxUI fxUI = new FxUI(top, boardCanvas, statusLabel); 
-        
-        fxUI.setOnKeyPressed(
-                new EventHandler<KeyEvent>() {
-                   @Override
-                   public void handle(KeyEvent keyEvent) {
-                      System.out.println("Es wurde folgende Taste gedrückt: " + keyEvent.getCode() + " bitte behandeln!");
-                      // TODO handle event 
-                   }
-                }
-          );
-        return fxUI;
-    }
+		super(parent);
+		this.boardCanvas = boardCanvas;
+		this.msgLabel = msgLabel;
+	}
 
-    
+	public static FxUI createInstance(XY boardSize) {
+		Canvas boardCanvas = new Canvas(boardSize.getX() * CELL_SIZE, boardSize.getY() * CELL_SIZE);
+		Label statusLabel = new Label();
+		VBox top = new VBox();
 
-    @Override
-    public void render(final BoardView view) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                repaintBoardCanvas(view);            
-            }      
-        });  
-    }
-    
-    private void repaintBoardCanvas(BoardView view) {
-        GraphicsContext gc = boardCanvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
-        XY viewSize = view.getSize();
+		top.getChildren().add(boardCanvas);
+		top.getChildren().add(statusLabel);
+		statusLabel.setText("Hier könnte Ihre Werbung stehen");
 
-        gc.setFill(Color.GREEN);
-        gc.fillRect(0,0,viewSize.getX()*CELL_SIZE, viewSize.getY()*CELL_SIZE);
-		
-        for(int y = 0; y < viewSize.getY()*CELL_SIZE; y+=CELL_SIZE) {
-        	for(int x = 0; x < viewSize.getX()*CELL_SIZE; x+=CELL_SIZE) {
-        		Entity entity = view.getEntityType(x/CELL_SIZE, y/CELL_SIZE);
-        		if(entity instanceof Wall) {
-        			gc.setFill(Color.ORANGE);
-        			gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-        		} else if(entity instanceof GoodBeast) {
-        			gc.setFill(Color.LIGHTGREEN);
-        			gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
-        		} else if(entity instanceof BadBeast) {
-        			gc.setFill(Color.DARKRED);
-        			gc.fillOval(x, y, CELL_SIZE,CELL_SIZE);
-        		} else if(entity instanceof GoodPlant) {
-        			gc.setFill(Color.GREEN);
-        			gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-        		} else if(entity instanceof BadPlant) {
-        			gc.setFill(Color.RED);
-        			gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-        		} else if(entity instanceof MasterSquirrel) {
-        			gc.setFill(Color.MAGENTA);
-        			gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-        		} else if(entity instanceof MiniSquirrel) {
-        			gc.setFill(Color.BLUEVIOLET);
-        			gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-        		}
-        	}
-        }
-        
-    }
+		final FxUI fxUI = new FxUI(top, boardCanvas, statusLabel);
+
+		fxUI.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent keyEvent) {
+				System.out.println("Es wurde folgende Taste gedrückt: " + keyEvent.getCode() + " bitte behandeln!");
+				switch (keyEvent.getCode()) {
+				case A:
+					setCommand(MoveCommand.LEFT);
+					break;
+				case W:
+					setCommand(MoveCommand.UP);
+					break;
+				case S:
+					setCommand(MoveCommand.DOWN);
+					break;
+				case D:
+					setCommand(MoveCommand.RIGHT);
+					break;
+				case SPACE:
+					MoveCommand moveCommand = MoveCommand.MINI_DOWN;
+					moveCommand.setEnergy(100);
+					setCommand(moveCommand);
+					break;
+				default:
+					break;
+
+				}
+			}
+		});
+		return fxUI;
+	}
+
+	@SuppressWarnings("restriction")
+	@Override
+	public void render(final BoardView view) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				repaintBoardCanvas(view);
+			}
+		});
+	}
+
+	private void repaintBoardCanvas(BoardView view) {
+		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
+		gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
+		XY viewSize = view.getSize();
+
+		gc.setFill(Color.GREEN);
+		gc.fillRect(0, 0, viewSize.getX() * CELL_SIZE, viewSize.getY() * CELL_SIZE);
+
+		for (int y = 0; y < viewSize.getY() * CELL_SIZE; y += CELL_SIZE) {
+			for (int x = 0; x < viewSize.getX() * CELL_SIZE; x += CELL_SIZE) {
+				Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
+				if (entity instanceof Wall) {
+					gc.setFill(Color.ORANGE);
+					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+				} else if (entity instanceof GoodBeast) {
+					gc.setFill(Color.LIGHTGREEN);
+					gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+				} else if (entity instanceof BadBeast) {
+					gc.setFill(Color.DARKRED);
+					gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+				} else if (entity instanceof GoodPlant) {
+					gc.setFill(Color.LIGHTGREEN);
+					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+				} else if (entity instanceof BadPlant) {
+					gc.setFill(Color.RED);
+					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+				} else if (entity instanceof MasterSquirrel) {
+					gc.setFill(Color.MAGENTA);
+					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					this.message("Energy: " + entity.getEnergy());
+				} else if (entity instanceof MiniSquirrel) {
+					gc.setFill(Color.BLUEVIOLET);
+					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+				}
+			}
+		}
+
+	}
 
 	@Override
 	public MoveCommand getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+		MoveCommand toReturn = moveCommand;
+		moveCommand = null;
+		return toReturn;
 	}
-    
 
-    @Override
-    public void message(final String msg) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                msgLabel.setText(msg);            
-            }      
-        });         
-    }
+	public static void setCommand(MoveCommand move) {
+		moveCommand = move;
+	}
+
+	@Override
+	public void message(final String msg) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				msgLabel.setText(msg);
+			}
+		});
+	}
 }
-
-
