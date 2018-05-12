@@ -9,9 +9,7 @@ import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
