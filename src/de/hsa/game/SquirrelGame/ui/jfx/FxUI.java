@@ -31,9 +31,9 @@ public class FxUI extends Scene implements UI {
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 8;
+	private static final int CELL_SIZE = 32;
 	private static MoveCommand moveCommand;
-	
+
 	private Image sprWall;
 	private Image sprGoodPlant;
 	private Image sprBadPlant;
@@ -46,6 +46,51 @@ public class FxUI extends Scene implements UI {
 		super(parent);
 		this.boardCanvas = boardCanvas;
 		this.msgLabel = msgLabel;
+		loadImages();
+	}
+
+	private void loadImages() {
+		try {
+			File file = new File("ressource/sprites/Wall.png");
+			sprWall = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/sprites/BadPlant.png");
+			sprBadPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/sprites/GoodPlant.png");
+			sprGoodPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/spirtes/MasterSquirrel.png");
+			sprMasterSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/spirtes/MiniSquirrel.png");
+			sprMiniSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/spirtes/GoodBeast.png");
+			sprGoodBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
+
+		try {
+			File file = new File("ressource/spirtes/BadBeast.png");
+			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, false, false);
+		} catch (Exception e) {
+		}
 	}
 
 	public static FxUI createInstance(XY boardSize) {
@@ -108,42 +153,60 @@ public class FxUI extends Scene implements UI {
 
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, viewSize.getX() * CELL_SIZE, viewSize.getY() * CELL_SIZE);
-		
-		File file = new File("ressource/sprites/Wall.png");
-		Image sprWall = new Image(file.toURI().toString(),CELL_SIZE,CELL_SIZE,false,false);
-		
-		file = new File("ressource/sprites/BadPlant.png");
-		Image sprBadPlant = new Image(file.toURI().toString(),CELL_SIZE,CELL_SIZE,false,false);
-		
-		file = new File("ressource/sprites/GoodPlant.png");
-		Image sprGoodPlant = new Image(file.toURI().toString(),CELL_SIZE,CELL_SIZE,false,false);
-		
-		
+
 		for (int y = 0; y < viewSize.getY() * CELL_SIZE; y += CELL_SIZE) {
 			for (int x = 0; x < viewSize.getX() * CELL_SIZE; x += CELL_SIZE) {
 				Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
 				if (entity instanceof Wall) {
-					gc.setFill(Color.ORANGE);
-					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprWall == null) {
+						gc.setFill(Color.ORANGE);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprWall, x, y);
+					}
 				} else if (entity instanceof GoodBeast) {
-					gc.setFill(Color.LIGHTGREEN);
-					gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprGoodBeast.isError()) {
+						gc.setFill(Color.LIGHTGREEN);
+						gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprGoodBeast, x, y);
+					}
 				} else if (entity instanceof BadBeast) {
-					gc.setFill(Color.DARKRED);
-					gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprBadBeast.isError()) {
+						gc.setFill(Color.DARKRED);
+						gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprBadBeast, x, y);
+					}
 				} else if (entity instanceof GoodPlant) {
-					gc.setFill(Color.LIGHTGREEN);
-					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprGoodPlant.isError()) {
+						gc.setFill(Color.LIGHTGREEN);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprGoodPlant, x, y);
+					}
 				} else if (entity instanceof BadPlant) {
-					gc.setFill(Color.RED);
-					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprBadPlant.isError()) {
+						gc.setFill(Color.RED);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprBadPlant, x, y);
+					}
 				} else if (entity instanceof MasterSquirrel) {
-					gc.setFill(Color.MAGENTA);
-					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprMasterSquirrel.isError()) {
+						gc.setFill(Color.MAGENTA);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprMasterSquirrel, x, y);
+					}
 					this.message("Energy: " + entity.getEnergy());
 				} else if (entity instanceof MiniSquirrel) {
-					gc.setFill(Color.BLUEVIOLET);
-					gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					if (sprMiniSquirrel.isError()) {
+						gc.setFill(Color.BLUEVIOLET);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprMiniSquirrel, x, y);
+					}
 				}
 			}
 		}
