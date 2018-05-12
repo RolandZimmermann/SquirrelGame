@@ -1,5 +1,7 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
+import java.io.File;
+
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.*;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
@@ -31,6 +33,14 @@ public class FxUI extends Scene implements UI {
 	private Label msgLabel;
 	private static final int CELL_SIZE = 8;
 	private static MoveCommand moveCommand;
+	
+	private Image sprWall;
+	private Image sprGoodPlant;
+	private Image sprBadPlant;
+	private Image sprMasterSquirrel;
+	private Image sprGoodBeast;
+	private Image sprBadBeast;
+	private Image sprMiniSquirrel;
 
 	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel) {
 		super(parent);
@@ -98,7 +108,17 @@ public class FxUI extends Scene implements UI {
 
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, viewSize.getX() * CELL_SIZE, viewSize.getY() * CELL_SIZE);
-
+		
+		File file = new File("ressource/sprites/Wall.png");
+		Image sprWall = new Image(file.toURI().toString(),CELL_SIZE,CELL_SIZE,false,false);
+		
+		file = new File("ressource/sprites/BadPlant.png");
+		Image sprBadPlant = new Image(file.toURI().toString(),CELL_SIZE,CELL_SIZE,false,false);
+		
+		file = new File("ressource/sprites/GoodPlant.png");
+		Image sprGoodPlant = new Image(file.toURI().toString(),CELL_SIZE,CELL_SIZE,false,false);
+		
+		
 		for (int y = 0; y < viewSize.getY() * CELL_SIZE; y += CELL_SIZE) {
 			for (int x = 0; x < viewSize.getX() * CELL_SIZE; x += CELL_SIZE) {
 				Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
