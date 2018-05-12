@@ -1,5 +1,7 @@
 package de.hsa.game.SquirrelGame.core.board;
 
+import de.hsa.game.SquirrelGame.gamestats.XY;
+
 public class BoardConfig {
 
 	
@@ -13,4 +15,8 @@ public class BoardConfig {
 	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 1;
 	public static int COUNT_MASTERSQUIRREL = 0;
 	
+	
+	public static XY getSize() {
+		return new XY(WIDTH_SIZE, HEIGHT_SIZE);
+	}
 }

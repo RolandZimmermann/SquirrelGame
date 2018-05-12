@@ -15,16 +15,16 @@ public abstract class Game {
     private UI ui;
     private BoardView boardView;
     private EntityContext entityContext;
-    private int FPS = 10;
+    private int FPS = 5;
     private boolean multi = true;
     
     
 
     private MoveCommand moveCommand = null;
 
-    public Game(State state) {
+    public Game(State state, UI ui) {
         this.state = state;
-        this.ui = new ConsoleUI();
+        this.ui = ui;
 
         FlattenBoard flattenBoard = new FlattenBoard(state.getBoard());
         this.boardView = flattenBoard;

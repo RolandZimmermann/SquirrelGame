@@ -139,4 +139,10 @@ public class ConsoleUI implements UI {
 		for (int i = 0; i < 100; i++)
 			outputStream.println();
 	}
+
+	@Override
+	public void message(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
 }

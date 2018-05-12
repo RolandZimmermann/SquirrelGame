@@ -1,11 +1,12 @@
 package de.hsa.game.SquirrelGame.general;
 
 import de.hsa.game.SquirrelGame.core.board.State;
+import de.hsa.game.SquirrelGame.ui.UI;
 
 public class GameImpl extends Game {
 
-	public GameImpl(State state) {
-		super(state);
+	public GameImpl(State state, UI ui) {
+		super(state, ui);
 		// TODO Auto-generated constructor stub
 	}
 
