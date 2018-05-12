@@ -9,7 +9,7 @@ public interface ControllerContext {
 	public EntityType getEntityAt(XY xy);
 	public void move (XY direction);
 	public void spawnMiniBot (XY direction, int energy);
-	public int getEntergy();
+	public int getEnergy();
 	
 
 }
