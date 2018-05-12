@@ -10,7 +10,7 @@ public class BoardConfig {
 	public static int COUNT_WALL = 10;
 	public static int COUNT_GOODBEAST = 7;
 	public static int COUNT_BADBEAST = 3;
-	public static int COUNT_GOODPLANT = 20;
+	public static int COUNT_GOODPLANT = 8;
 	public static int COUNT_BADPLANT = 2;
 	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 0;
 	public static int COUNT_MASTERSQUIRREL = 2;
