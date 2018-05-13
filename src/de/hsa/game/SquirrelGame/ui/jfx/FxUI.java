@@ -31,7 +31,7 @@ public class FxUI extends Scene implements UI {
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 128;
+	private static final int CELL_SIZE = 32;
 	private static MoveCommand moveCommand;
 
 	private Image sprWall;
@@ -133,6 +133,20 @@ public class FxUI extends Scene implements UI {
 					moveCommand.setEnergy(100);
 					setCommand(moveCommand);
 					break;
+				case Q:
+                    setCommand(MoveCommand.UPLEFT);
+                    break;
+				case E:
+                    setCommand(MoveCommand.UPRIGHT);
+                    break;
+				case Y:
+                    setCommand(MoveCommand.DOWNLEFT);
+                    break;
+				case C:
+                    setCommand(MoveCommand.DOWNRIGHT);
+                    break;
+					
+					
 				default:
 					break;
 
