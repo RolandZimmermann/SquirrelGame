@@ -14,6 +14,8 @@ import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
+
+	
 	public MasterSquirrelBot(int id, XY position) {
 		super(id, position);
 		// TODO Auto-generated constructor stub
@@ -82,18 +84,27 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 		}
 	}
 
-	@Override
-	public void nextStep(EntityContext entityContext) {
-		this.nextStep(new ControllerContextImpl(entityContext));
-	}
+
 
 	@Override
 	public void nextStep(ControllerContext view) {
-		XY move = XY.randomMove();
+		int moveX = (int) (Math.random() < 0.5 ? -1 : 1);
+		int moveY = (int) (Math.random() < 0.5 ? -1 : 1);
+		XY move = new XY(moveX,moveY);
 		if (view.getEntityAt(
 				new XY(this.getPositionXY().getX() + move.getX(), this.getPositionXY().getY() + move.getY())) == EntityType.NONE) {
 			this.setPositionXY(move.getX(), move.getY());
 		}
+	}
+	
+	public ControllerContext createControllerContext(EntityContext entityContext) {
+		return new ControllerContextImpl(entityContext);
+	}
+
+	@Override
+	public void nextStep(EntityContext entityContext) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
