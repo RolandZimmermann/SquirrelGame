@@ -22,7 +22,6 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 	public class ControllerContextImpl implements ControllerContext {
 		private EntityContext entityContext;
 		private final int VISION = 31;
-	
 
 		public ControllerContextImpl(EntityContext entityContext) {
 			this.entityContext = entityContext;
@@ -90,8 +89,11 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 	@Override
 	public void nextStep(ControllerContext view) {
-		// TODO Auto-generated method stub
-		this.setPositionXY(1, 1);
+		XY move = XY.randomMove();
+		if (view.getEntityAt(
+				new XY(this.getPositionXY().getX() + move.getX(), this.getPositionXY().getY() + move.getY())) == EntityType.NONE) {
+			this.setPositionXY(move.getX(), move.getY());
+		}
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import de.hsa.game.SquirrelGame.botapi.BotControllerFactory;
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.EntitySet;
@@ -69,7 +70,7 @@ public class Board {
 			randomlocations.remove(0);
 		}
 		for(int i = 0; i < countMastersquirrel; i++) {
-			entitySet.add(new MasterSquirrelBot(id++,randomlocations.get(0)));
+			entitySet.add((Entity) BotControllerFactory.createMasterBotController(id++,randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		
