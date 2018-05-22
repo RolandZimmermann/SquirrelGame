@@ -1,6 +1,6 @@
 package de.hsa.game.SquirrelGame.gamemode;
 
 public enum GameMode {
-	CONSOLE, JFX;
+	CONSOLE, JFX, JFX3D;
 
 }
