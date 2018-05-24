@@ -83,6 +83,7 @@ public abstract class Game {
 
     public void processInput() {
         moveCommand = ui.getCommand();
+        
     }
 
     public void update() {

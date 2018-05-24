@@ -114,7 +114,6 @@ public class FxUI extends Scene implements UI {
 		fxUI.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyEvent) {
-				System.out.println("Es wurde folgende Taste gedrückt: " + keyEvent.getCode() + " bitte behandeln!");
 				switch (keyEvent.getCode()) {
 				case A:
 					setCommand(MoveCommand.LEFT);
@@ -133,6 +132,20 @@ public class FxUI extends Scene implements UI {
 					moveCommand.setEnergy(100);
 					setCommand(moveCommand);
 					break;
+				case Q:
+                    setCommand(MoveCommand.UPLEFT);
+                    break;
+				case E:
+                    setCommand(MoveCommand.UPRIGHT);
+                    break;
+				case Y:
+                    setCommand(MoveCommand.DOWNLEFT);
+                    break;
+				case C:
+                    setCommand(MoveCommand.DOWNRIGHT);
+                    break;
+					
+					
 				default:
 					break;
 
