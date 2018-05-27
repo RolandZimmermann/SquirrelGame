@@ -24,7 +24,7 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 
 	public class ControllerContextImpl implements ControllerContext {
 		private EntityContext entityContext;
-		private final int VISION = 31;
+		private final int VISION = 21;
 
 		public ControllerContextImpl(EntityContext entityContext) {
 			this.entityContext = entityContext;
