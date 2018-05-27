@@ -1,3 +1,0 @@
-INFO05-24-2018 12:58:22 || GameLogger.main() : info msg
-SEVERE05-24-2018 12:58:22 || GameLogger.main() : error message
-INFO05-24-2018 12:58:22 || GameLogger.main() : test

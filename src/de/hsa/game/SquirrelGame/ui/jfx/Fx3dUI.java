@@ -1,6 +1,7 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
@@ -12,6 +13,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +43,12 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 public class Fx3dUI extends Scene implements UI {
+	
+	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
+	static {
+		new GameLogger();
+	}
+	
 
 	private Group root;
 
@@ -68,6 +76,7 @@ public class Fx3dUI extends Scene implements UI {
 		this.root = root;
 		loadObjects();
 		editScene();
+		logger.fine("loaded 3D scene");
 	}
 
 	public static Fx3dUI createInstance(XY size) {
@@ -87,6 +96,7 @@ public class Fx3dUI extends Scene implements UI {
 	public MoveCommand getCommand() {
 		MoveCommand tmp =  moveCommand;
 		moveCommand = MoveCommand.NON;
+		logger.finer("returned Command");
 		return tmp;
 	}
 
@@ -162,6 +172,7 @@ public class Fx3dUI extends Scene implements UI {
 				}
 			}
 		}
+		logger.finest("Updated UI");
 	}
 
 	@Override

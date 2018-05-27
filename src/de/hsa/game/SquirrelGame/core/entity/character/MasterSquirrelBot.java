@@ -1,7 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity.character;
 
 import de.hsa.game.SquirrelGame.botapi.BotController;
-import de.hsa.game.SquirrelGame.botapi.BotControllerFactory;
 import de.hsa.game.SquirrelGame.botapi.ControllerContext;
 import de.hsa.game.SquirrelGame.botapi.EntityType;
 import de.hsa.game.SquirrelGame.core.EntityContext;
@@ -11,14 +10,13 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.proxy.ProxyFactory;
 
 public class MasterSquirrelBot extends MasterSquirrel implements BotController {
-
-
 	
+
 	public MasterSquirrelBot(int id, XY position) {
 		super(id, position);
-		// TODO Auto-generated constructor stub
 	}
 
 	public class ControllerContextImpl implements ControllerContext {
@@ -29,11 +27,8 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 			this.entityContext = entityContext;
 		}
 
-		// TODO outofFieldException
 		@Override
 		public XY getViewLowerLeft() {
-
-			// TODO Auto-generated method stub
 			return new XY(getPositionXY().getX() - VISION / 2, getPositionXY().getY() + VISION / 2);
 		}
 
@@ -44,7 +39,6 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public EntityType getEntityAt(XY xy) {
-
 			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
 				return EntityType.GOOD_PLANT;
 			} else if (entityContext.getEntityType(xy) instanceof BadPlant) {
@@ -79,32 +73,25 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public int getEnergy() {
-			// TODO Auto-generated method stub
 			return this.getEnergy();
 		}
 	}
-
-
 
 	@Override
 	public void nextStep(ControllerContext view) {
 		int moveX = (int) (Math.random() < 0.5 ? -1 : 1);
 		int moveY = (int) (Math.random() < 0.5 ? -1 : 1);
-		XY move = new XY(moveX,moveY);
-		if (view.getEntityAt(
-				new XY(this.getPositionXY().getX() + move.getX(), this.getPositionXY().getY() + move.getY())) == EntityType.NONE) {
-			this.setPositionXY(move.getX(), move.getY());
+		XY move = new XY(moveX, moveY);
+		if (view.getEntityAt(new XY(this.getPositionXY().getX() + move.getX(),
+				this.getPositionXY().getY() + move.getY())) == EntityType.NONE) {
+			view.move(move);
 		}
-	}
-	
-	public ControllerContext createControllerContext(EntityContext entityContext) {
-		return new ControllerContextImpl(entityContext);
 	}
 
 	@Override
 	public void nextStep(EntityContext entityContext) {
-		// TODO Auto-generated method stub
-		
+		//nextStep(new ControllerContextImpl(entityContext));
+		nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 	}
 
 }

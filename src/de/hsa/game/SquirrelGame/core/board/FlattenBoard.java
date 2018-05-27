@@ -1,6 +1,7 @@
 package de.hsa.game.SquirrelGame.core.board;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.EntityContext;
@@ -14,8 +15,14 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.log.GameLogger;
 
 public class FlattenBoard implements BoardView, EntityContext {
+	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
+	static {
+		new GameLogger();
+	}
+
 	private Entity[][] cells;
 	private Board database;
 
@@ -26,6 +33,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	public void update() {
 		this.cells = this.database.flatten();
+
+		logger.finest("update flattenBoard");
 	}
 
 	@Override
@@ -41,9 +50,12 @@ public class FlattenBoard implements BoardView, EntityContext {
 	@Override
 	public void tryMove(MiniSquirrel miniSquirrel, XY moveDirection) {
 
+		logger.finer(miniSquirrel.toString() + moveDirection.toString());
+
 		Entity collided = checkCollision(miniSquirrel, moveDirection);
 		if (collided instanceof MasterSquirrel) {
 
+			logger.fine(miniSquirrel.toString() + "collided with" + collided.toString());
 			if (((MasterSquirrel) collided).testSquirrel(miniSquirrel)) {
 				collided.updateEnergy(miniSquirrel.getEnergy());
 				kill(miniSquirrel);
@@ -53,7 +65,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 			}
 		} else if (collided instanceof MiniSquirrel) {
-
+			
+			logger.fine(miniSquirrel.toString() + "collided with" + collided.toString());
 			if (!miniSquirrel.getMaster().equals(((MiniSquirrel) collided).getMaster())) {
 				collided.updateEnergy(miniSquirrel.getEnergy());
 				kill(miniSquirrel);
@@ -67,9 +80,13 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public void tryMove(GoodBeast goodBeast, XY moveDirection) {
+		
+		logger.finer(goodBeast.toString() + moveDirection.toString());
+		
 		if (checkCollision(goodBeast, moveDirection) == null) {
 			goodBeast.setPositionXY(moveDirection.getX(), moveDirection.getY());
 		} else if (checkCollision(goodBeast, moveDirection) instanceof PlayerEntity) {
+			logger.fine(goodBeast.toString() + "collided with" + checkCollision(goodBeast,moveDirection).toString());
 			checkCollision(goodBeast, moveDirection).updateEnergy(goodBeast.getEnergy());
 		}
 
@@ -77,11 +94,14 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public void tryMove(BadBeast badBeast, XY moveDirection) {
+		
+		logger.finer(badBeast.toString() + moveDirection.toString());
 
 		if (checkCollision(badBeast, moveDirection) == null) {
 			badBeast.setPositionXY(moveDirection.getX(), moveDirection.getY());
 		} else if (checkCollision(badBeast, moveDirection) instanceof PlayerEntity) {
 			badBeast.updatebiteCounter();
+			logger.fine(badBeast.toString() + "collided with" + checkCollision(badBeast,moveDirection).toString());
 			checkCollision(badBeast, moveDirection).updateEnergy(badBeast.getEnergy());
 		}
 
@@ -89,17 +109,24 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public void tryMove(MasterSquirrel masterSquirrel, XY moveDirection) {
+		
+		logger.finer(masterSquirrel.toString() + moveDirection.toString());
+		
 		Entity collided = checkCollision(masterSquirrel, moveDirection);
 
 		if (collided == null) {
 			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
 
 		} else if (collided instanceof Wall) {
+			
+			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			masterSquirrel.updateEnergy(collided.getEnergy());
 			masterSquirrel.wallCollison();
 
 		} else if (collided instanceof GoodPlant) {
+			
+			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			masterSquirrel.updateEnergy(collided.getEnergy());
 
@@ -107,6 +134,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
 
 		} else if (collided instanceof BadPlant) {
+			
+			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			masterSquirrel.updateEnergy(collided.getEnergy());
 
@@ -114,6 +143,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
 
 		} else if (collided instanceof GoodBeast) {
+			
+			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			masterSquirrel.updateEnergy(collided.getEnergy());
 
@@ -121,10 +152,14 @@ public class FlattenBoard implements BoardView, EntityContext {
 			masterSquirrel.setPositionXY(moveDirection.getX(), moveDirection.getY());
 
 		} else if (collided instanceof BadBeast) {
+			
+			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			masterSquirrel.updateEnergy(collided.getEnergy());
 
 		} else if (collided instanceof MiniSquirrel) {
+			
+			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			if (masterSquirrel.testSquirrel(collided)) {
 				masterSquirrel.updateEnergy(collided.getEnergy());
@@ -178,8 +213,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 		Random a = new Random();
 
 		XY newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
-		
-		while(cells[newPos.getY()][newPos.getX()] != null) {
+
+		while (cells[newPos.getY()][newPos.getX()] != null) {
 			newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
 		}
 
@@ -203,7 +238,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 			database.spawnMiniSquirrel(master, xy, energy);
 			master.updateEnergy(-energy);
 		}
-
+		logger.finer("tryied spawing at " + xy.toString());
 	}
 
 }

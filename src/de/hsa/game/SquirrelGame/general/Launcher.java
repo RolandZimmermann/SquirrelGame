@@ -5,6 +5,7 @@ import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.board.BoardFactory;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.gamemode.GameMode;
+import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.jfx.Fx3dUI;
 import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
@@ -16,6 +17,8 @@ import javafx.stage.WindowEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("restriction")
 public class Launcher extends Application {
@@ -24,11 +27,19 @@ public class Launcher extends Application {
 
 	private static Game game;
 
-	private static final GameMode gameMode = GameMode.JFX3D;
+	private static final GameMode gameMode = GameMode.CONSOLE;
+	
+	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
 
 	public static void main(String[] args) {
+		//start Logging
+		
+		//TODO: Why can you only change the level of the logger in the class itself??
+		new GameLogger();
+		logger.finest("START");
 
 		if (gameMode == GameMode.CONSOLE) {
+			logger.fine("Starting Console Mode");
 			game = new GameImpl(new State(board), new ConsoleUI());
 			startGame(game);
 		} else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
@@ -66,7 +77,7 @@ public class Launcher extends Application {
 				try {
 					game.run();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+					logger.log(Level.SEVERE, e.getMessage(), e);
 					e.printStackTrace();
 				}
 
@@ -79,10 +90,13 @@ public class Launcher extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		
 		if(gameMode == GameMode.JFX3D) {
+			logger.fine("Starting JFX3D game");
 			start3dGame(primaryStage);
 			return;
 		}
-	
+		
+		logger.fine("Starting JFX game");
+		
 		FxUI fxUI = FxUI.createInstance(BoardConfig.getSize());
 
 		game = new GameImpl(new State(board), fxUI);

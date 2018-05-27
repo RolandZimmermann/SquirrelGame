@@ -1,6 +1,8 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.*;
@@ -13,6 +15,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -28,6 +31,11 @@ import javafx.scene.paint.Color;
 
 @SuppressWarnings("restriction")
 public class FxUI extends Scene implements UI {
+	
+	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
+	static {
+		new GameLogger();
+	}
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
@@ -48,6 +56,7 @@ public class FxUI extends Scene implements UI {
 		this.boardCanvas = boardCanvas;
 		this.msgLabel = msgLabel;
 		loadImages();
+		logger.fine("Loaded UI");
 	}
 
 	private void loadImages() {
@@ -55,48 +64,56 @@ public class FxUI extends Scene implements UI {
 			File file = new File("ressource/sprites/Wall.png");
 			sprWall = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/sprites/BadPlant.png");
 			sprBadPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/sprites/GoodPlant.png");
 			sprGoodPlant = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/spirtes/MasterSquirrel.png");
 			sprMasterSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/spirtes/MiniSquirrel.png");
 			sprMiniSquirrel = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/spirtes/GoodBeast.png");
 			sprGoodBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/spirtes/BadBeast.png");
 			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 		try {
 			File file = new File("ressource/sprites/Empty.png");
 			sprEmpty = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 
@@ -237,6 +254,8 @@ public class FxUI extends Scene implements UI {
 				}
 			}
 		}
+		
+		logger.finest("Updated UI");
 
 	}
 
@@ -244,6 +263,7 @@ public class FxUI extends Scene implements UI {
 	public MoveCommand getCommand() {
 		MoveCommand toReturn = moveCommand;
 		moveCommand = null;
+		logger.finer("returned Command");
 		return toReturn;
 	}
 

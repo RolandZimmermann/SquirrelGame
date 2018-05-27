@@ -5,12 +5,20 @@ import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
+import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class Game {
+	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
+	static {
+		new GameLogger();
+	}
+	
     private State state;
     private UI ui;
     private BoardView boardView;
@@ -45,7 +53,7 @@ public abstract class Game {
                         try {
                             Thread.sleep(1000 / FPS);
                         } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
+                        	logger.log(Level.SEVERE, e.getMessage(), e);
                             e.printStackTrace();
                         }
                     }
@@ -61,7 +69,7 @@ public abstract class Game {
                         try {
                             Thread.sleep(1000 / FPS);
                         } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
+                        	logger.log(Level.SEVERE, e.getMessage(), e);
                             e.printStackTrace();
                         }
                     }

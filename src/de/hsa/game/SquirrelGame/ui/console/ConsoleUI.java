@@ -8,17 +8,25 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.*;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.*;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
+import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
 import de.hsa.game.SquirrelGame.core.entity.character.*;
 import de.hsa.game.SquirrelGame.core.entity.*;
 
 public class ConsoleUI implements UI {
+	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
+	static {
+		new GameLogger();
+	}
+	
 	private PrintStream outputStream = System.out;
 	private BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
 	private CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader, outputStream);
@@ -33,7 +41,7 @@ public class ConsoleUI implements UI {
 		try {
 			command = commandScanner.next();
 		} catch (NumberFormatException | ScanException | IOException e) {
-			// TODO Auto-generated catch block
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			e.printStackTrace();
 		}
 
@@ -61,9 +69,10 @@ public class ConsoleUI implements UI {
 			
 			return moveCommand;
 		} catch (IllegalArgumentException | SecurityException e) {
-			// TODO Auto-generated catch block
+			logger.log(Level.SEVERE, e.getMessage(), e);
 			e.printStackTrace();
 		}
+		logger.finer("returned Command");
 		return null;
 	}
 
@@ -133,6 +142,8 @@ public class ConsoleUI implements UI {
 			}
 			outputall = false;
 		}
+		
+		logger.finest("Updated UI");
 	}
 
 	private void clearConsole() {
