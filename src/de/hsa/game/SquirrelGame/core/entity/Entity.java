@@ -34,7 +34,7 @@ public abstract class Entity {
 	}
 
 	public void setPositionXY(int deltaX, int deltaY) {
-		position = position.move(deltaX, deltaY);
+		position = position.plus(new XY(deltaX,deltaY));
 	}
 
 	@Override

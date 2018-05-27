@@ -2,7 +2,7 @@ package de.hsa.game.SquirrelGame.core.entity;
 
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 
 public class EntitySet {
 	private Entity[] entitySet = new Entity[20];
@@ -55,7 +55,7 @@ public class EntitySet {
 			if (entitySet[i] instanceof MasterSquirrel) {
 				for (int j = 0; j < entitySet.length; j++) {
 					if (entitySet[j] instanceof GoodPlant) {
-						if (XY.equalPosition(entitySet[i].getPositionXY(), entitySet[j].getPositionXY())) {
+						if (XYsupport.equalPosition(entitySet[i].getPositionXY(), entitySet[j].getPositionXY())) {
 							entitySet[i].updateEnergy(entitySet[j].getEnergy());
 							delete(entitySet[j]);
 							

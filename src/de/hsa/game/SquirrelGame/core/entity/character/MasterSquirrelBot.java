@@ -12,6 +12,8 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.proxy.ProxyFactory;
 import de.hsa.games.fatsquirrel.botapi.BotController;
 import de.hsa.games.fatsquirrel.botapi.ControllerContext;
+import de.hsa.games.fatsquirrel.botapi.OutOfViewException;
+import de.hsa.games.fatsquirrel.botapi.SpawnException;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
@@ -31,19 +33,23 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public XY getViewLowerLeft() {
-			return new XY(getPositionXY().getX() - VISION / 2, getPositionXY().getY() + VISION / 2);
+			return new XY(getPositionXY().x - VISION / 2, getPositionXY().y + VISION / 2);
 		}
 
 		@Override
 		public XY getViewUpperRight() {
-			return new XY(getPositionXY().getX() + VISION / 2, getPositionXY().getY() - VISION / 2);
+			return new XY(getPositionXY().x + VISION / 2, getPositionXY().y - VISION / 2);
 		}
 
 		@Override
 		public EntityType getEntityAt(XY xy) {
 			if(!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y && xy.y < getViewUpperRight().y)) {
-				throw new OutOfViewException();
-				return null;
+				try {
+					throw new OutOfViewException("Out of View!");
+				} catch (OutOfViewException e) {
+					//TODO: LOGGER????
+					e.printStackTrace();
+				}
 			}
 			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
 				return EntityType.GOOD_PLANT;
@@ -67,13 +73,18 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public void move(XY direction) {
-			setPositionXY(direction.getX(), direction.getY());
+			setPositionXY(direction.x, direction.y);
 		}
 
 		@Override
 		public void spawnMiniBot(XY direction, int energy) {
-			if (energy < 100 && Math.abs(direction.getX()) > 1 && Math.abs(direction.getY()) > 1) {
-				throw new SpawnException();
+			if (energy < 100 && Math.abs(direction.x) > 1 && Math.abs(direction.y) > 1) {
+				try {
+					throw new SpawnException("Wrong parameter");
+				} catch (SpawnException e) {
+					//TODO: LOGGER?????
+					e.printStackTrace();
+				}
 				return;
 			}
 			entityContext.trySpawnMiniSquirrel(MasterSquirrelBot.this,direction,energy);
@@ -96,9 +107,14 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public boolean isMine(XY xy) {
-			if(!(xy.getX() > getViewUpperRight().getX() && xy.getX() < getViewLowerLeft().getX() && xy.getY() > getViewUpperRight().getY() && xy.getY() < getViewUpperRight().getY())) {
-				throw new OutOfViewException();
-				return;
+			if(!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y && xy.y < getViewUpperRight().y)) {
+				try {
+					throw new OutOfViewException("Out of View!");
+				} catch (OutOfViewException e1) {
+					// TODO: LOGGER???
+					e1.printStackTrace();
+				}
+				return false;
 			}
 			Entity e = entityContext.getEntityType(xy);
 			if(e instanceof MiniSquirrel) {
@@ -126,10 +142,14 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 		int moveX = (int) (Math.random() < 0.5 ? -1 : 1);
 		int moveY = (int) (Math.random() < 0.5 ? -1 : 1);
 		XY move = new XY(moveX, moveY);
-		if (view.getEntityAt(new XY(this.getPositionXY().getX() + move.getX(),
-				this.getPositionXY().getY() + move.getY())) == EntityType.NONE) {
+		System.out.println(this.getPositionXY().toString());
+		System.out.println(move.toString());
+		if (view.getEntityAt(new XY(this.getPositionXY().x + move.x,
+				this.getPositionXY().y + move.y)) == EntityType.NONE) {
 			view.move(move);
+			System.out.println(this.getPositionXY().toString());
 		}
+		view.move(move);
 	}
 
 	@Override

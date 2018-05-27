@@ -1,6 +1,6 @@
 package de.hsa.games.fatsquirrel.botapi;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.games.fatsquirrel.util.XY;
 
 public interface BotControllerFactory {
 	

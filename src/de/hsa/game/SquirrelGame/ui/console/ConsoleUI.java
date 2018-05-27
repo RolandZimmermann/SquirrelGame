@@ -79,8 +79,8 @@ public class ConsoleUI implements UI {
 	public void render(BoardView boardView) {
 		ArrayList<Entity> entitysToOutput = new ArrayList<>();
 		clearConsole();
-		for (int y = 0; y < boardView.getSize().getY(); y++) {
-			for (int x = 0; x < boardView.getSize().getX(); x++) {
+		for (int y = 0; y < boardView.getSize().y; y++) {
+			for (int x = 0; x < boardView.getSize().x; x++) {
 				Entity toInsert = boardView.getEntityType(x, y);
 				if (toInsert == null) {
 					outputStream.print(" ");

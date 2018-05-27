@@ -14,9 +14,10 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
+import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -117,8 +118,8 @@ public class FxUI extends Scene implements UI {
 		}
 	}
 
-	public static FxUI createInstance(XY boardSize) {
-		Canvas boardCanvas = new Canvas(boardSize.getX() * CELL_SIZE, boardSize.getY() * CELL_SIZE);
+	public static FxUI createInstance(XY xy) {
+		Canvas boardCanvas = new Canvas(xy.x * CELL_SIZE, xy.y * CELL_SIZE);
 		Label statusLabel = new Label();
 		VBox top = new VBox();
 
@@ -189,10 +190,10 @@ public class FxUI extends Scene implements UI {
 		XY viewSize = view.getSize();
 
 		gc.setFill(Color.GREEN);
-		gc.fillRect(0, 0, viewSize.getX() * CELL_SIZE, viewSize.getY() * CELL_SIZE);
+		gc.fillRect(0, 0, viewSize.x * CELL_SIZE, viewSize.y * CELL_SIZE);
 
-		for (int y = 0; y < viewSize.getY() * CELL_SIZE; y += CELL_SIZE) {
-			for (int x = 0; x < viewSize.getX() * CELL_SIZE; x += CELL_SIZE) {
+		for (int y = 0; y < viewSize.y * CELL_SIZE; y += CELL_SIZE) {
+			for (int x = 0; x < viewSize.x * CELL_SIZE; x += CELL_SIZE) {
 				Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
 				if (entity instanceof Wall) {
 					if (sprWall == null) {

@@ -1,6 +1,6 @@
 package de.hsa.game.SquirrelGame.core.board;
 
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.games.fatsquirrel.util.XY;
 
 public class BoardConfig {
 

@@ -27,7 +27,7 @@ public class Launcher extends Application {
 
 	private static Game game;
 
-	private static final GameMode gameMode = GameMode.CONSOLE;
+	private static final GameMode gameMode = GameMode.JFX3D;
 	
 	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
 
@@ -36,10 +36,10 @@ public class Launcher extends Application {
 		
 		//TODO: Why can you only change the level of the logger in the class itself??
 		new GameLogger();
-		logger.finest("START");
+		logger.info("START");
 
 		if (gameMode == GameMode.CONSOLE) {
-			logger.fine("Starting Console Mode");
+			logger.info("Starting Console Mode");
 			game = new GameImpl(new State(board), new ConsoleUI());
 			startGame(game);
 		} else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
@@ -90,16 +90,15 @@ public class Launcher extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		
 		if(gameMode == GameMode.JFX3D) {
-			logger.fine("Starting JFX3D game");
+			logger.info("Starting JFX3D game");
 			start3dGame(primaryStage);
 			return;
 		}
 		
-		logger.fine("Starting JFX game");
+		logger.info("Starting JFX game");
 		
 		FxUI fxUI = FxUI.createInstance(BoardConfig.getSize());
 
-		game = new GameImpl(new State(board), fxUI);
 		primaryStage.setScene(fxUI);
 		primaryStage.setTitle("MaToRo");
 		fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {

@@ -10,7 +10,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class GameLogger {
-	public static Level loggerLevel = Level.INFO;
+	public static Level loggerLevel = Level.FINE;
 	private static Logger logger = init();
 	private static FileHandler fh;
 	

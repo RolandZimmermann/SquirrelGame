@@ -2,28 +2,10 @@ package de.hsa.game.SquirrelGame.gamestats;
 
 import java.util.Random;
 
-public final class XY {
+import de.hsa.games.fatsquirrel.util.XY;
 
-    private final int x;
-    private final int y;
-
-    public XY(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
- 
-
-    public XY move(int deltaX, int deltaY) {
-    	int x = this.x + deltaX;
-        int y = this.y + deltaY;
-        return new XY(x,y);
-    }
-    
-    public XY move(XY moveDirection) {
-    	return move(moveDirection.getX(), moveDirection.getY());
-    }
-    
+public final class XYsupport {
+     
     public static XY randomMove() {
        Random random = new Random();
        int direct = random.nextInt(8);
@@ -60,23 +42,10 @@ public final class XY {
     }
     
     public static boolean equalPosition(XY xy1, XY xy2) {
-    	if (xy1.getX() == xy2.getX() && xy1.getY() == xy2.getY()) {
+    	if (xy1.x== xy2.x && xy1.y == xy2.y) {
     		return true;
     	}
     	return false;
-    }
-
-    @Override
-    public String toString() {
-        return "[x: " + x + ", y: " + y + "]";
-    }
-    
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
 }

@@ -12,9 +12,10 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
+import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.AmbientLight;
@@ -79,7 +80,7 @@ public class Fx3dUI extends Scene implements UI {
 		logger.fine("loaded 3D scene");
 	}
 
-	public static Fx3dUI createInstance(XY size) {
+	public static Fx3dUI createInstance(XY xy) {
 
 		Group root = new Group();
 
@@ -118,15 +119,15 @@ public class Fx3dUI extends Scene implements UI {
 
 		root.getChildren().clear();
 
-		Box floor = new Box(view.getSize().getX() * CELL_SIZE, view.getSize().getY() * CELL_SIZE, CELL_SIZE);
+		Box floor = new Box(view.getSize().x * CELL_SIZE, view.getSize().y * CELL_SIZE, CELL_SIZE);
 		floor.setMaterial(new PhongMaterial(Color.GREEN));
-		floor.setTranslateX((view.getSize().getX() * CELL_SIZE) / 2 - CELL_SIZE / 2);
-		floor.setTranslateY((view.getSize().getY() * CELL_SIZE) / 2 - CELL_SIZE / 2);
+		floor.setTranslateX((view.getSize().x * CELL_SIZE) / 2 - CELL_SIZE / 2);
+		floor.setTranslateY((view.getSize().y * CELL_SIZE) / 2 - CELL_SIZE / 2);
 		floor.setTranslateZ(CELL_SIZE);
 		root.getChildren().add(floor);
 
-		for (int y = 0; y < view.getSize().getY() * CELL_SIZE; y += CELL_SIZE) {
-			for (int x = 0; x < view.getSize().getX() * CELL_SIZE; x += CELL_SIZE) {
+		for (int y = 0; y < view.getSize().y * CELL_SIZE; y += CELL_SIZE) {
+			for (int x = 0; x < view.getSize().x * CELL_SIZE; x += CELL_SIZE) {
 				if (view.getEntityType(x / CELL_SIZE, y / CELL_SIZE) instanceof Wall) {
 					Box object = new Box(CELL_SIZE, CELL_SIZE, CELL_SIZE);
 					object.setMaterial(new PhongMaterial(Color.BROWN));

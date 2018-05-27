@@ -16,6 +16,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
+import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
@@ -100,16 +101,16 @@ public class Board {
 
 	public void killandReplace(Entity entity, XY newPos) {
 		if (entity instanceof GoodPlant) {
-			addID.add(new GoodPlant(id++, new XY(newPos.getX(), newPos.getY())));
+			addID.add(new GoodPlant(id++, new XY(newPos.x, newPos.y)));
 		}
 		if (entity instanceof BadPlant) {
-			addID.add(new BadPlant(id++, new XY(newPos.getX(), newPos.getY())));
+			addID.add(new BadPlant(id++, new XY(newPos.x, newPos.y)));
 		}
 		if (entity instanceof GoodBeast) {
-			addID.add(new GoodBeast(id++, new XY(newPos.getX(), newPos.getY())));
+			addID.add(new GoodBeast(id++, new XY(newPos.x, newPos.y)));
 		}
 		if (entity instanceof BadBeast) {
-			addID.add(new BadBeast(id++, new XY(newPos.getX(), newPos.getY())));
+			addID.add(new BadBeast(id++, new XY(newPos.x, newPos.y)));
 		}
 
 		logger.finer(entity.toString() + newPos.toString());
@@ -137,7 +138,7 @@ public class Board {
 			boolean inserted = false;
 			XY xy = new XY(a.nextInt(BOARD_WIDTH - 2) + 1, a.nextInt(BOARD_HEIGHT - 2) + 1);
 			for (XY positions : randomLocations) {
-				if (!XY.equalPosition(positions, xy)) {
+				if (!XYsupport.equalPosition(positions, xy)) {
 					randomLocations.add(xy);
 					inserted = true;
 					break;
@@ -156,7 +157,7 @@ public class Board {
 		Entity[][] entityarry = new Entity[BOARD_HEIGHT][BOARD_WIDTH];
 
 		for (Entity e : entitySet) {
-			entityarry[e.getPositionXY().getY()][e.getPositionXY().getX()] = e;
+			entityarry[e.getPositionXY().y][e.getPositionXY().x] = e;
 		}
 
 		return entityarry;
@@ -180,7 +181,7 @@ public class Board {
 		}
 		removeID = new ArrayList<>();
 		addID = new ArrayList<>();
-		
+
 		logger.finest("Updated");
 	}
 

@@ -2,7 +2,8 @@ package de.hsa.game.SquirrelGame.proxy;
 
 import java.lang.reflect.Proxy;
 
-import de.hsa.game.SquirrelGame.botapi.ControllerContext;
+import de.hsa.games.fatsquirrel.botapi.ControllerContext;
+
 
 public class ProxyFactory {
 	public static Object newInstance(Object ob) {

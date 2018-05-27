@@ -2,8 +2,6 @@ package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.ui.UI;
-import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.exceptions.NotEnoughEnergyException;
 import de.hsa.game.SquirrelGame.ui.exceptions.WrongParamInputException;
 import de.hsa.games.fatsquirrel.util.XY;
@@ -48,8 +46,8 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 					}
 					return;
 				}
-				entityContext.trySpawnMiniSquirrel(this, new XY(this.getPositionXY().getX() + move.xy.getX(),
-						this.getPositionXY().getY() + move.xy.getY()), move.energy);
+				entityContext.trySpawnMiniSquirrel(this, new XY(this.getPositionXY().x + move.xy.x,
+						this.getPositionXY().y + move.xy.y), move.energy);
 				return;
 			}
 			entityContext.tryMove(this, move.xy);
