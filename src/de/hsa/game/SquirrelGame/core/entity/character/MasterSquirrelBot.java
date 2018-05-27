@@ -1,20 +1,22 @@
 package de.hsa.game.SquirrelGame.core.entity.character;
 
-import de.hsa.game.SquirrelGame.botapi.BotController;
-import de.hsa.game.SquirrelGame.botapi.ControllerContext;
-import de.hsa.game.SquirrelGame.botapi.EntityType;
+
 import de.hsa.game.SquirrelGame.core.EntityContext;
+import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
-import de.hsa.game.SquirrelGame.gamestats.XY;
 import de.hsa.game.SquirrelGame.proxy.ProxyFactory;
+import de.hsa.games.fatsquirrel.botapi.BotController;
+import de.hsa.games.fatsquirrel.botapi.ControllerContext;
+import de.hsa.games.fatsquirrel.core.EntityType;
+import de.hsa.games.fatsquirrel.util.XY;
 
 public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 	
-
 	public MasterSquirrelBot(int id, XY position) {
 		super(id, position);
 	}
@@ -39,6 +41,10 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public EntityType getEntityAt(XY xy) {
+			if(!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y && xy.y < getViewUpperRight().y)) {
+				throw new OutOfViewException();
+				return null;
+			}
 			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
 				return EntityType.GOOD_PLANT;
 			} else if (entityContext.getEntityType(xy) instanceof BadPlant) {
@@ -62,18 +68,56 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 		@Override
 		public void move(XY direction) {
 			setPositionXY(direction.getX(), direction.getY());
-
 		}
 
 		@Override
 		public void spawnMiniBot(XY direction, int energy) {
-			// TODO Auto-generated method stub
-
+			if (energy < 100 && Math.abs(direction.getX()) > 1 && Math.abs(direction.getY()) > 1) {
+				throw new SpawnException();
+				return;
+			}
+			entityContext.trySpawnMiniSquirrel(MasterSquirrelBot.this,direction,energy);
 		}
 
 		@Override
 		public int getEnergy() {
-			return this.getEnergy();
+			return MasterSquirrelBot.this.getEnergy();
+		}
+
+		@Override
+		public void implode(int impactRadius) {
+			throw new UnsupportedOperationException("Only for minisquirrels");
+		}
+
+		@Override
+		public XY locate() {
+			return MasterSquirrelBot.this.getPositionXY();
+		}
+
+		@Override
+		public boolean isMine(XY xy) {
+			if(!(xy.getX() > getViewUpperRight().getX() && xy.getX() < getViewLowerLeft().getX() && xy.getY() > getViewUpperRight().getY() && xy.getY() < getViewUpperRight().getY())) {
+				throw new OutOfViewException();
+				return;
+			}
+			Entity e = entityContext.getEntityType(xy);
+			if(e instanceof MiniSquirrel) {
+				if(((MiniSquirrel) e).getMaster() == MasterSquirrelBot.this) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public XY directionOfMaster() {
+			return XY.ZERO_ZERO;
+		}
+
+		@Override
+		public long getRemainingSteps() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 	}
 
@@ -90,7 +134,6 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 	@Override
 	public void nextStep(EntityContext entityContext) {
-		//nextStep(new ControllerContextImpl(entityContext));
 		nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 	}
 

@@ -6,9 +6,6 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import de.hsa.game.SquirrelGame.botapi.BotController;
-import de.hsa.game.SquirrelGame.botapi.BotControllerFactory;
-import de.hsa.game.SquirrelGame.botapi.ControllerContext;
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.EntitySet;
@@ -19,8 +16,9 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.gamestats.XY;
 import de.hsa.game.SquirrelGame.log.GameLogger;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
+import de.hsa.games.fatsquirrel.util.XY;
 import de.hsa.game.SquirrelGame.core.entity.character.*;
 import de.hsa.game.SquirrelGame.core.entity.character.Character;
 

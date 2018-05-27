@@ -1,7 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity;
 
-import de.hsa.game.SquirrelGame.core.EntityContext;
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.games.fatsquirrel.util.XY;
 
 public abstract class Entity {
 

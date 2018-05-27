@@ -2,14 +2,14 @@ package de.hsa.game.SquirrelGame.core.entity.character;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
-import de.hsa.game.SquirrelGame.gamestats.XY;
-
+import de.hsa.game.SquirrelGame.gamestats.Energy;
+import de.hsa.games.fatsquirrel.util.XY;
 public class BadBeast extends Character {
     private int turnCounter = 4;
     private int biteCounter = 7;
 
     public BadBeast(int id, XY position) {
-        super(id, position, -150);
+        super(id, position, Energy.BADBEAST.energy);
         // TODO Auto-generated constructor stub
     }
 
@@ -21,8 +21,8 @@ public class BadBeast extends Character {
 
             if (turnCounter == 4) {
                 turnCounter = 0;
-                int x = this.getPositionXY().getX();
-        		int y = this.getPositionXY().getY();
+                int x = this.getPositionXY().x;
+        		int y = this.getPositionXY().y;
                 int moveX = 0;
         		int moveY = 0;
         		PlayerEntity playerEntity = entityContext.nearestPlayerEntity(this.getPositionXY());

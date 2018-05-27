@@ -1,4 +1,4 @@
-package de.hsa.game.SquirrelGame.botapi;
+package de.hsa.games.fatsquirrel.botapi;
 
 public interface BotController {
 	

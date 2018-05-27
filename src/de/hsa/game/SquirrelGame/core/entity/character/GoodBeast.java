@@ -2,13 +2,14 @@ package de.hsa.game.SquirrelGame.core.entity.character;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
+import de.hsa.game.SquirrelGame.gamestats.Energy;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public class GoodBeast extends Character {
 	private int turnCounter = 4;
 
 	public GoodBeast(int id, XY position) {
-		super(id, position, 200);
+		super(id, position, Energy.GOODBEAST.energy);
 		// TODO Auto-generated constructor stub
 	}
 

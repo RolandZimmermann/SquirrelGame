@@ -1,12 +1,11 @@
-package de.hsa.game.SquirrelGame.botapi;
-
+package de.hsa.games.fatsquirrel.botapi;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.gamestats.XY;
 
 public interface BotControllerFactory {
 	
 	public static BotController createMasterBotController (int id, XY xy) {
-		return new MasterSquirrelBot(id, xy);
+		return (BotController) new MasterSquirrelBot(id, xy);
 	}
 	public BotController createMiniBotController();
 	

@@ -2,11 +2,11 @@ package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.gamestats.XY;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.exceptions.NotEnoughEnergyException;
 import de.hsa.game.SquirrelGame.ui.exceptions.WrongParamInputException;
+import de.hsa.games.fatsquirrel.util.XY;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel {
 

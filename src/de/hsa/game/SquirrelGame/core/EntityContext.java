@@ -6,7 +6,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
-import de.hsa.game.SquirrelGame.gamestats.XY;
+import de.hsa.games.fatsquirrel.util.XY;
 
 public interface EntityContext {
 	public XY getSize();
@@ -21,4 +21,6 @@ public interface EntityContext {
 	public void kill(Entity entity);
 	public void killandReplace(Entity entity);
 	public Entity getEntityType(XY xy);
+	
+	public void impload(Entity entity, int impactRadius);
 }
