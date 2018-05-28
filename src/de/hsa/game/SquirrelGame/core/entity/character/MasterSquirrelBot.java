@@ -142,14 +142,10 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 		int moveX = (int) (Math.random() < 0.5 ? -1 : 1);
 		int moveY = (int) (Math.random() < 0.5 ? -1 : 1);
 		XY move = new XY(moveX, moveY);
-		System.out.println(this.getPositionXY().toString());
-		System.out.println(move.toString());
 		if (view.getEntityAt(new XY(this.getPositionXY().x + move.x,
 				this.getPositionXY().y + move.y)) == EntityType.NONE) {
 			view.move(move);
-			System.out.println(this.getPositionXY().toString());
 		}
-		view.move(move);
 	}
 
 	@Override
