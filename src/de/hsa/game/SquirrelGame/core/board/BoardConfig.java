@@ -5,13 +5,13 @@ import de.hsa.games.fatsquirrel.util.XY;
 public class BoardConfig {
 
 	
-	public static int WIDTH_SIZE = 20;
-	public static int HEIGHT_SIZE = 20;
-	public static int COUNT_WALL = 10;
-	public static int COUNT_GOODBEAST = 5;
-	public static int COUNT_BADBEAST = 3;
-	public static int COUNT_GOODPLANT = 8;
-	public static int COUNT_BADPLANT = 2;
+	public static int WIDTH_SIZE = 30;
+	public static int HEIGHT_SIZE = 30;
+	public static int COUNT_WALL = 20;
+	public static int COUNT_GOODBEAST = 15;
+	public static int COUNT_BADBEAST = 13;
+	public static int COUNT_GOODPLANT = 10;
+	public static int COUNT_BADPLANT = 30;
 	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 0;
 	public static int COUNT_MASTERSQUIRREL = 1;
 	

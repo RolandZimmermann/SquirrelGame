@@ -18,157 +18,156 @@ import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class MasterSquirrelBot extends MasterSquirrel {
-    BotControllerFactory botControllerFactory;
-    BotController masterBotController;
+	BotControllerFactory botControllerFactory;
+	BotController masterBotController;
 
-    public MasterSquirrelBot(int id, XY position, BotControllerFactory botControllerFactory) {
-        super(id, position);
-        this.botControllerFactory = botControllerFactory;
-        masterBotController = this.botControllerFactory.createMasterBotController();
-    }
+	public MasterSquirrelBot(int id, XY position, BotControllerFactory botControllerFactory) {
+		super(id, position);
+		this.botControllerFactory = botControllerFactory;
+		masterBotController = this.botControllerFactory.createMasterBotController();
+	}
 
-    public class ControllerContextImpl implements ControllerContext {
-        private EntityContext entityContext;
-        private final int VISION = 31;
+	public class ControllerContextImpl implements ControllerContext {
+		private EntityContext entityContext;
+		private final int VISION = 31;
 
-        public ControllerContextImpl(EntityContext entityContext) {
-            this.entityContext = entityContext;
-        }
+		public ControllerContextImpl(EntityContext entityContext) {
+			this.entityContext = entityContext;
+		}
 
-        @Override
-        public XY getViewLowerLeft() {
-            int x = getPositionXY().x - VISION / 2;
-            int y =  getPositionXY().y + VISION / 2;
-            
-            if (x > entityContext.getSize().x) {
-                x=entityContext.getSize().x;
-            }
-            if (y > entityContext.getSize().y) {
-                x=entityContext.getSize().y;
-            }
+		@Override
+		public XY getViewLowerLeft() {
+			int x = getPositionXY().x - VISION / 2;
+			int y = getPositionXY().y + VISION / 2;
 
-            return new XY(x,y);
-        }
+			if (x < 0) {
+				x = 0;
+			}
+			if (y > entityContext.getSize().y) {
+				y = entityContext.getSize().y;
+			}
 
-        @Override
-        public XY getViewUpperRight() {
-            int x = getPositionXY().x + VISION / 2;
-            int y =  getPositionXY().y - VISION / 2;
-            
-            if (x > entityContext.getSize().x) {
-                x=entityContext.getSize().x;
-            }
-            if (y > entityContext.getSize().y) {
-                x=entityContext.getSize().y;
-            }
-            return new XY(x,y);
-        }
+			return new XY(x, y);
+		}
 
-        @Override
-        public EntityType getEntityAt(XY xy) {
-            if (!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y
-                    && xy.y <= getViewLowerLeft().y)) {
+		@Override
+		public XY getViewUpperRight() {
+			int x = getPositionXY().x + VISION / 2;
+			int y = getPositionXY().y - VISION / 2;
 
-                throw new OutOfViewException("Out of View!");
+			if (x > entityContext.getSize().x) {
+				x = entityContext.getSize().x;
+			}
+			if (y < 0) {
+				y = 0;
+			}
+			return new XY(x, y);
+		}
 
-            }
-            if (xy.x > entityContext.getSize().x || xy.y > entityContext.getSize().y || xy.x < 0 || xy.y < 0) {
+		@Override
+		public EntityType getEntityAt(XY xy) {
+			if (!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y
+					&& xy.y <= getViewLowerLeft().y)) {
 
-                throw new OutOfViewException("Field is to small");
+				throw new OutOfViewException("Out of View!");
 
-            }
-            if (entityContext.getEntityType(xy) instanceof GoodPlant) {
-                return EntityType.GOOD_PLANT;
-            } else if (entityContext.getEntityType(xy) instanceof BadPlant) {
-                return EntityType.BAD_PLANT;
-            } else if (entityContext.getEntityType(xy) instanceof BadBeast) {
-                return EntityType.BAD_BEAST;
-            } else if (entityContext.getEntityType(xy) instanceof GoodBeast) {
-                return EntityType.GOOD_BEAST;
-            } else if (entityContext.getEntityType(xy) instanceof Wall) {
-                return EntityType.WALL;
-            } else if (entityContext.getEntityType(xy) instanceof MasterSquirrel) {
-                return EntityType.MASTER_SQUIRREL;
-            } else if (entityContext.getEntityType(xy) instanceof MiniSquirrel) {
-                return EntityType.MINI_SQUIRREL;
-            } else if (entityContext.getEntityType(xy) == null) {
-                return EntityType.NONE;
-            }
-            return null;
-        }
+			}
+			if (xy.x > entityContext.getSize().x || xy.y > entityContext.getSize().y || xy.x < 0 || xy.y < 0) {
 
-        @Override
-        public void move(XY direction) {
-            entityContext.tryMove(MasterSquirrelBot.this, direction);
-        }
+				throw new OutOfViewException("Field is to small");
 
-        @Override
-        public void spawnMiniBot(XY direction, int energy) {
-            if (energy < 100 && Math.abs(direction.x) > 1 && Math.abs(direction.y) > 1) {
-                try {
-                    throw new SpawnException("Wrong parameter");
-                } catch (SpawnException e) {
-                    // TODO: LOGGER?????
-                    e.printStackTrace();
-                }
-                return;
-            }
-            entityContext.trySpawnMiniSquirrel(MasterSquirrelBot.this, direction, energy);
-        }
+			}
+			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
+				return EntityType.GOOD_PLANT;
+			} else if (entityContext.getEntityType(xy) instanceof BadPlant) {
+				return EntityType.BAD_PLANT;
+			} else if (entityContext.getEntityType(xy) instanceof BadBeast) {
+				return EntityType.BAD_BEAST;
+			} else if (entityContext.getEntityType(xy) instanceof GoodBeast) {
+				return EntityType.GOOD_BEAST;
+			} else if (entityContext.getEntityType(xy) instanceof Wall) {
+				return EntityType.WALL;
+			} else if (entityContext.getEntityType(xy) instanceof MasterSquirrel) {
+				return EntityType.MASTER_SQUIRREL;
+			} else if (entityContext.getEntityType(xy) instanceof MiniSquirrel) {
+				return EntityType.MINI_SQUIRREL;
+			} else if (entityContext.getEntityType(xy) == null) {
+				return EntityType.NONE;
+			}
+			return null;
+		}
 
-        @Override
-        public int getEnergy() {
-            return MasterSquirrelBot.this.getEnergy();
-        }
+		@Override
+		public void move(XY direction) {
+			entityContext.tryMove(MasterSquirrelBot.this, direction);
+		}
 
-        @Override
-        public void implode(int impactRadius) {
-            throw new UnsupportedOperationException("Only for minisquirrels");
-        }
+		@Override
+		public void spawnMiniBot(XY direction, int energy) {
+			if (energy < 100 && Math.abs(direction.x) > 1 && Math.abs(direction.y) > 1) {
+				try {
+					throw new SpawnException("Wrong parameter");
+				} catch (SpawnException e) {
+					// TODO: LOGGER?????
+					e.printStackTrace();
+				}
+				return;
+			}
+			entityContext.trySpawnMiniSquirrel(MasterSquirrelBot.this, direction, energy);
+		}
 
-        @Override
-        public XY locate() {
-            return MasterSquirrelBot.this.getPositionXY();
-        }
+		@Override
+		public int getEnergy() {
+			return MasterSquirrelBot.this.getEnergy();
+		}
 
-        @Override
-        public boolean isMine(XY xy) {
-            if (!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y
-                    && xy.y < getViewUpperRight().y)) {
-                try {
-                    throw new OutOfViewException("Out of View!");
-                } catch (OutOfViewException e1) {
-                    // TODO: LOGGER???
-                    e1.printStackTrace();
-                }
-                return false;
-            }
-            Entity e = entityContext.getEntityType(xy);
-            if (e instanceof MiniSquirrel) {
-                if (((MiniSquirrel) e).getMaster() == MasterSquirrelBot.this) {
-                    return true;
-                }
-            }
-            return false;
-        }
+		@Override
+		public void implode(int impactRadius) {
+			throw new UnsupportedOperationException("Only for minisquirrels");
+		}
 
-        @Override
-        public XY directionOfMaster() {
-            return XY.ZERO_ZERO;
-        }
+		@Override
+		public XY locate() {
+			return MasterSquirrelBot.this.getPositionXY();
+		}
 
-        @Override
-        public long getRemainingSteps() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-    }
+		@Override
+		public boolean isMine(XY xy) {
+			if (!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y
+					&& xy.y < getViewUpperRight().y)) {
+				throw new OutOfViewException("Out of View!");
+			}
+			Entity e = entityContext.getEntityType(xy);
+			if (e instanceof MiniSquirrel) {
+				if (((MiniSquirrel) e).getMaster() == MasterSquirrelBot.this) {
+					return true;
+				}
+			}
+			return false;
+		}
 
-    @Override
-    public void nextStep(EntityContext entityContext) {
-        masterBotController.nextStep(new ControllerContextImpl(entityContext));
-        // masterBotController.nextStep((ControllerContext)ProxyFactory.newInstance(new
-        // ControllerContextImpl(entityContext)));
-    }
+		@Override
+		public XY directionOfMaster() {
+			return XY.ZERO_ZERO;
+		}
+
+		@Override
+		public long getRemainingSteps() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+	}
+
+	@Override
+	public void nextStep(EntityContext entityContext) {
+		
+		if (this.getEnergy() < 0) {
+			this.updateEnergy(-this.getEnergy());
+		}
+		
+		// masterBotController.nextStep(new ControllerContextImpl(entityContext));
+		masterBotController
+				.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+	}
 
 }

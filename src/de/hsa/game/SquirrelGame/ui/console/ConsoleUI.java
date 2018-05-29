@@ -22,10 +22,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.*;
 import de.hsa.game.SquirrelGame.core.entity.*;
 
 public class ConsoleUI implements UI {
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
-	static {
-		new GameLogger();
-	}
+	private static Logger logger = Logger.getLogger(ConsoleUI.class.getName());
 	
 	private PrintStream outputStream = System.out;
 	private BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));

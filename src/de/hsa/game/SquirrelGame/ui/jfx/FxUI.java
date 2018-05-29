@@ -33,14 +33,11 @@ import javafx.scene.paint.Color;
 @SuppressWarnings("restriction")
 public class FxUI extends Scene implements UI {
 	
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
-	static {
-		new GameLogger();
-	}
+	private static Logger logger = Logger.getLogger(FxUI.class.getName());
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 8;
+	private static final int CELL_SIZE = 16;
 	private static MoveCommand moveCommand;
 
 	private Image sprWall;
@@ -61,6 +58,21 @@ public class FxUI extends Scene implements UI {
 	}
 
 	private void loadImages() {
+		
+		try {
+			File file = new File("ressource/spirtes/Wall.png");
+			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+
+		try {
+			File file = new File("ressource/sprites/Empty.png");
+			sprEmpty = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		
 		try {
 			File file = new File("ressource/sprites/Wall.png");
 			sprWall = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
@@ -103,19 +115,6 @@ public class FxUI extends Scene implements UI {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
-		try {
-			File file = new File("ressource/spirtes/BadBeast.png");
-			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
-		}
-
-		try {
-			File file = new File("ressource/sprites/Empty.png");
-			sprEmpty = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
-		}
 	}
 
 	public static FxUI createInstance(XY xy) {
@@ -196,7 +195,7 @@ public class FxUI extends Scene implements UI {
 			for (int x = 0; x < viewSize.x * CELL_SIZE; x += CELL_SIZE) {
 				Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
 				if (entity instanceof Wall) {
-					if (sprWall == null) {
+					if (sprWall.isError()) {
 						gc.setFill(Color.ORANGE);
 						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
@@ -212,7 +211,7 @@ public class FxUI extends Scene implements UI {
 				} else if (entity instanceof BadBeast) {
 					if (sprBadBeast.isError()) {
 						gc.setFill(Color.DARKRED);
-						gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
 						gc.drawImage(sprBadBeast, x, y);
 					}

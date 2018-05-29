@@ -1,6 +1,6 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
-import java.io.IOException;
+
 import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
@@ -12,8 +12,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.gamestats.XYsupport;
-import de.hsa.game.SquirrelGame.log.GameLogger;
+
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
@@ -29,8 +28,6 @@ import javafx.scene.Scene;
 
 import javafx.scene.SceneAntialiasing;
 
-import javafx.scene.input.KeyCode;
-
 import javafx.scene.input.MouseButton;
 
 import javafx.scene.paint.Color;
@@ -45,10 +42,7 @@ import javafx.scene.transform.Translate;
 
 public class Fx3dUI extends Scene implements UI {
 	
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
-	static {
-		new GameLogger();
-	}
+	private static Logger logger = Logger.getLogger(Fx3dUI.class.getName());
 	
 
 	private Group root;

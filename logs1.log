@@ -1,4 +1,37 @@
-Mai 29, 2018 3:12:49 PM de.hsa.game.SquirrelGame.general.Launcher main
+Mai 29, 2018 9:42:58 PM de.hsa.game.SquirrelGame.general.Launcher main
 INFORMATION: START
-Mai 29, 2018 3:12:50 PM de.hsa.game.SquirrelGame.general.Launcher start
+Mai 29, 2018 9:42:58 PM de.hsa.game.SquirrelGame.general.Launcher start
 INFORMATION: Starting JFX game
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: locate
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewLowerLeft
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewUpperRight
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewUpperRight
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewLowerLeft
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Mai 29, 2018 9:43:00 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+SCHWERWIEGEND: null
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at de.hsa.game.SquirrelGame.proxy.ProxyBot.invoke(ProxyBot.java:25)
+	at com.sun.proxy.$Proxy0.getEntityAt(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.entity.character.bots.HalfRandomBot.nextStep(HalfRandomBot.java:70)
+	at de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot.nextStep(MasterSquirrelBot.java:170)
+	at de.hsa.game.SquirrelGame.core.board.Board.update(Board.java:176)
+	at de.hsa.game.SquirrelGame.core.board.State.update(State.java:16)
+	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:98)
+	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:52)
+	at java.util.TimerThread.mainLoop(Unknown Source)
+	at java.util.TimerThread.run(Unknown Source)
+Caused by: de.hsa.games.fatsquirrel.botapi.OutOfViewException: Out of View!
+	at de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot$ControllerContextImpl.getEntityAt(MasterSquirrelBot.java:72)
+	... 14 more
+

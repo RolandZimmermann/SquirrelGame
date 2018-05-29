@@ -22,11 +22,8 @@ import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class FlattenBoard implements BoardView, EntityContext {
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
-	static {
-		new GameLogger();
-	}
-
+	private static Logger logger = Logger.getLogger(FlattenBoard.class.getName());
+	
 	private Entity[][] cells;
 	private Board database;
 

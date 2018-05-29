@@ -23,7 +23,7 @@ public abstract class Game {
     private UI ui;
     private BoardView boardView;
     private EntityContext entityContext;
-    private int FPS = 5;
+    private int FPS = 60;
     private boolean multi = true;
     
     
