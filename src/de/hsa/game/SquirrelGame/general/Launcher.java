@@ -27,16 +27,14 @@ public class Launcher extends Application {
 
 	private static Game game;
 
-	private static final GameMode gameMode = GameMode.JFX;
+	private static final GameMode gameMode = GameMode.JFX3D;
 	
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
+	private static Logger logger = Logger.getLogger(Launcher.class.getName());
 
 	public static void main(String[] args) {
-		//start Logging
-		
-		//TODO: Why can you only change the level of the logger in the class itself??
-		new GameLogger();
+		GameLogger.init();
 		logger.info("START");
+		logger.finest("test");
 
 		if (gameMode == GameMode.CONSOLE) {
 			logger.info("Starting Console Mode");

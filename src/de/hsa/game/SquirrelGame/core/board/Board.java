@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
@@ -29,10 +30,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.bots.RandomBot;
 public class Board {
 
 	// starting Logging
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
-	static {
-		new GameLogger();
-	}
+	private static Logger logger = Logger.getLogger(Board.class.getName());
 
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
@@ -47,6 +45,8 @@ public class Board {
 			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
 
 		logger.finer("Initialising");
+		logger.finest("test");
+		logger.log(Level.FINEST, "test2", new Throwable());
 
 		this.BOARD_HEIGHT = boardHeight;
 		this.BOARD_WIDTH = boardWidth;

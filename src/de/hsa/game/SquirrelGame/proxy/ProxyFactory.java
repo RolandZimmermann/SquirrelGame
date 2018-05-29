@@ -6,7 +6,7 @@ import de.hsa.games.fatsquirrel.botapi.ControllerContext;
 
 
 public class ProxyFactory {
-	public static Object newInstance(Object ob) {
+	public static Object newInstance(ControllerContext ob) {
 		return Proxy.newProxyInstance(ob.getClass().getClassLoader(),
 				new Class<?>[] { ControllerContext.class }, new ProxyBot(ob));
 	}

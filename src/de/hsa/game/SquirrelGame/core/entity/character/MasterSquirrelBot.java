@@ -55,8 +55,10 @@ public class MasterSquirrelBot extends MasterSquirrel {
 				} catch (OutOfViewException e) {
 					//TODO: LOGGER????
 					e.printStackTrace();
+				} finally {
+					return EntityType.NONE;
 				}
-				return EntityType.NONE;
+				
 			}
 			if (xy.x > entityContext.getSize().x || xy.y > entityContext.getSize().y || xy.x < 0 || xy.y < 0 ) {
 				try {
@@ -155,8 +157,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 
 	@Override
 	public void nextStep(EntityContext entityContext) {
-		masterBotController.nextStep(new ControllerContextImpl(entityContext));
-		//masterBotController.nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+		//masterBotController.nextStep(new ControllerContextImpl(entityContext));
+		masterBotController.nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 	}
 
 }
