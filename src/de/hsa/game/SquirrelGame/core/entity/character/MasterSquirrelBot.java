@@ -11,16 +11,22 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.proxy.ProxyFactory;
 import de.hsa.games.fatsquirrel.botapi.BotController;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botapi.ControllerContext;
 import de.hsa.games.fatsquirrel.botapi.OutOfViewException;
 import de.hsa.games.fatsquirrel.botapi.SpawnException;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
-public class MasterSquirrelBot extends MasterSquirrel implements BotController {
+public class MasterSquirrelBot extends MasterSquirrel {
+	BotControllerFactory botControllerFactory;
+	BotController masterBotController;
 	
-	public MasterSquirrelBot(int id, XY position) {
+	
+	public MasterSquirrelBot(int id, XY position, BotControllerFactory botControllerFactory) {
 		super(id, position);
+		this.botControllerFactory = botControllerFactory;
+		masterBotController = this.botControllerFactory.createMasterBotController();
 	}
 
 	public class ControllerContextImpl implements ControllerContext {
@@ -43,14 +49,24 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public EntityType getEntityAt(XY xy) {
-//			if(!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y && xy.y < getViewUpperRight().y)) {
-//				try {
-//					throw new OutOfViewException("Out of View!");
-//				} catch (OutOfViewException e) {
-//					//TODO: LOGGER????
-//					e.printStackTrace();
-//				}
-//			}
+			if(!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y && xy.y <= getViewLowerLeft().y)) {
+				try {
+					throw new OutOfViewException("Out of View!");
+				} catch (OutOfViewException e) {
+					//TODO: LOGGER????
+					e.printStackTrace();
+				}
+				return EntityType.NONE;
+			}
+			if (xy.x > entityContext.getSize().x || xy.y > entityContext.getSize().y || xy.x < 0 || xy.y < 0 ) {
+				try {
+					throw new OutOfViewException("Field is to small");
+				} catch (OutOfViewException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return EntityType.NONE;
+			}
 			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
 				return EntityType.GOOD_PLANT;
 			} else if (entityContext.getEntityType(xy) instanceof BadPlant) {
@@ -73,7 +89,7 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
 		@Override
 		public void move(XY direction) {
-			setPositionXY(direction.x, direction.y);
+			entityContext.tryMove(MasterSquirrelBot.this, direction);
 		}
 
 		@Override
@@ -138,20 +154,9 @@ public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 	}
 
 	@Override
-	public void nextStep(ControllerContext view) {
-		int moveX = (int) (Math.random() < 0.5 ? -1 : 1);
-		int moveY = (int) (Math.random() < 0.5 ? -1 : 1);
-		XY move = new XY(moveX, moveY);
-		if (view.getEntityAt(new XY(this.getPositionXY().x + move.x,
-				this.getPositionXY().y + move.y)) == EntityType.NONE) {
-			view.move(move);
-		}
-	}
-
-	@Override
 	public void nextStep(EntityContext entityContext) {
-		//nextStep(new ControllerContextImpl(entityContext));
-		nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+		masterBotController.nextStep(new ControllerContextImpl(entityContext));
+		//masterBotController.nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 	}
 
 }

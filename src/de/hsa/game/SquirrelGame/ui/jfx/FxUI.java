@@ -40,7 +40,7 @@ public class FxUI extends Scene implements UI {
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 32;
+	private static final int CELL_SIZE = 8;
 	private static MoveCommand moveCommand;
 
 	private Image sprWall;

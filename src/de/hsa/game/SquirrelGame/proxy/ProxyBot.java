@@ -22,6 +22,7 @@ public class ProxyBot implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		logger.info(method.getName() + " || " + args.toString());
+		//method.invoke(proxy, args);
 		return null;
 	}
 

@@ -27,7 +27,7 @@ public class Launcher extends Application {
 
 	private static Game game;
 
-	private static final GameMode gameMode = GameMode.CONSOLE;
+	private static final GameMode gameMode = GameMode.JFX;
 	
 	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
 
@@ -109,6 +109,8 @@ public class Launcher extends Application {
 		});
 
 		primaryStage.show();
+		
+		game = new GameImpl(new State(board), fxUI);
 
 		startGame(game);
 	}

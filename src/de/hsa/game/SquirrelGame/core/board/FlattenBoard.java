@@ -9,6 +9,7 @@ import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.bots.RandomBot;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
@@ -16,6 +17,8 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.log.GameLogger;
+import de.hsa.games.fatsquirrel.botapi.BotController;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class FlattenBoard implements BoardView, EntityContext {
@@ -313,5 +316,4 @@ public class FlattenBoard implements BoardView, EntityContext {
 		}
 		((MiniSquirrel) entity).getMaster().updateEnergy(collectedEnergy);
 	}
-
 }

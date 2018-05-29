@@ -18,10 +18,13 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.game.SquirrelGame.log.GameLogger;
+import de.hsa.games.fatsquirrel.botapi.BotController;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 import de.hsa.game.SquirrelGame.core.entity.character.*;
 import de.hsa.game.SquirrelGame.core.entity.character.Character;
+import de.hsa.game.SquirrelGame.core.entity.character.bots.BotControllerFactoryImpl;
+import de.hsa.game.SquirrelGame.core.entity.character.bots.RandomBot;
 
 public class Board {
 
@@ -80,7 +83,7 @@ public class Board {
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < countMastersquirrel; i++) {
-			entitySet.add((Entity) BotControllerFactory.createMasterBotController(id++, randomlocations.get(0)));
+			entitySet.add(new MasterSquirrelBot(id++, randomlocations.get(0), new BotControllerFactoryImpl()));
 			randomlocations.remove(0);
 		}
 
@@ -188,5 +191,4 @@ public class Board {
 	public String toString() {
 		return entitySet.toString();
 	}
-
 }
