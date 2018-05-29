@@ -27,7 +27,7 @@ public class Launcher extends Application {
 
 	private static Game game;
 
-	private static final GameMode gameMode = GameMode.JFX3D;
+	private static final GameMode gameMode = GameMode.JFX;
 	
 	private static Logger logger = Logger.getLogger(Launcher.class.getName());
 

@@ -20,7 +20,7 @@ public class ProxyBot implements InvocationHandler {
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		logger.log(Level.INFO, method.getName());
+//		logger.log(Level.INFO, method.getName());
 		try {
 		return method.invoke(this.obj, args);
 		} catch (Exception e) {
