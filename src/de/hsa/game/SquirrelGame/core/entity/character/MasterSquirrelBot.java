@@ -50,24 +50,14 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		@Override
 		public EntityType getEntityAt(XY xy) {
 			if(!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y && xy.y <= getViewLowerLeft().y)) {
-				try {
-					throw new OutOfViewException("Out of View!");
-				} catch (OutOfViewException e) {
-					//TODO: LOGGER????
-					e.printStackTrace();
-				} finally {
-					return EntityType.NONE;
-				}
+				
+				throw new OutOfViewException("Out of View!");
 				
 			}
 			if (xy.x > entityContext.getSize().x || xy.y > entityContext.getSize().y || xy.x < 0 || xy.y < 0 ) {
-				try {
+				
 					throw new OutOfViewException("Field is to small");
-				} catch (OutOfViewException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return EntityType.NONE;
+			
 			}
 			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
 				return EntityType.GOOD_PLANT;

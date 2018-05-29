@@ -101,6 +101,7 @@ public class Fx3dUI extends Scene implements UI {
 		return tmp;
 	}
 
+	@SuppressWarnings("restriction")
 	@Override
 	public void render(BoardView view) {
 		Platform.runLater(new Runnable() {
@@ -112,7 +113,7 @@ public class Fx3dUI extends Scene implements UI {
 	}
 
 	private void loadObjects() {
-		// TODO: Load Objects here
+//		objWall = FXMLLoader.load(location);
 	}
 
 	private void repaintBoardCanvas(BoardView view) {

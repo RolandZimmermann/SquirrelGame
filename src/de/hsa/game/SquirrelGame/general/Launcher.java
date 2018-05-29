@@ -34,7 +34,6 @@ public class Launcher extends Application {
 	public static void main(String[] args) {
 		GameLogger.init();
 		logger.info("START");
-		logger.finest("test");
 
 		if (gameMode == GameMode.CONSOLE) {
 			logger.info("Starting Console Mode");
