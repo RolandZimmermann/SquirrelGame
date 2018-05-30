@@ -7,7 +7,6 @@ public class GameImpl extends Game {
 
 	public GameImpl(State state, UI ui) {
 		super(state, ui);
-		// TODO Auto-generated constructor stub
 	}
 
 }

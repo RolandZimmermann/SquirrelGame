@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.games.fatsquirrel.botapi.ControllerContext;
 
 public class ProxyBot implements InvocationHandler {

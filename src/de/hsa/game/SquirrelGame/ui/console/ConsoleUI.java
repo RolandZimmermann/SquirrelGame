@@ -4,22 +4,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
-import de.hsa.game.SquirrelGame.core.entity.character.playerentity.*;
-import de.hsa.game.SquirrelGame.core.entity.noncharacter.*;
+import de.hsa.game.SquirrelGame.core.entity.Entity;
+import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
-import de.hsa.game.SquirrelGame.core.entity.character.*;
-import de.hsa.game.SquirrelGame.core.entity.*;
 
 public class ConsoleUI implements UI {
 	private static Logger logger = Logger.getLogger(ConsoleUI.class.getName());

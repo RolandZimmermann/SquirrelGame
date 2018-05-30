@@ -9,22 +9,20 @@ import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
-import de.hsa.game.SquirrelGame.core.entity.character.bots.RandomBot;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
-import de.hsa.game.SquirrelGame.log.GameLogger;
-import de.hsa.games.fatsquirrel.botapi.BotController;
-import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class FlattenBoard implements BoardView, EntityContext {
 	private static Logger logger = Logger.getLogger(FlattenBoard.class.getName());
 	
 	private Entity[][] cells;
+	
+
 	private Board database;
 
 	public FlattenBoard(Board database) {
@@ -40,12 +38,12 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public XY getSize() {
-		return new XY(cells[0].length, cells.length);
+		return new XY(getCells()[0].length, getCells().length);
 	}
 
 	@Override
 	public Entity getEntityType(int x, int y) {
-		return cells[y][x];
+		return getCells()[y][x];
 	}
 
 	@Override
@@ -72,6 +70,40 @@ public class FlattenBoard implements BoardView, EntityContext {
 				collided.updateEnergy(miniSquirrel.getEnergy());
 				kill(miniSquirrel);
 			}
+		} else if (collided instanceof GoodPlant) {
+
+			logger.fine(miniSquirrel.toString() + "collided with " + collided.toString());
+
+			miniSquirrel.updateEnergy(collided.getEnergy());
+
+			killandReplace(collided);
+			miniSquirrel.setPositionXY(moveDirection.x, moveDirection.y);
+
+		} else if (collided instanceof BadPlant) {
+
+			logger.fine(miniSquirrel.toString() + "collided with " + collided.toString());
+
+			miniSquirrel.updateEnergy(collided.getEnergy());
+
+			killandReplace(collided);
+			miniSquirrel.setPositionXY(moveDirection.x, moveDirection.y);
+
+		} else if (collided instanceof GoodBeast) {
+
+			logger.fine(miniSquirrel.toString() + "collided with " + collided.toString());
+
+			miniSquirrel.updateEnergy(collided.getEnergy());
+
+			killandReplace(collided);
+			miniSquirrel.setPositionXY(moveDirection.x, moveDirection.y);
+
+		} else if (collided instanceof BadBeast) {
+
+			logger.fine(miniSquirrel.toString() + "collided with " + collided.toString());
+
+			miniSquirrel.updateEnergy(collided.getEnergy());
+			((BadBeast) collided).updatebiteCounter();
+
 		}
 		if (collided == null) {
 			miniSquirrel.setPositionXY(moveDirection.x, moveDirection.y);
@@ -157,6 +189,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 			logger.fine(masterSquirrel.toString() + "collided with " + collided.toString());
 
 			masterSquirrel.updateEnergy(collided.getEnergy());
+			((BadBeast) collided).updatebiteCounter();
 
 		} else if (collided instanceof MiniSquirrel) {
 
@@ -180,9 +213,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 	public PlayerEntity nearestPlayerEntity(XY pos) {
 		XY nearest = new XY(1000, 1000);
 		PlayerEntity output = null;
-		for (int i = 0; i < cells.length; i++) {
-			for (int j = 0; j < cells[0].length; j++) {
-				Entity e = cells[i][j];
+		for (int i = 0; i < getCells().length; i++) {
+			for (int j = 0; j < getCells()[0].length; j++) {
+				Entity e = getCells()[i][j];
 				if (e instanceof PlayerEntity) {
 					double diste = Math.sqrt(Math.pow(Math.abs(e.getPositionXY().x - pos.x), 2)
 							+ Math.pow(Math.abs(e.getPositionXY().y - pos.y), 2));
@@ -213,10 +246,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 		Random a = new Random();
 
-		XY newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
+		XY newPos = new XY(a.nextInt((getCells()[0].length - 2) + 1), a.nextInt((getCells().length - 2) + 1));
 
-		while (cells[newPos.y][newPos.x] != null) {
-			newPos = new XY(a.nextInt((cells[0].length - 2) + 1), a.nextInt((cells.length - 2) + 1));
+		while (getCells()[newPos.y][newPos.x] != null) {
+			newPos = new XY(a.nextInt((getCells()[0].length - 2) + 1), a.nextInt((getCells().length - 2) + 1));
 		}
 
 		database.killandReplace(insert, newPos);
@@ -228,8 +261,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 		return getEntityType(xy.x, xy.y);
 	}
 
-	private Entity checkCollision(Entity entity, XY moveDirection) {
-		return cells[entity.getPositionXY().y + moveDirection.y][moveDirection.x
+	// public only to be able to use it in UNIT TESTS;
+	public Entity checkCollision(Entity entity, XY moveDirection) {
+		return getCells()[entity.getPositionXY().y + moveDirection.y][moveDirection.x
 				+ entity.getPositionXY().x];
 	}
 
@@ -253,9 +287,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 			}
 		}
 		int collectedEnergy = 0;
-		for (int y = 0; y < cells.length; y++) {
-			for (int x = 0; x < cells.length; x++) {
-				Entity e = cells[y][x];
+		for (int y = 0; y < getCells().length; y++) {
+			for (int x = 0; x < getCells().length; x++) {
+				Entity e = getCells()[y][x];
 				int distance = (int) Math
 						.sqrt(Math.pow(Math.abs(e.getPositionXY().x - entity.getPositionXY().x), 2)
 								+ Math.pow(Math.abs(e.getPositionXY().y - entity.getPositionXY().y), 2));
@@ -312,5 +346,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 			}
 		}
 		((MiniSquirrel) entity).getMaster().updateEnergy(collectedEnergy);
+	}
+	
+	public Entity[][] getCells() {
+		return cells;
 	}
 }

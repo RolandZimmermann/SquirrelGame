@@ -12,32 +12,21 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.AmbientLight;
-
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
-
 import javafx.scene.PointLight;
-
 import javafx.scene.Scene;
-
 import javafx.scene.SceneAntialiasing;
-
 import javafx.scene.input.MouseButton;
-
 import javafx.scene.paint.Color;
-
 import javafx.scene.paint.PhongMaterial;
-
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-
 import javafx.scene.transform.Translate;
 
 public class Fx3dUI extends Scene implements UI {
@@ -95,7 +84,6 @@ public class Fx3dUI extends Scene implements UI {
 		return tmp;
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public void render(BoardView view) {
 		Platform.runLater(new Runnable() {

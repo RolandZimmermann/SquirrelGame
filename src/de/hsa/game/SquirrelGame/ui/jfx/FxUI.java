@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
-import de.hsa.game.SquirrelGame.core.entity.*;
+import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
@@ -14,8 +14,6 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.gamestats.XYsupport;
-import de.hsa.game.SquirrelGame.log.GameLogger;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
@@ -30,7 +28,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-@SuppressWarnings("restriction")
 public class FxUI extends Scene implements UI {
 	
 	private static Logger logger = Logger.getLogger(FxUI.class.getName());
@@ -172,7 +169,6 @@ public class FxUI extends Scene implements UI {
 		return fxUI;
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public void render(final BoardView view) {
 		Platform.runLater(new Runnable() {

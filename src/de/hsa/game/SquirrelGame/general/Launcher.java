@@ -1,5 +1,10 @@
 package de.hsa.game.SquirrelGame.general;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.hsa.game.SquirrelGame.core.board.Board;
 import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.board.BoardFactory;
@@ -11,16 +16,9 @@ import de.hsa.game.SquirrelGame.ui.jfx.Fx3dUI;
 import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-@SuppressWarnings("restriction")
 public class Launcher extends Application {
 
 	private static Board board = BoardFactory.createBoard();
@@ -82,7 +80,7 @@ public class Launcher extends Application {
 		}, 1000);
 	}
 
-	@SuppressWarnings("restriction")
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		

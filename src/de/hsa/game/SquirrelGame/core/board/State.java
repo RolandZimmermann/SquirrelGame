@@ -1,6 +1,5 @@
 package de.hsa.game.SquirrelGame.core.board;
 
-import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 

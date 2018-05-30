@@ -1,15 +1,19 @@
 package de.hsa.game.SquirrelGame.core.board;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
-import de.hsa.game.SquirrelGame.core.entity.EntitySet;
+import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.Character;
+import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
+import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
+import de.hsa.game.SquirrelGame.core.entity.character.bots.BotControllerFactoryImpl;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
@@ -18,30 +22,24 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
-import de.hsa.game.SquirrelGame.log.GameLogger;
-import de.hsa.games.fatsquirrel.botapi.BotController;
-import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
-import de.hsa.game.SquirrelGame.core.entity.character.*;
-import de.hsa.game.SquirrelGame.core.entity.character.Character;
-import de.hsa.game.SquirrelGame.core.entity.character.bots.BotControllerFactoryImpl;
-import de.hsa.game.SquirrelGame.core.entity.character.bots.RandomBot;
 
 public class Board {
 
-	// starting Logging
 	private static Logger logger = Logger.getLogger(Board.class.getName());
 
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
 
+	private BoardView boardView;
+
 	private int id;
 
-	private ArrayList<Entity> entitySet = new ArrayList<Entity>();
-	private ArrayList<Entity> removeID = new ArrayList<Entity>();
-	private ArrayList<Entity> addID = new ArrayList<Entity>();
+	private List<Entity> entitySet = new ArrayList<Entity>();
+	private List<Entity> removeID = new ArrayList<Entity>();
+	private List<Entity> addID = new ArrayList<Entity>();
 
-	Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
+	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
 			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
 
 		logger.finer("Initialising");
@@ -57,75 +55,76 @@ public class Board {
 		List<XY> randomlocations = generateRandomLocations(counter);
 
 		for (int i = 0; i < countBadPlant; i++) {
-			entitySet.add(new BadPlant(id++, randomlocations.get(0)));
+			getEntitySet().add(new BadPlant(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 
 		for (int i = 0; i < countGoodPlant; i++) {
-			entitySet.add(new GoodPlant(id++, randomlocations.get(0)));
+			getEntitySet().add(new GoodPlant(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 
 		for (int i = 0; i < countBadBeast; i++) {
-			entitySet.add(new BadBeast(id++, randomlocations.get(0)));
+			getEntitySet().add(new BadBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < countGoodBeast; i++) {
-			entitySet.add(new GoodBeast(id++, randomlocations.get(0)));
+			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < countWall; i++) {
-			entitySet.add(new Wall(id++, randomlocations.get(0)));
+			getEntitySet().add(new Wall(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < countHandOperatedMastersquirrel; i++) {
-			entitySet.add(new HandOperatedMasterSquirrel(id++, randomlocations.get(0)));
+			getEntitySet().add(new HandOperatedMasterSquirrel(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < countMastersquirrel; i++) {
-			entitySet.add(new MasterSquirrelBot(id++, randomlocations.get(0), new BotControllerFactoryImpl()));
+			getEntitySet().add(new MasterSquirrelBot(id++, randomlocations.get(0), new BotControllerFactoryImpl()));
 			randomlocations.remove(0);
 		}
 
 		for (int i = 0; i < boardHeight; i++) {
-			entitySet.add(new Wall(id++, new XY(0, i)));
+			getEntitySet().add(new Wall(id++, new XY(0, i)));
 		}
 		for (int i = 0; i < boardWidth; i++) {
-			entitySet.add(new Wall(id++, new XY(i, 0)));
+			getEntitySet().add(new Wall(id++, new XY(i, 0)));
 		}
 		for (int i = boardHeight; i > 0; i--) {
-			entitySet.add(new Wall(id++, new XY(boardWidth - 1, i - 1)));
+			getEntitySet().add(new Wall(id++, new XY(boardWidth - 1, i - 1)));
 		}
 		for (int i = boardWidth; i > 0; i--) {
-			entitySet.add(new Wall(id++, new XY(i - 1, boardHeight - 1)));
+			getEntitySet().add(new Wall(id++, new XY(i - 1, boardHeight - 1)));
 		}
 
 	}
 
 	public void killandReplace(Entity entity, XY newPos) {
 		if (entity instanceof GoodPlant) {
-			addID.add(new GoodPlant(id++, new XY(newPos.x, newPos.y)));
+			getAddID().add(new GoodPlant(id++, new XY(newPos.x, newPos.y)));
 		}
 		if (entity instanceof BadPlant) {
-			addID.add(new BadPlant(id++, new XY(newPos.x, newPos.y)));
+			getAddID().add(new BadPlant(id++, new XY(newPos.x, newPos.y)));
 		}
 		if (entity instanceof GoodBeast) {
-			addID.add(new GoodBeast(id++, new XY(newPos.x, newPos.y)));
+			getAddID().add(new GoodBeast(id++, new XY(newPos.x, newPos.y)));
 		}
 		if (entity instanceof BadBeast) {
-			addID.add(new BadBeast(id++, new XY(newPos.x, newPos.y)));
+			getAddID().add(new BadBeast(id++, new XY(newPos.x, newPos.y)));
 		}
 
 		logger.finer(entity.toString() + newPos.toString());
 	}
 
+	
 	public void kill(Entity entity) {
-		removeID.add(entity);
+		getRemoveID().add(entity);
 		logger.finer(entity.toString());
 	}
 
 	public void spawnMiniSquirrel(MasterSquirrel master, XY xy, int energy) {
-		addID.add(new MiniSquirrel(id++, xy, energy, master));
+		getAddID().add(new MiniSquirrel(id++, xy, energy, master));
 		logger.finer("Spawning mini squirrel: " + xy.toString() + energy);
 	}
 
@@ -159,34 +158,54 @@ public class Board {
 
 		Entity[][] entityarry = new Entity[BOARD_HEIGHT][BOARD_WIDTH];
 
-		for (Entity e : entitySet) {
+		for (Entity e : getEntitySet()) {
 			entityarry[e.getPositionXY().y][e.getPositionXY().x] = e;
 		}
 
 		return entityarry;
 	}
 
+	public void setBoardView(BoardView boardView) {
+		this.boardView = boardView;
+	}
+
 	public void update(MoveCommand moveCommand, EntityContext entityContext) {
-		for (int i = 0; i < entitySet.size(); i++) {
-			Entity c = entitySet.get(i);
+		for (int i = 0; i < getEntitySet().size(); i++) {
+			Entity c = getEntitySet().get(i);
 			if (c instanceof Character) {
 				if (c instanceof HandOperatedMasterSquirrel) {
 					((HandOperatedMasterSquirrel) c).getMove(moveCommand);
 				}
 				((Character) c).nextStep(entityContext);
+				if (boardView != null) {
+					boardView.update();
+				}
 			}
 		}
-		for (int i = 0; i < removeID.size(); i++) {
-			entitySet.remove(removeID.get(i));
+		for (int i = 0; i < getRemoveID().size(); i++) {
+			getEntitySet().remove(getRemoveID().get(i));
 		}
-		for (int i = 0; i < addID.size(); i++) {
-			entitySet.add(addID.get(i));
+		for (int i = 0; i < getAddID().size(); i++) {
+			getEntitySet().add(getAddID().get(i));
 		}
 		removeID = new ArrayList<>();
 		addID = new ArrayList<>();
 
 		logger.finest("Updated");
 	}
+	
+	public List<Entity> getEntitySet() {
+		return entitySet;
+	}
+
+	public List<Entity> getRemoveID() {
+		return removeID;
+	}
+
+	public List<Entity> getAddID() {
+		return addID;
+	}
+
 
 	public String toString() {
 		return entitySet.toString();

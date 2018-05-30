@@ -1,29 +1,25 @@
 package de.hsa.game.SquirrelGame.general;
 
-import de.hsa.game.SquirrelGame.core.BoardView;
-import de.hsa.game.SquirrelGame.core.EntityContext;
-import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
-import de.hsa.game.SquirrelGame.core.board.State;
-import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.log.GameLogger;
-import de.hsa.game.SquirrelGame.ui.UI;
-import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.hsa.game.SquirrelGame.core.BoardView;
+import de.hsa.game.SquirrelGame.core.EntityContext;
+import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
+import de.hsa.game.SquirrelGame.core.board.State;
+import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
+import de.hsa.game.SquirrelGame.ui.UI;
+
 public abstract class Game {
-	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
-	static {
-		new GameLogger();
-	}
+	private static Logger logger = Logger.getLogger(Game.class.getName());
 	
     private State state;
     private UI ui;
     private BoardView boardView;
     private EntityContext entityContext;
-    private int FPS = 60;
+    private int FPS = 10000;
     private boolean multi = true;
     
     
@@ -37,6 +33,7 @@ public abstract class Game {
         FlattenBoard flattenBoard = new FlattenBoard(state.getBoard());
         this.boardView = flattenBoard;
         this.entityContext = flattenBoard;
+        state.getBoard().setBoardView(this.boardView);
     }
 
     public void run() throws InterruptedException {
