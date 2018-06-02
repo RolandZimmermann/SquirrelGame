@@ -1,5 +1,11 @@
 package de.hsa.game.SquirrelGame.core.board;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +19,6 @@ import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.Character;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
-import de.hsa.game.SquirrelGame.core.entity.character.bots.BotControllerFactoryImpl;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
@@ -22,6 +27,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class Board {
@@ -40,7 +46,7 @@ public class Board {
 	private List<Entity> addID = new ArrayList<Entity>();
 
 	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
-			int countHandOperatedMastersquirrel, int countMastersquirrel, int countWall) {
+			int countHandOperatedMastersquirrel, int countWall, String[] bots) {
 
 		logger.finer("Initialising");
 		logger.finest("test");
@@ -50,7 +56,7 @@ public class Board {
 		this.BOARD_WIDTH = boardWidth;
 
 		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
-				+ countMastersquirrel + countWall;
+				+ bots.length + countWall;
 
 		List<XY> randomlocations = generateRandomLocations(counter);
 
@@ -80,8 +86,33 @@ public class Board {
 			getEntitySet().add(new HandOperatedMasterSquirrel(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
-		for (int i = 0; i < countMastersquirrel; i++) {
-			getEntitySet().add(new MasterSquirrelBot(id++, randomlocations.get(0), new BotControllerFactoryImpl()));
+		for (int i = 0; i < bots.length; i++) {
+			
+			URL[] urls = null;
+			try
+			{
+				//what is the real path??
+			File dir = new File("");
+			URL url = dir.toURI().toURL();
+			urls = new URL[]{url};
+			}
+			catch (Exception e) {
+				logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		
+			ClassLoader cl = new URLClassLoader(urls);
+			
+			BotControllerFactory botControllerFactory = null;
+			try {
+				//Package name needed too
+				Class cls = cl.loadClass("de.hsa.games.fatsquirrel.botimpls." + bots[i]);
+				botControllerFactory = (BotControllerFactory) cls.newInstance();
+			} catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+				logger.log(Level.SEVERE, e.getMessage(), e);
+				continue;
+			}
+			
+			getEntitySet().add(new MasterSquirrelBot(id++, randomlocations.get(0), botControllerFactory));
 			randomlocations.remove(0);
 		}
 

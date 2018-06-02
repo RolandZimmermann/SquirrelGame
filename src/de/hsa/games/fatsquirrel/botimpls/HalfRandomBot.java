@@ -1,12 +1,13 @@
-package de.hsa.game.SquirrelGame.core.entity.character.bots;
+package de.hsa.games.fatsquirrel.botimpls;
 
 import de.hsa.games.fatsquirrel.botapi.BotController;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botapi.ControllerContext;
 import de.hsa.games.fatsquirrel.botapi.OutOfViewException;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
-public class HalfRandomBot implements BotController {
+public class HalfRandomBot implements BotController,BotControllerFactory {
 
 	@Override
 	public void nextStep(ControllerContext view) {
@@ -78,5 +79,17 @@ public class HalfRandomBot implements BotController {
 		}
 		view.move(new XY(moveX, moveY));
 
+	}
+
+	@Override
+	public BotController createMasterBotController() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public BotController createMiniBotController() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

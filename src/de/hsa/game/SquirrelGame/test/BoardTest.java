@@ -52,7 +52,7 @@ public class BoardTest {
 		
 		board = new Board(BoardConfig.WIDTH_SIZE, BoardConfig.HEIGHT_SIZE, BoardConfig.COUNT_BADPLANT,
 				BoardConfig.COUNT_GOODPLANT, BoardConfig.COUNT_BADBEAST, BoardConfig.COUNT_GOODBEAST,
-				BoardConfig.COUNT_HANDOPERATED_MASTERSQUIRREL, BoardConfig.COUNT_MASTERSQUIRREL, BoardConfig.COUNT_WALL);
+				BoardConfig.COUNT_HANDOPERATED_MASTERSQUIRREL, BoardConfig.COUNT_WALL, BoardConfig.COUNT_BOTS);
 		spyboard = spy(board);
 		
 		entity = mock(GoodBeast.class);
