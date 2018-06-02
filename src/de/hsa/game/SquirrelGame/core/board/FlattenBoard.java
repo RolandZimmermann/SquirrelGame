@@ -211,7 +211,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	@Override
 	public PlayerEntity nearestPlayerEntity(XY pos) {
-		XY nearest = new XY(1000, 1000);
+		XY nearest = new XY(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		PlayerEntity output = null;
 		for (int i = 0; i < getCells().length; i++) {
 			for (int j = 0; j < getCells()[0].length; j++) {

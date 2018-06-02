@@ -11,8 +11,6 @@ public class XYtest {
 	XY xy1 = new XY(1,1);
 	XY xy2 = new XY(2,2);
 	
-
-
 	@Test
 	public void testXY() {
 		assertEquals(xy1, new XY(1,1));
