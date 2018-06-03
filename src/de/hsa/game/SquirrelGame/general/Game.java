@@ -34,7 +34,7 @@ public abstract class Game {
 	private boolean training = false;
 	private int gameSteps;
 
-	private int population = 20;
+	private int population = 6;
 	private BotControllerFactory[] bots;
 
 	private MoveCommand moveCommand = null;
@@ -93,15 +93,11 @@ public abstract class Game {
 			}
 		}
 		
-		
 		newbots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
-		for (MasterSquirrelBot e : newbots) {
-			MaToRoKi a = (MaToRoKi) e.getBotController();
-		}
 		
 		for (int i = 0; i < population; i++) {
 			MaToRoKi a = (MaToRoKi) newbots.get(i).getBotController();
-			a.mutate(0.1);
+			a.mutate(0.5);
 			bots[i] = (BotControllerFactory) a;
 		}
 
