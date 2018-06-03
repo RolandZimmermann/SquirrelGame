@@ -14,8 +14,8 @@ public class BoardConfig {
 	public static int COUNT_BADPLANT = 30;
 	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 0;
 	public static int COUNT_MASTERSQUIRREL = 1;
-	public static String[] COUNT_BOTS = {"HalfRandomBot","RandomBot","HalfRandomBot","HalfRandomBot"};
-	
+	public static String[] COUNT_BOTS = {"HalfRandomBot","RandomBot","HalfRandomBot","HalfRandomBot","HalfRandomBot","RandomBot","HalfRandomBot","HalfRandomBot"};
+	public static int GAME_STEPS = 1000;	
 	
 	public static XY getSize() {
 		return new XY(WIDTH_SIZE, HEIGHT_SIZE);

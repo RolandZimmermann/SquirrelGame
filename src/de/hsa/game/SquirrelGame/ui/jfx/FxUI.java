@@ -207,7 +207,7 @@ public class FxUI extends Scene implements UI {
 				} else if (entity instanceof BadBeast) {
 					if (sprBadBeast.isError()) {
 						gc.setFill(Color.DARKRED);
-						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+						gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
 						gc.drawImage(sprBadBeast, x, y);
 					}
@@ -232,7 +232,6 @@ public class FxUI extends Scene implements UI {
 					} else {
 						gc.drawImage(sprMasterSquirrel, x, y);
 					}
-					this.message("Energy: " + entity.getEnergy());
 				} else if (entity instanceof MiniSquirrel) {
 					if (sprMiniSquirrel.isError()) {
 						gc.setFill(Color.BLUEVIOLET);

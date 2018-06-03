@@ -169,4 +169,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 				.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 	}
 
+	public Object getBotController() {
+		return this.masterBotController;
+	}
+
 }

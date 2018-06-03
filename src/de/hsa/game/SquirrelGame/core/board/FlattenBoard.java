@@ -22,7 +22,6 @@ public class FlattenBoard implements BoardView, EntityContext {
 	
 	private Entity[][] cells;
 	
-
 	private Board database;
 
 	public FlattenBoard(Board database) {
