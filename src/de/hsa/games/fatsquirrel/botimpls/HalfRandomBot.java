@@ -21,22 +21,15 @@ public class HalfRandomBot implements BotController,BotControllerFactory {
 		XY topleft = new XY(view.getViewLowerLeft().x, view.getViewUpperRight().y);
 		XY downright = new XY(view.getViewUpperRight().x, view.getViewLowerLeft().y);
 		
-		
-		int newX = topleft.x;
-		int newY = topleft.y;
-		
-		
 		if (topleft.x < 0) {
-			
+			topleft = new XY(0, topleft.y);
+		} 
+		if (topleft.y < 0) {
+			topleft = new XY(topleft.x, 0);
 		}
-		
-		
 		
 		for (int i = topleft.y; i < downright.y; i++) {
 			for (int j = topleft.x; j < downright.x; j++) {
-				if (i < 0 || j < 0) {
-					continue;
-				}
 
 				try {
 					entity = view.getEntityAt(new XY(j, i));

@@ -5,10 +5,21 @@ import java.util.function.Function;
 import de.hsa.games.fatsquirrel.botapi.BotController;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botapi.ControllerContext;
+import de.hsa.games.fatsquirrel.botapi.OutOfViewException;
+import de.hsa.games.fatsquirrel.core.EntityType;
+import de.hsa.games.fatsquirrel.util.XY;
 
-public class MaToRoKi implements BotController, BotControllerFactory{
-	
-	NeuralNetwork nn= new NeuralNetwork();
+public class MaToRoKi implements BotController, BotControllerFactory {
+
+	private NeuralNetwork nn = new NeuralNetwork(961, 700, 700, 8);
+
+	public NeuralNetwork getNn() {
+		return nn;
+	}
+
+	public void setNn(NeuralNetwork nn) {
+		this.nn = nn;
+	}
 
 	@Override
 	public BotController createMasterBotController() {
@@ -23,9 +34,124 @@ public class MaToRoKi implements BotController, BotControllerFactory{
 
 	@Override
 	public void nextStep(ControllerContext view) {
-		// TODO Auto-generated method stub
+		double[][] input = new double[961][1];
+
+		EntityType entity = EntityType.NONE;
+		XY topleft = new XY(view.getViewLowerLeft().x, view.getViewUpperRight().y);
+		XY downright = new XY(view.getViewUpperRight().x, view.getViewLowerLeft().y);
+
+		for (int i = topleft.y; i < downright.y; i++) {
+			for (int j = topleft.x; j < downright.x; j++) {
+
+				try {
+					entity = view.getEntityAt(new XY(j, i));
+					double value = 0;
+					if (entity == EntityType.GOOD_BEAST) {
+						value = 0.6;
+					} else if (entity == EntityType.BAD_BEAST) {
+						value = 0.1;
+					} else if (entity == EntityType.GOOD_PLANT) {
+						value = 0.5;
+					} else if (entity == EntityType.BAD_PLANT) {
+						value = 0.2;
+					} else if (entity == EntityType.WALL) {
+						value = 0.3;
+					} else if (entity == EntityType.MASTER_SQUIRREL) {
+						if (view.locate() != new XY(j, i)) {
+							value = 0.4;
+						}
+					} else if (entity == EntityType.MINI_SQUIRREL) {
+						if (view.isMine(new XY(j, i))) {
+							value = 0.7;
+						} else {
+							value = 0.8;
+						}
+					}
+					input[i - topleft.y][0] = value;
+				} catch (OutOfViewException e) {
+					// e.printStackTrace();
+					input[i - topleft.y][j - topleft.x] = -1;
+					continue;
+				}
+			}
+		}
+
+		Matrix inputMatrix = new Matrix(input);
+		Matrix outputMatrix = nn.feedforward(inputMatrix);
+
+		double[][] output = outputMatrix.getData();
 		
+		double highestoutput = -100d;
+		int position = -1;
+
+		for (int i = 0; i < output.length; i++) {
+			for (int j = 0; j < output[0].length; j++) {
+				if(output[i][j] > highestoutput) {
+					position = i;
+					highestoutput = output[i][j];
+				}
+			}
+		}
+		
+		switch(position) {
+		case -1:
+			view.move(XY.ZERO_ZERO);
+			break;
+		case 0: 
+			view.move(XY.DOWN);
+			break;
+		case 1:
+			view.move(XY.LEFT);
+			break;
+		case 2:
+			view.move(XY.LEFT_DOWN);
+			break;
+		case 3: 
+			view.move(XY.LEFT_UP);
+			break;
+		case 4: 
+			view.move(XY.RIGHT);
+			break;
+		case 5: 
+			view.move(XY.RIGHT_DOWN);
+			break;
+		case 6:
+			view.move(XY.RIGHT_UP);
+			break;
+		case 7:
+			view.move(XY.UP);
+			break;
+//		case 8:
+//			view.spawnMiniBot(XY.DOWN, 100);
+//			break;
+//		case 9:
+//			view.spawnMiniBot(XY.LEFT, 100);
+//			break;
+//		case 10:
+//			view.spawnMiniBot(XY.LEFT_DOWN, 100);
+//			break;
+//		case 11:
+//			view.spawnMiniBot(XY.LEFT_UP, 100);
+//			break;
+//		case 12:
+//			view.spawnMiniBot(XY.RIGHT, 100);
+//			break;
+//		case 13:
+//			view.spawnMiniBot(XY.RIGHT_DOWN, 100);
+//			break;
+//		case 14:
+//			view.spawnMiniBot(XY.RIGHT_UP, 100);
+//			break;
+//		case 15:
+//			view.spawnMiniBot(XY.UP, 100);
+		}
+
 	}
+	
+	public void mutate(double mutationRate) {
+		nn.mutate(mutationRate);
+	}
+}
 
 class NeuralNetwork {
 
@@ -33,6 +159,8 @@ class NeuralNetwork {
 	private int hiddenNodes;
 	private int hiddenNodes2;
 	private int outputNodes;
+
+	private double mutationRate;
 
 	private Matrix weightsIH;
 	private Matrix weightsHH;
@@ -61,6 +189,21 @@ class NeuralNetwork {
 		this.biasO.randomize();
 	}
 
+	public NeuralNetwork(NeuralNetwork neuralNetwork) {
+		this.inputNodes = neuralNetwork.inputNodes;
+		this.hiddenNodes = neuralNetwork.hiddenNodes;
+		this.hiddenNodes2 = neuralNetwork.hiddenNodes2;
+		this.outputNodes = neuralNetwork.outputNodes;
+
+		this.weightsIH = new Matrix(neuralNetwork.weightsIH);
+		this.weightsHH = new Matrix(neuralNetwork.weightsHH);
+		this.weightsOH = new Matrix(neuralNetwork.weightsOH);
+
+		this.biasH = new Matrix(neuralNetwork.biasH);
+		this.biasH2 = new Matrix(neuralNetwork.biasH2);
+		this.biasO = new Matrix(neuralNetwork.biasO);
+	}
+
 	public Matrix feedforward(Matrix input) {
 		Matrix hidden = null;
 		Matrix hidden2 = null;
@@ -72,7 +215,7 @@ class NeuralNetwork {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			hidden2 = Matrix.multiply(this.weightsHH, hidden);
 			hidden2.addMatrix(this.biasH);
@@ -95,13 +238,33 @@ class NeuralNetwork {
 
 	}
 
+	public void mutate(double mutationRate) {
+
+		this.mutationRate = mutationRate;
+
+		this.weightsIH.map(this::mutation);
+		this.weightsHH.map(this::mutation);
+		this.weightsOH.map(this::mutation);
+		this.biasH.map(this::mutation);
+		this.biasO.map(this::mutation);
+		this.biasH2.map(this::mutation);
+	}
+
 	public double sigmoid(Double x) {
 		return 1 / (1 + Math.exp(-x));
 	}
 
+	public double mutation(Double x) {
+		if (mutationRate > Math.random()) {
+			return x + Math.random() - 0.5;
+		} else {
+			return x;
+		}
+	}
+
 }
 
-static class Matrix {
+class Matrix {
 
 	private int rows;
 	private int cols;
@@ -121,13 +284,23 @@ static class Matrix {
 	public Matrix(Matrix matrix) {
 		this.rows = matrix.getRows();
 		this.cols = matrix.getCols();
-		this.data = matrix.getData();
+		this.data = new double[matrix.getCols()][matrix.getRows()];
+		for (int i = 0; i < data.length; i++) {
+			for (int j = 0; j < data[0].length; j++) {
+				this.data[i][j] = matrix.getData()[i][j];
+			}
+		}
 	}
 
 	public Matrix(double[][] matrix) {
 		this.rows = matrix[0].length;
 		this.cols = matrix.length;
-		this.data = matrix;
+		this.data = new double[matrix.length][matrix[0].length];
+		for (int i = 0; i < data.length; i++) {
+			for (int j = 0; j < data[0].length; j++) {
+				this.data[i][j] = matrix[i][j];
+			}
+		}
 	}
 
 	public void scale(double n) {
@@ -149,7 +322,7 @@ static class Matrix {
 	public void add(double n) {
 		for (int i = 0; i < this.cols; i++) {
 			for (int j = 0; j < this.rows; j++) {
-				this.data[i][j] *= n;
+				this.data[i][j] += n;
 			}
 		}
 	}
@@ -230,7 +403,4 @@ static class Matrix {
 	public double[][] getData() {
 		return data;
 	}
-}
-
-
 }
