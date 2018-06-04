@@ -11,7 +11,7 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 public class MaToRoKi implements BotController, BotControllerFactory {
 
-	private NeuralNetwork nn = new NeuralNetwork(961, 700, 700, 8);
+	private NeuralNetwork nn = new NeuralNetwork(961, 500, 500, 9);
 
 	public NeuralNetwork getNn() {
 		return nn;
@@ -29,7 +29,15 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 	@Override
 	public BotController createMiniBotController() {
 		// TODO Auto-generated method stub
-		return null;
+		return new BotController() {
+
+			@Override
+			public void nextStep(ControllerContext view) {
+				view.implode(5);
+				
+			}
+			
+		};
 	}
 
 	@Override
@@ -122,29 +130,32 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 		case 7:
 			view.move(XY.UP);
 			break;
-//		case 8:
+		case 8:
+			view.move(XY.ZERO_ZERO);
+//		case 9:
 //			view.spawnMiniBot(XY.DOWN, 100);
 //			break;
-//		case 9:
+//		case 10:
 //			view.spawnMiniBot(XY.LEFT, 100);
 //			break;
-//		case 10:
+//		case 11:
 //			view.spawnMiniBot(XY.LEFT_DOWN, 100);
 //			break;
-//		case 11:
+//		case 12:
 //			view.spawnMiniBot(XY.LEFT_UP, 100);
 //			break;
-//		case 12:
+//		case 13:
 //			view.spawnMiniBot(XY.RIGHT, 100);
 //			break;
-//		case 13:
+//		case 14:
 //			view.spawnMiniBot(XY.RIGHT_DOWN, 100);
 //			break;
-//		case 14:
+//		case 15:
 //			view.spawnMiniBot(XY.RIGHT_UP, 100);
 //			break;
-//		case 15:
+//		case 16:
 //			view.spawnMiniBot(XY.UP, 100);
+		
 		}
 
 	}

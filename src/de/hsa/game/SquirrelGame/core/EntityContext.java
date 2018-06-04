@@ -6,6 +6,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public interface EntityContext {
@@ -16,6 +17,7 @@ public interface EntityContext {
 	public void tryMove(BadBeast badbeast, XY moveDirection);
 	public void tryMove(MasterSquirrel masterSquirrel, XY moveDirection);
 	public void trySpawnMiniSquirrel(MasterSquirrel master, XY xy, int energy );
+	public void trySpawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy, BotControllerFactory botControllerFactory);
 	public PlayerEntity nearestPlayerEntity(XY pos);
 	
 	public void kill(Entity entity);

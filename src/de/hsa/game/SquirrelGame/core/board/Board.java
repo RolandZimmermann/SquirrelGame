@@ -19,6 +19,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.Character;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
+import de.hsa.game.SquirrelGame.core.entity.character.MiniSquirrelBot;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
@@ -310,5 +311,11 @@ public class Board {
 
 	public String toString() {
 		return entitySet.toString();
+	}
+
+	public void spawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy, BotControllerFactory botControllerFacotry) {
+		getAddID().add(new MiniSquirrelBot(master,id++, xy, energy,botControllerFacotry));
+		logger.finer("Spawning mini squirrel: " + xy.toString() + energy);
+		
 	}
 }

@@ -7,7 +7,7 @@ public class BoardConfig {
 	
 	public static int WIDTH_SIZE = 100;
 	public static int HEIGHT_SIZE = 100;
-	public static int COUNT_WALL = 30;
+	public static int COUNT_WALL = 90;
 	public static int COUNT_GOODBEAST = 30;
 	public static int COUNT_BADBEAST = 30;
 	public static int COUNT_GOODPLANT = 50;

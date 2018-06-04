@@ -1,8 +1,8 @@
 package de.hsa.game.SquirrelGame.core.entity.character;
 
-
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
+import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot.ControllerContextImpl;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
@@ -10,15 +10,21 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.proxy.ProxyFactory;
 import de.hsa.games.fatsquirrel.botapi.BotController;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botapi.ControllerContext;
 import de.hsa.games.fatsquirrel.botapi.OutOfViewException;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
-public class MiniSquirrelBot extends MiniSquirrel implements BotController {
-	
-	public MiniSquirrelBot(MasterSquirrel masterSquirrel, int id, XY position, int energy) {
+public class MiniSquirrelBot extends MiniSquirrel {
+	BotControllerFactory botControllerFactory;
+	BotController miniBotController;
+
+	public MiniSquirrelBot(MasterSquirrel masterSquirrel, int id, XY position, int energy,
+			BotControllerFactory botControllerFactory) {
 		super(id, position, energy, masterSquirrel);
+		this.botControllerFactory = botControllerFactory;
+		miniBotController = this.botControllerFactory.createMiniBotController();
 	}
 
 	public class ControllerContextImpl implements ControllerContext {
@@ -31,24 +37,32 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 
 		@Override
 		public XY getViewLowerLeft() {
-			return new XY(getPositionXY().x - VISION / 2, getPositionXY().y + VISION / 2);
+			int x = getPositionXY().x - VISION / 2;
+			int y = getPositionXY().y + VISION / 2;
+
+			return new XY(x, y);
 		}
 
 		@Override
 		public XY getViewUpperRight() {
-			return new XY(getPositionXY().x + VISION / 2, getPositionXY().y - VISION / 2);
+			int x = getPositionXY().x + VISION / 2;
+			int y = getPositionXY().y - VISION / 2;
+
+			return new XY(x, y);
 		}
 
 		@Override
 		public EntityType getEntityAt(XY xy) {
-			if(!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y && xy.y < getViewUpperRight().y)) {
-				try {
-					throw new OutOfViewException("Out of View");
-				} catch (OutOfViewException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return null;
+			if (!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y
+					&& xy.y <= getViewLowerLeft().y)) {
+
+				throw new OutOfViewException("Out of View!");
+
+			}
+			if (xy.x >= entityContext.getSize().x || xy.y >= entityContext.getSize().y || xy.x < 0 || xy.y < 0) {
+
+				throw new OutOfViewException("Field is to small");
+
 			}
 			if (entityContext.getEntityType(xy) instanceof GoodPlant) {
 				return EntityType.GOOD_PLANT;
@@ -72,7 +86,7 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 
 		@Override
 		public void move(XY direction) {
-			setPositionXY(direction.x, direction.y);
+			entityContext.tryMove(MiniSquirrelBot.this, direction);
 		}
 
 		@Override
@@ -97,7 +111,8 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 
 		@Override
 		public boolean isMine(XY xy) {
-			if(!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y && xy.y < getViewUpperRight().y)) {
+			if (!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y
+					&& xy.y < getViewUpperRight().y)) {
 				try {
 					throw new OutOfViewException("Out of view");
 				} catch (OutOfViewException e1) {
@@ -106,13 +121,13 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 				return false;
 			}
 			Entity e = entityContext.getEntityType(xy);
-			if(e instanceof MiniSquirrel) {
-				if(((MiniSquirrel) e).getMaster() == MiniSquirrelBot.this.getMaster()) {
+			if (e instanceof MiniSquirrel) {
+				if (((MiniSquirrel) e).getMaster() == MiniSquirrelBot.this.getMaster()) {
 					return true;
 				}
 			}
-			if(e instanceof MasterSquirrel) {
-				if(((MasterSquirrel)e).testSquirrel(MiniSquirrelBot.this)) {
+			if (e instanceof MasterSquirrel) {
+				if (((MasterSquirrel) e).testSquirrel(MiniSquirrelBot.this)) {
 					return true;
 				}
 			}
@@ -124,21 +139,20 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 			Entity e = MiniSquirrelBot.this.getMaster();
 			int x = 0;
 			int y = 0;
-			
-			
+
 			if (e.getPositionXY().x < MiniSquirrelBot.this.getPositionXY().x) {
 				x = -1;
 			} else if (e.getPositionXY().x > MiniSquirrelBot.this.getPositionXY().x) {
 				x = 1;
 			}
-			
+
 			if (e.getPositionXY().y < MiniSquirrelBot.this.getPositionXY().y) {
 				y = 1;
 			} else if (e.getPositionXY().y > MiniSquirrelBot.this.getPositionXY().y) {
 				y = -1;
 			}
-			
-			return new XY(x,y);
+
+			return new XY(x, y);
 		}
 
 		@Override
@@ -149,19 +163,12 @@ public class MiniSquirrelBot extends MiniSquirrel implements BotController {
 	}
 
 	@Override
-	public void nextStep(ControllerContext view) {
-		int moveX = (int) (Math.random() < 0.5 ? -1 : 1);
-		int moveY = (int) (Math.random() < 0.5 ? -1 : 1);
-		XY move = new XY(moveX, moveY);
-		if (view.getEntityAt(new XY(this.getPositionXY().x + move.x,
-				this.getPositionXY().y + move.y)) == EntityType.NONE) {
-			view.move(move);
-		}
-	}
-
-	@Override
 	public void nextStep(EntityContext entityContext) {
-		nextStep((ControllerContext)ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+
+		miniBotController.nextStep(new ControllerContextImpl(entityContext));
+		// miniBotController
+		// .nextStep((ControllerContext) ProxyFactory.newInstance(new
+		// ControllerContextImpl(entityContext)));
 	}
 
 }

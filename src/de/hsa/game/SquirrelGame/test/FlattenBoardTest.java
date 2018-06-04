@@ -56,7 +56,7 @@ public class FlattenBoardTest {
 		when(dataset.flatten()).thenReturn(e);
 		mini = mock(MiniSquirrel.class);
 		moveDirection = mock(XY.class);
-		when(spy.getCells()).thenReturn(e);
+		when(spy.getCells()).thenReturn(e); // NullPointerException when used.
 
 	}
 
@@ -116,8 +116,8 @@ public class FlattenBoardTest {
 
 	@Test
 	public void testKillandReplace() {
-		spy.killandReplace(mini);
-		verify(spy).kill(any(Entity.class));
+		spy.killandReplace(new GoodBeast(30, new XY(1,1)));
+		verify(dataset).kill(any(Entity.class));
 		verify(dataset).killandReplace(any(Entity.class), any(XY.class));
 	}
 

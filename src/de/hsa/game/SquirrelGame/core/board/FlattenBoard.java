@@ -15,13 +15,14 @@ import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
+import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class FlattenBoard implements BoardView, EntityContext {
 	private static Logger logger = Logger.getLogger(FlattenBoard.class.getName());
-	
+
 	private Entity[][] cells;
-	
+
 	private Board database;
 
 	public FlattenBoard(Board database) {
@@ -51,7 +52,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 		logger.finer(miniSquirrel.toString() + moveDirection.toString());
 
 		Entity collided = checkCollision(miniSquirrel, moveDirection);
-		if (collided instanceof MasterSquirrel) {
+		if (collided == null) {
+			miniSquirrel.setPositionXY(moveDirection.x, moveDirection.y);
+
+		} else if (collided instanceof MasterSquirrel) {
 
 			logger.fine(miniSquirrel.toString() + "collided with" + collided.toString());
 			if (((MasterSquirrel) collided).testSquirrel(miniSquirrel)) {
@@ -103,11 +107,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 			miniSquirrel.updateEnergy(collided.getEnergy());
 			((BadBeast) collided).updatebiteCounter();
 
+		} else if (collided instanceof Wall) {
+			logger.fine(miniSquirrel.toString() + "collided with " + collided.toString());
+			miniSquirrel.updateEnergy(collided.getEnergy());
 		}
-		if (collided == null) {
-			miniSquirrel.setPositionXY(moveDirection.x, moveDirection.y);
-		}
-
 	}
 
 	@Override
@@ -218,8 +221,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 				if (e instanceof PlayerEntity) {
 					double diste = Math.sqrt(Math.pow(Math.abs(e.getPositionXY().x - pos.x), 2)
 							+ Math.pow(Math.abs(e.getPositionXY().y - pos.y), 2));
-					double distnearest = Math.sqrt(Math.pow(Math.abs(nearest.x - pos.x), 2)
-							+ Math.pow(Math.abs(nearest.y - pos.y), 2));
+					double distnearest = Math
+							.sqrt(Math.pow(Math.abs(nearest.x - pos.x), 2) + Math.pow(Math.abs(nearest.y - pos.y), 2));
 
 					if (diste < distnearest) {
 						nearest = e.getPositionXY();
@@ -262,14 +265,23 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	// public only to be able to use it in UNIT TESTS;
 	public Entity checkCollision(Entity entity, XY moveDirection) {
-		return getCells()[entity.getPositionXY().y + moveDirection.y][moveDirection.x
-				+ entity.getPositionXY().x];
+		return getCells()[entity.getPositionXY().y + moveDirection.y][moveDirection.x + entity.getPositionXY().x];
 	}
 
 	public void trySpawnMiniSquirrel(MasterSquirrel master, XY xy, int energy) {
 		Entity location = getEntityType(xy);
 		if (location == null) {
 			database.spawnMiniSquirrel(master, xy, energy);
+			master.updateEnergy(-energy);
+		}
+		logger.finer("tryied spawing at " + xy.toString());
+	}
+
+	public void trySpawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy,
+			BotControllerFactory botControllerFacotry) {
+		Entity location = getEntityType(xy);
+		if (location == null) {
+			database.spawnMiniSquirrelBot(master, xy, energy, botControllerFacotry);
 			master.updateEnergy(-energy);
 		}
 		logger.finer("tryied spawing at " + xy.toString());
@@ -289,12 +301,16 @@ public class FlattenBoard implements BoardView, EntityContext {
 		for (int y = 0; y < getCells().length; y++) {
 			for (int x = 0; x < getCells().length; x++) {
 				Entity e = getCells()[y][x];
-				int distance = (int) Math
-						.sqrt(Math.pow(Math.abs(e.getPositionXY().x - entity.getPositionXY().x), 2)
-								+ Math.pow(Math.abs(e.getPositionXY().y - entity.getPositionXY().y), 2));
+				if (e == null) {
+					continue;
+				}
+				int distance = (int) Math.sqrt(Math.pow(Math.abs(e.getPositionXY().x - entity.getPositionXY().x), 2)
+						+ Math.pow(Math.abs(e.getPositionXY().y - entity.getPositionXY().y), 2));
+				if(distance > impactRadius) {
+					continue;
+				}
 				int energyLoss = (int) (200 * (entity.getEnergy() / impactRadius * impactRadius * Math.PI)
 						* (1 - distance / impactRadius));
-				
 
 				if (e instanceof MasterSquirrel) {
 					if (((MiniSquirrel) entity).getMaster() == e) {
@@ -318,7 +334,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 						collectedEnergy += e.getEnergy();
 						e.updateEnergy(-e.getEnergy());
 					}
-					if(e.getEnergy()<=0) {
+					if (e.getEnergy() <= 0) {
 						kill(e);
 					}
 				} else if (e instanceof GoodBeast || e instanceof GoodPlant) {
@@ -329,24 +345,27 @@ public class FlattenBoard implements BoardView, EntityContext {
 						collectedEnergy += e.getEnergy();
 						e.updateEnergy(-e.getEnergy());
 					}
-					if(e.getEnergy()<=0) {
+					if (e.getEnergy() <= 0) {
 						killandReplace(e);
 					}
 				} else if (e instanceof BadBeast || e instanceof BadPlant) {
-					if(Math.abs(e.getEnergy()) >= energyLoss) {
+					if (Math.abs(e.getEnergy()) >= energyLoss) {
 						e.updateEnergy(energyLoss);
+						collectedEnergy -= energyLoss;
 					} else {
+						collectedEnergy -= e.getEnergy();
 						e.updateEnergy(e.getEnergy());
 					}
-					if(e.getEnergy()>=0) {
+					if (e.getEnergy() >= 0) {
 						killandReplace(e);
 					}
 				}
 			}
 		}
 		((MiniSquirrel) entity).getMaster().updateEnergy(collectedEnergy);
+		database.kill(entity);
 	}
-	
+
 	public Entity[][] getCells() {
 		return cells;
 	}

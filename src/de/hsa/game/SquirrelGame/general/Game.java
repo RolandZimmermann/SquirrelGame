@@ -34,7 +34,7 @@ public abstract class Game {
 	private boolean training = false;
 	private int gameSteps;
 
-	private int population = 60;
+	private int population = 10;
 	private BotControllerFactory[] bots;
 
 	private MoveCommand moveCommand = null;
@@ -74,29 +74,24 @@ public abstract class Game {
 
 	private void selectBots() {
 		List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
-		float sum = 0;
-		for (MasterSquirrelBot e : oldbots) {
-			sum += e.getEnergy();
+		for(MasterSquirrelBot e: oldbots) {
+			if(e.getEnergy() < 0) {
+				e.updateEnergy(-e.getEnergy());
+			}
 		}
+				
+		oldbots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 		
-		Map<MasterSquirrelBot, Double> mutationPool = new HashMap<>();
-		for (MasterSquirrelBot e : oldbots) {
-			Double fitness = (double) (e.getEnergy() / sum);
-			mutationPool.put(e, fitness);
-		}
 		
 		List<MasterSquirrelBot> newbots = new ArrayList<>();
-		
-		for (Map.Entry<MasterSquirrelBot, Double> e : mutationPool.entrySet()) {
-			for (double i = 0; i < e.getValue() + 1; i += 0.1) {
-				newbots.add(e.getKey());
+		for(MasterSquirrelBot e: oldbots) {
+			for(int i = 0; i < e.getEnergy()+1; i ++) {
+				newbots.add(e);
 			}
 		}
 		
-		newbots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
-		
 		for (int i = 0; i < population; i++) {
-			MaToRoKi a = (MaToRoKi) newbots.get(i).getBotController();
+			MaToRoKi a = (MaToRoKi) newbots.get((int)Math.random()*newbots.size()).getBotController();
 			a.mutate(0.4);
 			bots[i] = (BotControllerFactory) a;
 		}
