@@ -67,10 +67,11 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 							value = 0.8;
 						}
 					}
-					input[i - topleft.y][0] = value;
+					input[i - topleft.y + j  - topleft.x][0] = value;
 				} catch (OutOfViewException e) {
 					// e.printStackTrace();
-					input[i - topleft.y][j - topleft.x] = -1;
+					//if(i - topleft.y > 0 && i - topleft.y <   )
+					input[i - topleft.y + j  - topleft.x][0] = -1;
 					continue;
 				}
 			}

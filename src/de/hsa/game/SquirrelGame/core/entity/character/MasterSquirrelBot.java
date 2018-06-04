@@ -39,12 +39,12 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			int x = getPositionXY().x - VISION / 2;
 			int y = getPositionXY().y + VISION / 2;
 
-			if (x < 0) {
-				x = 0;
-			}
-			if (y > entityContext.getSize().y) {
-				y = entityContext.getSize().y;
-			}
+//			if (x < 0) {
+//				x = 0;
+//			}
+//			if (y > entityContext.getSize().y) {
+//				y = entityContext.getSize().y;
+//			}
 
 			return new XY(x, y);
 		}
@@ -54,12 +54,12 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			int x = getPositionXY().x + VISION / 2;
 			int y = getPositionXY().y - VISION / 2;
 
-			if (x > entityContext.getSize().x) {
-				x = entityContext.getSize().x;
-			}
-			if (y < 0) {
-				y = 0;
-			}
+//			if (x > entityContext.getSize().x) {
+//				x = entityContext.getSize().x;
+//			}
+//			if (y < 0) {
+//				y = 0;
+//			}
 			return new XY(x, y);
 		}
 
@@ -71,7 +71,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 				throw new OutOfViewException("Out of View!");
 
 			}
-			if (xy.x > entityContext.getSize().x || xy.y > entityContext.getSize().y || xy.x < 0 || xy.y < 0) {
+			if (xy.x >= entityContext.getSize().x || xy.y >= entityContext.getSize().y || xy.x < 0 || xy.y < 0) {
 
 				throw new OutOfViewException("Field is to small");
 

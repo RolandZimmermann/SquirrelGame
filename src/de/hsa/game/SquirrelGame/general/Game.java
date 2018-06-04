@@ -34,7 +34,7 @@ public abstract class Game {
 	private boolean training = false;
 	private int gameSteps;
 
-	private int population = 6;
+	private int population = 60;
 	private BotControllerFactory[] bots;
 
 	private MoveCommand moveCommand = null;
@@ -97,7 +97,7 @@ public abstract class Game {
 		
 		for (int i = 0; i < population; i++) {
 			MaToRoKi a = (MaToRoKi) newbots.get(i).getBotController();
-			a.mutate(0.5);
+			a.mutate(0.4);
 			bots[i] = (BotControllerFactory) a;
 		}
 
