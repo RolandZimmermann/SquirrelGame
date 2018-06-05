@@ -5,7 +5,6 @@ import de.hsa.game.SquirrelGame.gamestats.Energy;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public abstract class MasterSquirrel extends PlayerEntity {
-	private int wallCounter = 0;
     public MasterSquirrel(int id, XY position) {
         super(id, position, Energy.MASTERSQUIRREL.energy);
 
@@ -20,9 +19,7 @@ public abstract class MasterSquirrel extends PlayerEntity {
     }
     
     
-    public void wallCollison() {
-    	wallCounter = 4;
-    }
+    public abstract void wallCollison();
     
     
 }

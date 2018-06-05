@@ -20,6 +20,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	BotControllerFactory botControllerFactory;
 	BotController masterBotController;
 
+	private int wallCounter = 0;
+
 	public MasterSquirrelBot(int id, XY position, BotControllerFactory botControllerFactory) {
 		super(id, position);
 		this.botControllerFactory = botControllerFactory;
@@ -38,7 +40,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public XY getViewLowerLeft() {
 			int x = getPositionXY().x - VISION / 2;
 			int y = getPositionXY().y + VISION / 2;
-			
+
 			return new XY(x, y);
 		}
 
@@ -99,7 +101,11 @@ public class MasterSquirrelBot extends MasterSquirrel {
 				}
 				return;
 			}
-			entityContext.trySpawnMiniSquirrelBot(MasterSquirrelBot.this, new XY(MasterSquirrelBot.this.getPositionXY().x + direction.x, MasterSquirrelBot.this.getPositionXY().y + direction.y), energy,botControllerFactory);
+			entityContext
+					.trySpawnMiniSquirrelBot(MasterSquirrelBot.this,
+							new XY(MasterSquirrelBot.this.getPositionXY().x + direction.x,
+									MasterSquirrelBot.this.getPositionXY().y + direction.y),
+							energy, botControllerFactory);
 		}
 
 		@Override
@@ -146,18 +152,26 @@ public class MasterSquirrelBot extends MasterSquirrel {
 
 	@Override
 	public void nextStep(EntityContext entityContext) {
-		
+
 		if (this.getEnergy() < 0) {
 			this.updateEnergy(-this.getEnergy());
 		}
-		
-		 masterBotController.nextStep(new ControllerContextImpl(entityContext));
-		//masterBotController
-		//		.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
-	}
+		if (wallCounter == 0) {
+			 masterBotController.nextStep(new ControllerContextImpl(entityContext));
+			//masterBotController
+			//		.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+
+		}else {
+			wallCounter--;}
+		}
 
 	public Object getBotController() {
 		return this.masterBotController;
+	}
+
+	@Override
+	public void wallCollison() {
+		wallCounter = 4;
 	}
 
 }

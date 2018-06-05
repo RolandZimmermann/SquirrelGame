@@ -29,12 +29,12 @@ public abstract class Game {
 	private UI ui;
 	private BoardView boardView;
 	private EntityContext entityContext;
-	private int FPS = 1000000;
+	private int FPS = 300000;
 	private boolean multi = true;
 	private boolean training = false;
 	private int gameSteps;
 
-	private int population = 10;
+	private int population = 60;
 	private BotControllerFactory[] bots;
 
 	private MoveCommand moveCommand = null;
@@ -75,6 +75,7 @@ public abstract class Game {
 	private void selectBots() {
 		List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
 		for(MasterSquirrelBot e: oldbots) {
+			e.updateEnergy(-1000);
 			if(e.getEnergy() < 0) {
 				e.updateEnergy(-e.getEnergy());
 			}

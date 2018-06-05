@@ -1,24 +1,2 @@
-Jun 04, 2018 8:18:00 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:-10
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: Bot-Scores:
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:1000
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:320
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:260
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:90
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:0
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:0
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:-10
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:-10
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:-10
-Jun 04, 2018 8:18:03 PM de.hsa.game.SquirrelGame.core.board.State restart
-INFORMATION: de.hsa.games.fatsquirrel.botimpls.MaToRoKi| Score:-10
+Jun 05, 2018 9:42:22 AM de.hsa.game.SquirrelGame.core.board.FlattenBoard trySpawnMiniSquirrelBot
+FEINER: tryied spawing at [x: 2, y: 36]

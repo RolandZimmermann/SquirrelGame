@@ -280,9 +280,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 	public void trySpawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy,
 			BotControllerFactory botControllerFacotry) {
 		Entity location = getEntityType(xy);
-		if (location == null) {
+		if (location == null && master.getEnergy() >= energy) {
 			database.spawnMiniSquirrelBot(master, xy, energy, botControllerFacotry);
-			master.updateEnergy(-energy);
+			int minusEnergy = energy - 2* energy;
+			master.updateEnergy(minusEnergy);
 		}
 		logger.finer("tryied spawing at " + xy.toString());
 	}
@@ -354,7 +355,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 						collectedEnergy -= energyLoss;
 					} else {
 						collectedEnergy -= e.getEnergy();
-						e.updateEnergy(e.getEnergy());
+						e.updateEnergy(-e.getEnergy());
 					}
 					if (e.getEnergy() >= 0) {
 						killandReplace(e);

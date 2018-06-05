@@ -11,7 +11,7 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 public class MaToRoKi implements BotController, BotControllerFactory {
 
-	private NeuralNetwork nn = new NeuralNetwork(961, 500, 500, 9);
+	private NeuralNetwork nn = new NeuralNetwork(961, 500, 500, 17);
 
 	public NeuralNetwork getNn() {
 		return nn;
@@ -132,29 +132,29 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 			break;
 		case 8:
 			view.move(XY.ZERO_ZERO);
-//		case 9:
-//			view.spawnMiniBot(XY.DOWN, 100);
-//			break;
-//		case 10:
-//			view.spawnMiniBot(XY.LEFT, 100);
-//			break;
-//		case 11:
-//			view.spawnMiniBot(XY.LEFT_DOWN, 100);
-//			break;
-//		case 12:
-//			view.spawnMiniBot(XY.LEFT_UP, 100);
-//			break;
-//		case 13:
-//			view.spawnMiniBot(XY.RIGHT, 100);
-//			break;
-//		case 14:
-//			view.spawnMiniBot(XY.RIGHT_DOWN, 100);
-//			break;
-//		case 15:
-//			view.spawnMiniBot(XY.RIGHT_UP, 100);
-//			break;
-//		case 16:
-//			view.spawnMiniBot(XY.UP, 100);
+		case 9:
+			view.spawnMiniBot(XY.DOWN, 100);
+			break;
+		case 10:
+			view.spawnMiniBot(XY.LEFT, 100);
+			break;
+		case 11:
+			view.spawnMiniBot(XY.LEFT_DOWN, 100);
+			break;
+		case 12:
+			view.spawnMiniBot(XY.LEFT_UP, 100);
+			break;
+		case 13:
+			view.spawnMiniBot(XY.RIGHT, 100);
+			break;
+		case 14:
+			view.spawnMiniBot(XY.RIGHT_DOWN, 100);
+			break;
+		case 15:
+			view.spawnMiniBot(XY.RIGHT_UP, 100);
+			break;
+		case 16:
+			view.spawnMiniBot(XY.UP, 100);
 		
 		}
 
