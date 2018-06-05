@@ -339,6 +339,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 						kill(e);
 					}
 				} else if (e instanceof GoodBeast || e instanceof GoodPlant) {
+					if(e.getEnergy() <= 0) {
+						continue;
+					}
+					
 					if (e.getEnergy() >= energyLoss) {
 						e.updateEnergy(-energyLoss);
 						collectedEnergy += energyLoss;
@@ -350,6 +354,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 						killandReplace(e);
 					}
 				} else if (e instanceof BadBeast || e instanceof BadPlant) {
+					if(e.getEnergy() <= 0) {
+						continue;
+					}
 					if (Math.abs(e.getEnergy()) >= energyLoss) {
 						e.updateEnergy(energyLoss);
 						collectedEnergy -= energyLoss;

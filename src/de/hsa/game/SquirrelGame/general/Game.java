@@ -18,7 +18,6 @@ import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.ui.UI;
-import de.hsa.games.fatsquirrel.botapi.BotController;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 
@@ -29,7 +28,7 @@ public abstract class Game {
 	private UI ui;
 	private BoardView boardView;
 	private EntityContext entityContext;
-	private int FPS = 300000;
+	private int FPS = 60;
 	private boolean multi = true;
 	private boolean training = false;
 	private int gameSteps;

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
@@ -23,10 +25,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.image.*;
 
 public class FxUI extends Scene implements UI {
 	
@@ -179,6 +181,7 @@ public class FxUI extends Scene implements UI {
 		});
 	}
 
+	@SuppressWarnings("restriction")
 	private void repaintBoardCanvas(BoardView view) {
 		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
@@ -226,11 +229,11 @@ public class FxUI extends Scene implements UI {
 						gc.drawImage(sprBadPlant, x, y);
 					}
 				} else if (entity instanceof MasterSquirrel) {
-					if (sprMasterSquirrel.isError()) {
+					if (sprWall.isError()) {
 						gc.setFill(Color.MAGENTA);
 						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
-						gc.drawImage(sprMasterSquirrel, x, y);
+						gc.drawImage(sprWall, x, y);
 					}
 				} else if (entity instanceof MiniSquirrel) {
 					if (sprMiniSquirrel.isError()) {

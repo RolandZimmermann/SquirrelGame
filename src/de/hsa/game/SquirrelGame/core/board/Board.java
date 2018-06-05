@@ -93,7 +93,7 @@ public class Board {
 			try
 			{
 				//what is the real path??
-			File dir = new File("");
+			File dir = new File("de.game.SquirrelGame.core.board");
 			URL url = dir.toURI().toURL();
 			urls = new URL[]{url};
 			}

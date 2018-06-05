@@ -158,8 +158,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		}
 		if (wallCounter == 0) {
 			 masterBotController.nextStep(new ControllerContextImpl(entityContext));
-			//masterBotController
-			//		.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+//			masterBotController
+//					.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 
 		}else {
 			wallCounter--;}

@@ -14,7 +14,7 @@ public class BoardConfig {
 	public static int COUNT_BADPLANT = 15;
 	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 0;
 	public static int COUNT_MASTERSQUIRREL = 1;
-    public static String[] COUNT_BOTS = {"HalfRandomBot","RandomBot","HalfRandomBot","HalfRandomBot","MaToRoKi"};
+    public static String[] COUNT_BOTS = {"HalfRandomBot","RandomBot","HalfRandomBot","HalfRandomBot"};
 	//public static String[] COUNT_BOTS = {"testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload"};
 	public static int GAME_STEPS = 150;	
 	
