@@ -20,12 +20,16 @@ import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
@@ -39,27 +43,28 @@ public class FxUI extends Scene implements UI {
 	private static final int CELL_SIZE = 16;
 	private static MoveCommand moveCommand;
 
-	private Image sprWall;
-	private Image sprGoodPlant;
-	private Image sprBadPlant;
-	private Image sprMasterSquirrel;
-	private Image sprGoodBeast;
-	private Image sprBadBeast;
-	private Image sprMiniSquirrel;
-	private Image sprEmpty;
+	private static Image sprWall;
+	private static Image sprGoodPlant;
+	private static Image sprBadPlant;
+	private static Image sprMasterSquirrel;
+	private static Image sprGoodBeast;
+	private static Image sprBadBeast;
+	private static Image sprMiniSquirrel;
+	private static Image sprEmpty;
 
 	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel) {
 		super(parent);
 		this.boardCanvas = boardCanvas;
 		this.msgLabel = msgLabel;
-		loadImages();
+		
 		logger.fine("Loaded UI");
+		
 	}
 
-	private void loadImages() {
+	private static void loadImages() {
 		
 		try {
-			File file = new File("ressource/spirtes/Wall.png");
+			File file = new File("ressource/spirtes/BadBeast.png");
 			sprBadBeast = new Image(file.toURI().toString(), CELL_SIZE, CELL_SIZE, true, true);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
@@ -117,12 +122,17 @@ public class FxUI extends Scene implements UI {
 	}
 
 	public static FxUI createInstance(XY xy) {
+		loadImages();
 		Canvas boardCanvas = new Canvas(xy.x * CELL_SIZE, xy.y * CELL_SIZE);
 		Label statusLabel = new Label();
-		VBox top = new VBox();
-
+		AnchorPane top = new AnchorPane();
+		
 		top.getChildren().add(boardCanvas);
 		top.getChildren().add(statusLabel);
+		
+		AnchorPane.setBottomAnchor(boardCanvas, 20d);
+		AnchorPane.setBottomAnchor(statusLabel, 0d);
+	
 		statusLabel.setText("Hier könnte Ihre Werbung stehen");
 
 		final FxUI fxUI = new FxUI(top, boardCanvas, statusLabel);
@@ -186,6 +196,8 @@ public class FxUI extends Scene implements UI {
 		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
 		XY viewSize = view.getSize();
+		
+		gc.drawImage(sprGoodBeast, 0, 0);
 
 		gc.setFill(Color.GREEN);
 		gc.fillRect(0, 0, viewSize.x * CELL_SIZE, viewSize.y * CELL_SIZE);
@@ -229,11 +241,11 @@ public class FxUI extends Scene implements UI {
 						gc.drawImage(sprBadPlant, x, y);
 					}
 				} else if (entity instanceof MasterSquirrel) {
-					if (sprWall.isError()) {
+					if (sprMasterSquirrel.isError()) {
 						gc.setFill(Color.MAGENTA);
 						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
-						gc.drawImage(sprWall, x, y);
+						gc.drawImage(sprMasterSquirrel, x, y);
 					}
 				} else if (entity instanceof MiniSquirrel) {
 					if (sprMiniSquirrel.isError()) {

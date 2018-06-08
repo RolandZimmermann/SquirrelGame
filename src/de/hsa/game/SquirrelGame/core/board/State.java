@@ -42,6 +42,9 @@ public class State {
 	public void restart() {
 		List<MasterSquirrelBot> bots = board.getBots();
 		for (MasterSquirrelBot e : bots) {
+			if(e.getEnergy() < 0) {
+				e.updateEnergy(-e.getEnergy());
+			}
 			map.put(e.getBotController().getClass().getName(), e.getEnergy());
 			
 			int score = map.get(e.getBotController().getClass().getName()).intValue();
