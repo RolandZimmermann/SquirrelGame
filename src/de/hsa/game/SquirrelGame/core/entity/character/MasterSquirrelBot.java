@@ -40,6 +40,13 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public XY getViewLowerLeft() {
 			int x = getPositionXY().x - VISION / 2;
 			int y = getPositionXY().y + VISION / 2;
+			
+			if(x < 0) {
+				x = 0;
+			} 
+			if (y > entityContext.getSize().y) {
+				y = entityContext.getSize().y;
+			}
 
 			return new XY(x, y);
 		}
@@ -48,6 +55,13 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public XY getViewUpperRight() {
 			int x = getPositionXY().x + VISION / 2;
 			int y = getPositionXY().y - VISION / 2;
+			
+			if (x > entityContext.getSize().x) {
+				x = entityContext.getSize().x;
+			}
+			if(y < 0) {
+				y = 0;
+			} 
 
 			return new XY(x, y);
 		}

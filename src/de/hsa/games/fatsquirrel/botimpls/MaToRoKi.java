@@ -33,10 +33,10 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 
 			@Override
 			public void nextStep(ControllerContext view) {
-				view.implode(5);
-				
+				view.implode(10);
+
 			}
-			
+
 		};
 	}
 
@@ -45,8 +45,8 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 		double[][] input = new double[961][1];
 
 		EntityType entity = EntityType.NONE;
-		XY topleft = new XY(view.getViewLowerLeft().x, view.getViewUpperRight().y);
-		XY downright = new XY(view.getViewUpperRight().x, view.getViewLowerLeft().y);
+		XY topleft = new XY(view.getViewLowerLeft().x - 31 / 2, view.getViewUpperRight().y + 31 / 2);
+		XY downright = new XY(view.getViewUpperRight().x + 31 / 2, view.getViewLowerLeft().y - 31 / 2);
 
 		for (int i = topleft.y; i < downright.y; i++) {
 			for (int j = topleft.x; j < downright.x; j++) {
@@ -75,11 +75,11 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 							value = 0.8;
 						}
 					}
-					input[i - topleft.y + j  - topleft.x][0] = value;
+					input[i - topleft.y + j - topleft.x][0] = value;
 				} catch (OutOfViewException e) {
 					// e.printStackTrace();
-					//if(i - topleft.y > 0 && i - topleft.y <   )
-					input[i - topleft.y + j  - topleft.x][0] = -1;
+					// if(i - topleft.y > 0 && i - topleft.y < )
+					input[i - topleft.y + j - topleft.x][0] = -1;
 					continue;
 				}
 			}
@@ -89,24 +89,24 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 		Matrix outputMatrix = nn.feedforward(inputMatrix);
 
 		double[][] output = outputMatrix.getData();
-		
+
 		double highestoutput = -100d;
 		int position = -1;
 
 		for (int i = 0; i < output.length; i++) {
 			for (int j = 0; j < output[0].length; j++) {
-				if(output[i][j] > highestoutput) {
+				if (output[i][j] > highestoutput) {
 					position = i;
 					highestoutput = output[i][j];
 				}
 			}
 		}
-		
-		switch(position) {
+
+		switch (position) {
 		case -1:
 			view.move(XY.ZERO_ZERO);
 			break;
-		case 0: 
+		case 0:
 			view.move(XY.DOWN);
 			break;
 		case 1:
@@ -115,13 +115,13 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 		case 2:
 			view.move(XY.LEFT_DOWN);
 			break;
-		case 3: 
+		case 3:
 			view.move(XY.LEFT_UP);
 			break;
-		case 4: 
+		case 4:
 			view.move(XY.RIGHT);
 			break;
-		case 5: 
+		case 5:
 			view.move(XY.RIGHT_DOWN);
 			break;
 		case 6:
@@ -155,11 +155,11 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 			break;
 		case 16:
 			view.spawnMiniBot(XY.UP, 100);
-		
+
 		}
 
 	}
-	
+
 	public void mutate(double mutationRate) {
 		nn.mutate(mutationRate);
 	}
