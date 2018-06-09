@@ -58,7 +58,7 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 		XY topleft = new XY(view.getViewLowerLeft().x - 31 / 2, view.getViewUpperRight().y + 31 / 2);
 		XY downright = new XY(view.getViewUpperRight().x + 31 / 2, view.getViewLowerLeft().y - 31 / 2);
 		
-		input[961] = view.getEnergy();
+		input[961] = view.getEnergy()/1000;
 
 		for (int i = topleft.y; i < downright.y; i++) {
 			for (int j = topleft.x; j < downright.x; j++) {
