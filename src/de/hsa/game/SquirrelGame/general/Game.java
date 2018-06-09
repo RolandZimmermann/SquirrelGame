@@ -33,7 +33,7 @@ public abstract class Game {
 	private EntityContext entityContext;
 	private int FPS = 60;
 	private boolean multi = true;
-	private boolean training = true;
+	private boolean training = false;
 	private boolean oldAI = false;
 	private int gameSteps;
 

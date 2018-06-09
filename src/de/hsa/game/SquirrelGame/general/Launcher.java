@@ -30,6 +30,8 @@ public class Launcher extends Application {
 	private static Logger logger = Logger.getLogger(Launcher.class.getName());
 
 	public static void main(String[] args) {
+		
+		BoardConfig.load();
 		GameLogger.init();
 		logger.info("START");
 

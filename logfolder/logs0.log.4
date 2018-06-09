@@ -1,0 +1,76 @@
+Jun 05, 2018 2:00:46 PM de.hsa.game.SquirrelGame.general.Launcher main
+INFORMATION: START
+Jun 05, 2018 2:00:47 PM de.hsa.game.SquirrelGame.general.Launcher start
+INFORMATION: Starting JFX game
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: locate
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewLowerLeft
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewUpperRight
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewUpperRight
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getViewLowerLeft
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+INFORMATION: getEntityAt
+Jun 05, 2018 2:00:49 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+SCHWERWIEGEND: null
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at de.hsa.game.SquirrelGame.proxy.ProxyBot.invoke(ProxyBot.java:24)
+	at com.sun.proxy.$Proxy0.getEntityAt(Unknown Source)
+	at de.hsa.games.fatsquirrel.botimpls.HalfRandomBot.nextStep(HalfRandomBot.java:35)
+	at de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot.nextStep(MasterSquirrelBot.java:162)
+	at de.hsa.game.SquirrelGame.core.board.Board.update(Board.java:278)
+	at de.hsa.game.SquirrelGame.core.board.State.update(State.java:23)
+	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:157)
+	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:111)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: de.hsa.games.fatsquirrel.botapi.OutOfViewException: Field is to small
+	at de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot$ControllerContextImpl.getEntityAt(MasterSquirrelBot.java:65)
+	... 13 more
+
