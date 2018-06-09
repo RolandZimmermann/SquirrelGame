@@ -48,7 +48,7 @@ public class BoardConfig {
 			COUNT_BADPLANT= Integer.parseInt( prop.getProperty("COUNT_BADPLANT"));
 			COUNT_HANDOPERATED_MASTERSQUIRREL = Integer.parseInt( prop.getProperty("COUNT_HANDOPERATED_MASTERSQUIRREL"));
 			COUNT_BOTS = prop.getProperty("COUNT_BOTS").split(",");
-			System.out.println(COUNT_BOTS.length);
+			GAME_STEPS = Integer.parseInt( prop.getProperty("GAME_STEPS"));
 			
 			
 			
