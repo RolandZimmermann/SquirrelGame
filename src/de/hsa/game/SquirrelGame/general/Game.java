@@ -248,4 +248,12 @@ public abstract class Game {
 			init();
 		}
 	}
+	
+	public State getState () {
+		return this.state;
+		
+		
+	}
+	
+	
 }

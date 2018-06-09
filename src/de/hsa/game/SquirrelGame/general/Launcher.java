@@ -54,6 +54,7 @@ public class Launcher extends Application {
 		fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent evt) {
+			game.getState().save();
 				System.exit(-1);
 			}
 		});
@@ -101,6 +102,7 @@ public class Launcher extends Application {
 		fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent evt) {
+				game.getState().save();
 				System.exit(-1);
 			}
 		});
