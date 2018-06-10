@@ -33,7 +33,6 @@ public class State {
 	public State(Board board) {
 		this.board = board;
 		load();
-
 	}
 
 	public void update(MoveCommand moveCommand, EntityContext entityContext) {

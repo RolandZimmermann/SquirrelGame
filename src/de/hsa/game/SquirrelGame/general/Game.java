@@ -33,7 +33,7 @@ public abstract class Game {
 	private EntityContext entityContext;
 	private int FPS = 60;
 	private boolean multi = true;
-	private boolean training = false;
+	private boolean training = true;
 	private boolean oldAI = false;
 	private int gameSteps;
 
@@ -76,6 +76,7 @@ public abstract class Game {
 				}
 			}
 			this.state.setBoard(BoardFactory.createTrainingBoard(bots));
+			this.state.load();
 		}
 		this.gameSteps = BoardConfig.GAME_STEPS;
 

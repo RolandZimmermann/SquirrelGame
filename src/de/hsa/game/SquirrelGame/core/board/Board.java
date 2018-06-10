@@ -83,8 +83,11 @@ public class Board {
 		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
 				+ bots.length;
 
+		List<XY> setpositions = new ArrayList<XY>();
+
 		for (int i = 0; i < countWall; i++) {
-			ArrayList<XY> start = generateRandomLocations(1);
+			ArrayList<XY> start = generateRandomLocations(1, null);
+
 			Random a = new Random();
 			int randomX = 0;
 			int randomY = 0;
@@ -113,10 +116,11 @@ public class Board {
 					continue;
 				}
 				getEntitySet().add(new Wall(id++, newXY));
+				setpositions.add(newXY);
 			}
 		}
 
-		List<XY> randomlocations = generateRandomLocations(counter);
+		List<XY> randomlocations = generateRandomLocations(counter, setpositions);
 
 		for (int i = 0; i < countBadPlant; i++) {
 			getEntitySet().add(new BadPlant(id++, randomlocations.get(0)));
@@ -218,9 +222,46 @@ public class Board {
 		this.BOARD_WIDTH = boardWidth;
 
 		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
-				+ bots.length + countWall;
+				+ bots.length;
 
-		List<XY> randomlocations = generateRandomLocations(counter);
+		List<XY> setpositions = new ArrayList<XY>();
+
+		for (int i = 0; i < countWall; i++) {
+			ArrayList<XY> start = generateRandomLocations(1, null);
+
+			Random a = new Random();
+			int randomX = 0;
+			int randomY = 0;
+			switch (a.nextInt(4)) {
+			case 0:
+				randomX = 1;
+				randomY = 0;
+				break;
+			case 1:
+				randomX = 0;
+				randomY = 1;
+				break;
+			case 2:
+				randomX = -1;
+				randomY = 0;
+				break;
+			case 3:
+				randomX = 0;
+				randomY = -1;
+				break;
+			}
+
+			for (int j = 0; j < BoardConfig.WALL_LENGTH; j++) {
+				XY newXY = new XY(start.get(0).x + randomX * j, start.get(0).y + randomY * j);
+				if (newXY.x < 1 || newXY.y < 1 || newXY.x > BOARD_WIDTH - 1 || newXY.y > BOARD_HEIGHT - 1) {
+					continue;
+				}
+				getEntitySet().add(new Wall(id++, newXY));
+				setpositions.add(newXY);
+			}
+		}
+
+		List<XY> randomlocations = generateRandomLocations(counter, setpositions);
 
 		for (int i = 0; i < countBadPlant; i++) {
 			getEntitySet().add(new BadPlant(id++, randomlocations.get(0)));
@@ -238,10 +279,6 @@ public class Board {
 		}
 		for (int i = 0; i < countGoodBeast; i++) {
 			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
-			randomlocations.remove(0);
-		}
-		for (int i = 0; i < countWall; i++) {
-			getEntitySet().add(new Wall(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < countHandOperatedMastersquirrel; i++) {
@@ -327,10 +364,12 @@ public class Board {
 	 * A method to generate random location for entitys
 	 * 
 	 * @param count
-	 *            = the amount of random location
+	 *            the amount of random location
+	 * @param alreadySet
+	 *            a list of positions that are already set
 	 * @return an ArrayList of new Positions
 	 */
-	private ArrayList<XY> generateRandomLocations(int count) {
+	private ArrayList<XY> generateRandomLocations(int count, List<XY> alreadySet) {
 
 		ArrayList<XY> randomLocations = new ArrayList<>();
 		Random a = new Random();
@@ -340,8 +379,21 @@ public class Board {
 
 		for (int i = 0; i < count; i++) {
 			boolean inserted = false;
+			boolean alreadyUsed = false;
 			XY xy = new XY(a.nextInt(BOARD_WIDTH - 2) + 1, a.nextInt(BOARD_HEIGHT - 2) + 1);
+
 			for (XY positions : randomLocations) {
+				if (alreadySet != null) {
+					for (XY alreadyUsedPos : alreadySet) {
+						if (XYsupport.equalPosition(alreadyUsedPos, xy)) {
+							alreadyUsed = true;
+							break;
+
+						}
+					}
+					if (alreadyUsed == true)
+						break;
+				}
 				if (!XYsupport.equalPosition(positions, xy)) {
 					randomLocations.add(xy);
 					inserted = true;
@@ -375,7 +427,8 @@ public class Board {
 	/**
 	 * Sets the boards view
 	 * 
-	 * @param boardView boardview to be set
+	 * @param boardView
+	 *            boardview to be set
 	 */
 	public void setBoardView(BoardView boardView) {
 		this.boardView = boardView;
@@ -386,7 +439,8 @@ public class Board {
 	 * 
 	 * @param moveCommand
 	 *            the move command for the mastersquirrel controlled by the player
-	 * @param entityContext an interface
+	 * @param entityContext
+	 *            an interface
 	 */
 	public void update(MoveCommand moveCommand, EntityContext entityContext) {
 		for (int i = 0; i < getEntitySet().size(); i++) {

@@ -418,8 +418,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 					if (e.getEnergy() <= 0) {
 						killandReplace(e);
 					}
-				} else if (e instanceof BadBeast || e instanceof BadPlant) {
-					if (e.getEnergy() <= 0) {
+				}else if (e instanceof BadBeast || e instanceof BadPlant) {
+					if (e.getEnergy() >= 0) {
 						continue;
 					}
 					if (Math.abs(e.getEnergy()) >= energyLoss) {
