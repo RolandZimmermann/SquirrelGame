@@ -31,7 +31,11 @@ import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.games.fatsquirrel.botapi.BotController;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Board is the database for the game.
+ * @author Roland
+ *
+ */
 public class Board {
 
 	private static Logger logger = Logger.getLogger(Board.class.getName());
@@ -48,16 +52,49 @@ public class Board {
 	private List<Entity> addID = new ArrayList<Entity>();
 	private List<MasterSquirrelBot> bots = new ArrayList<MasterSquirrelBot>();
 
-	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
-			int countHandOperatedMastersquirrel, int countWall, String[] bots) {
+	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
+			int countGoodBeast, int countHandOperatedMastersquirrel, int countWall, String[] bots) {
 
 		logger.finer("Initialising");
-		
+
 		this.BOARD_HEIGHT = boardHeight;
 		this.BOARD_WIDTH = boardWidth;
 
 		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
-				+ bots.length + countWall;
+				+ bots.length;
+
+		for (int i = 0; i < countWall; i++) {
+			ArrayList<XY> start = generateRandomLocations(1);
+			Random a = new Random();
+			int randomX = 0;
+			int randomY = 0;
+			switch (a.nextInt(4)) {
+			case 0:
+				randomX = 1;
+				randomY = 0;
+				break;
+			case 1:
+				randomX = 0;
+				randomY = 1;
+				break;
+			case 2:
+				randomX = -1;
+				randomY = 0;
+				break;
+			case 3:
+				randomX = 0;
+				randomY = -1;
+				break;
+			}
+			
+			for (int j = 0; j < BoardConfig.WALL_LENGTH; j++) {
+				XY newXY = new XY(start.get(0).x + randomX * j, start.get(0).y + randomY * j);
+				if (newXY.x < 1 || newXY.y < 1 || newXY.x > BOARD_WIDTH - 1 || newXY.y > BOARD_HEIGHT - 1) {
+					continue;
+				}
+				getEntitySet().add(new Wall(id++, newXY));
+			}
+		}
 
 		List<XY> randomlocations = generateRandomLocations(counter);
 
@@ -79,42 +116,37 @@ public class Board {
 			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
-		for (int i = 0; i < countWall; i++) {
-			getEntitySet().add(new Wall(id++, randomlocations.get(0)));
-			randomlocations.remove(0);
-		}
+
 		for (int i = 0; i < countHandOperatedMastersquirrel; i++) {
 			getEntitySet().add(new HandOperatedMasterSquirrel(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < bots.length; i++) {
-			
+
 			URL[] urls = null;
-			try
-			{
-				//what is the real path??
-			File dir = new File("de.game.SquirrelGame.core.board");
-			URL url = dir.toURI().toURL();
-			urls = new URL[]{url};
-			}
-			catch (Exception e) {
+			try {
+				// what is the real path??
+				File dir = new File("de.game.SquirrelGame.core.board");
+				URL url = dir.toURI().toURL();
+				urls = new URL[] { url };
+			} catch (Exception e) {
 				logger.log(Level.SEVERE, e.getMessage(), e);
 			}
-		
+
 			ClassLoader cl = new URLClassLoader(urls);
-			
+
 			BotControllerFactory botControllerFactory = null;
 			try {
-				//Package name needed too
+				// Package name needed too
 				Class cls = cl.loadClass("de.hsa.games.fatsquirrel.botimpls." + bots[i]);
 				botControllerFactory = (BotControllerFactory) cls.newInstance();
 			} catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
 				logger.log(Level.SEVERE, e.getMessage(), e);
 				continue;
 			}
-			
+
 			Entity e = new MasterSquirrelBot(id++, randomlocations.get(0), botControllerFactory);
-			
+
 			getEntitySet().add(e);
 			getBots().add((MasterSquirrelBot) e);
 			randomlocations.remove(0);
@@ -135,11 +167,11 @@ public class Board {
 
 	}
 
-	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast, int countGoodBeast,
-			int countHandOperatedMastersquirrel, int countWall, BotControllerFactory[] bots) {
-		
+	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
+			int countGoodBeast, int countHandOperatedMastersquirrel, int countWall, BotControllerFactory[] bots) {
+
 		logger.finer("Initialising Training Board");
-		
+
 		this.BOARD_HEIGHT = boardHeight;
 		this.BOARD_WIDTH = boardWidth;
 
@@ -175,10 +207,9 @@ public class Board {
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < bots.length; i++) {
-			
-			
+
 			Entity e = new MasterSquirrelBot(id++, randomlocations.get(0), bots[i]);
-			
+
 			getEntitySet().add(e);
 			getBots().add((MasterSquirrelBot) e);
 			randomlocations.remove(0);
@@ -216,7 +247,6 @@ public class Board {
 		logger.finer(entity.toString() + newPos.toString());
 	}
 
-	
 	public void kill(Entity entity) {
 		getRemoveID().add(entity);
 		logger.finer(entity.toString());
@@ -292,7 +322,7 @@ public class Board {
 
 		logger.finest("Updated");
 	}
-	
+
 	public List<Entity> getEntitySet() {
 		return entitySet;
 	}
@@ -313,9 +343,10 @@ public class Board {
 		return entitySet.toString();
 	}
 
-	public void spawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy, BotControllerFactory botControllerFacotry) {
-		getAddID().add(new MiniSquirrelBot(master,id++, xy, energy,botControllerFacotry));
+	public void spawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy,
+			BotControllerFactory botControllerFacotry) {
+		getAddID().add(new MiniSquirrelBot(master, id++, xy, energy, botControllerFacotry));
 		logger.finer("Spawning mini squirrel: " + xy.toString() + energy);
-		
+
 	}
 }

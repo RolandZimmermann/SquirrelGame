@@ -8,10 +8,12 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.games.fatsquirrel.util.XY;
 
 public class BoardConfig {
 
+	public static int WALL_LENGTH = 10;
 	private static Logger logger = Logger.getLogger(BoardConfig.class.getName());
 	public static int WIDTH_SIZE = 80;
 	public static int HEIGHT_SIZE = 80;
@@ -49,6 +51,7 @@ public class BoardConfig {
 			COUNT_HANDOPERATED_MASTERSQUIRREL = Integer.parseInt( prop.getProperty("COUNT_HANDOPERATED_MASTERSQUIRREL"));
 			COUNT_BOTS = prop.getProperty("COUNT_BOTS").split(",");
 			GAME_STEPS = Integer.parseInt( prop.getProperty("GAME_STEPS"));
+			WALL_LENGTH = Integer.parseInt(prop.getProperty("WALL_LENGTH"));
 			
 			
 			

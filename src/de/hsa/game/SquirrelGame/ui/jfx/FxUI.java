@@ -199,7 +199,7 @@ public class FxUI extends Scene implements UI {
 		
 		gc.drawImage(sprGoodBeast, 0, 0);
 
-		gc.setFill(Color.GREEN);
+		gc.setFill(Color.DARKOLIVEGREEN);
 		gc.fillRect(0, 0, viewSize.x * CELL_SIZE, viewSize.y * CELL_SIZE);
 
 		for (int y = 0; y < viewSize.y * CELL_SIZE; y += CELL_SIZE) {
@@ -256,7 +256,7 @@ public class FxUI extends Scene implements UI {
 					}
 				} else {
 					if (sprEmpty.isError()) {
-						gc.setFill(Color.GREEN);
+						gc.setFill(Color.DARKOLIVEGREEN);
 						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
 						gc.drawImage(sprEmpty, x, y);
