@@ -18,6 +18,12 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
 
+/**
+ * A class with the logic of the game
+ * 
+ * @author Roland
+ *
+ */
 public class FlattenBoard implements BoardView, EntityContext {
 	private static Logger logger = Logger.getLogger(FlattenBoard.class.getName());
 
@@ -25,11 +31,20 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	private Board database;
 
+	/**
+	 * Constuct an instance with a given dataset
+	 * 
+	 * @param database
+	 *            the database for the game
+	 */
 	public FlattenBoard(Board database) {
 		this.database = database;
 		update();
 	}
 
+	/**
+	 * updates every entity in the game
+	 */
 	public void update() {
 		this.cells = this.database.flatten();
 
@@ -37,16 +52,31 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	@Override
+	/**
+	 * returns the size of the game
+	 */
 	public XY getSize() {
 		return new XY(getCells()[0].length, getCells().length);
 	}
 
 	@Override
+	/**
+	 * returns the entity at a given position
+	 * 
+	 * @param x
+	 *            the x position in the game
+	 * @param y
+	 *            the y position in the game
+	 */
 	public Entity getEntityType(int x, int y) {
 		return getCells()[y][x];
 	}
 
 	@Override
+	/**
+	 * a method to decide what happens if a mini squirrel wants to move in a
+	 * direction
+	 */
 	public void tryMove(MiniSquirrel miniSquirrel, XY moveDirection) {
 
 		logger.finer(miniSquirrel.toString() + moveDirection.toString());
@@ -114,6 +144,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	@Override
+	/**
+	 * a method to decide what happens if a good beast wants to move in a direction
+	 */
 	public void tryMove(GoodBeast goodBeast, XY moveDirection) {
 
 		logger.finer(goodBeast.toString() + moveDirection.toString());
@@ -128,6 +161,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	@Override
+	/**
+	 * a method to decide what happens if a bad beast wants to move in a direction
+	 */
 	public void tryMove(BadBeast badBeast, XY moveDirection) {
 
 		logger.finer(badBeast.toString() + moveDirection.toString());
@@ -143,6 +179,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	@Override
+	/**
+	 * a method to decide what happens if a master squirrel wants to move in a
+	 * direction
+	 */
 	public void tryMove(MasterSquirrel masterSquirrel, XY moveDirection) {
 
 		logger.finer(masterSquirrel.toString() + moveDirection.toString());
@@ -212,6 +252,9 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	@Override
+	/**
+	 * returns the nearest playerentity by a given position
+	 */
 	public PlayerEntity nearestPlayerEntity(XY pos) {
 		XY nearest = new XY(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		PlayerEntity output = null;
@@ -236,12 +279,18 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	@Override
+	/**
+	 * kills an entity in the game
+	 */
 	public void kill(Entity entity) {
 		database.kill(entity);
 
 	}
 
 	@Override
+	/**
+	 * kills and replaces an entity
+	 */
 	public void killandReplace(Entity entity) {
 		Entity insert = entity;
 		database.kill(entity);
@@ -264,10 +313,20 @@ public class FlattenBoard implements BoardView, EntityContext {
 	}
 
 	// public only to be able to use it in UNIT TESTS;
+	/**
+	 * 
+	 * 
+	 * @param entity
+	 * @param moveDirection
+	 * @return returns a entity in a given position from the entity
+	 */
 	public Entity checkCollision(Entity entity, XY moveDirection) {
 		return getCells()[entity.getPositionXY().y + moveDirection.y][moveDirection.x + entity.getPositionXY().x];
 	}
 
+	/**
+	 * trys to spawn a mini Squirrel
+	 */
 	public void trySpawnMiniSquirrel(MasterSquirrel master, XY xy, int energy) {
 		Entity location = getEntityType(xy);
 		if (location == null) {
@@ -277,18 +336,24 @@ public class FlattenBoard implements BoardView, EntityContext {
 		logger.finer("tryied spawing at " + xy.toString());
 	}
 
+	/**
+	 * trys to spawn a miniSquirrelBot
+	 */
 	public void trySpawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy,
 			BotControllerFactory botControllerFacotry) {
 		Entity location = getEntityType(xy);
 		if (location == null && master.getEnergy() >= energy) {
 			database.spawnMiniSquirrelBot(master, xy, energy, botControllerFacotry);
-			int minusEnergy = energy - 2* energy;
+			int minusEnergy = energy - 2 * energy;
 			master.updateEnergy(minusEnergy);
 		}
 		logger.finer("tryied spawing at " + xy.toString());
 	}
 
 	@Override
+	/**
+	 * the impload method
+	 */
 	public void impload(Entity entity, int impactRadius) {
 		if (!(entity instanceof MiniSquirrel)) {
 			try {
@@ -307,7 +372,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 				}
 				int distance = (int) Math.sqrt(Math.pow(Math.abs(e.getPositionXY().x - entity.getPositionXY().x), 2)
 						+ Math.pow(Math.abs(e.getPositionXY().y - entity.getPositionXY().y), 2));
-				if(distance > impactRadius) {
+				if (distance > impactRadius) {
 					continue;
 				}
 				int energyLoss = (int) (200 * (entity.getEnergy() / impactRadius * impactRadius * Math.PI)
@@ -339,10 +404,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 						kill(e);
 					}
 				} else if (e instanceof GoodBeast || e instanceof GoodPlant) {
-					if(e.getEnergy() <= 0) {
+					if (e.getEnergy() <= 0) {
 						continue;
 					}
-					
+
 					if (e.getEnergy() >= energyLoss) {
 						e.updateEnergy(-energyLoss);
 						collectedEnergy += energyLoss;
@@ -354,7 +419,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 						killandReplace(e);
 					}
 				} else if (e instanceof BadBeast || e instanceof BadPlant) {
-					if(e.getEnergy() <= 0) {
+					if (e.getEnergy() <= 0) {
 						continue;
 					}
 					if (Math.abs(e.getEnergy()) >= energyLoss) {

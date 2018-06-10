@@ -165,10 +165,10 @@ public class MiniSquirrelBot extends MiniSquirrel {
 	@Override
 	public void nextStep(EntityContext entityContext) {
 
-		miniBotController.nextStep(new ControllerContextImpl(entityContext));
-		// miniBotController
-		// .nextStep((ControllerContext) ProxyFactory.newInstance(new
-		// ControllerContextImpl(entityContext)));
+		// miniBotController.nextStep(new ControllerContextImpl(entityContext));
+		miniBotController
+				.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
+		MiniSquirrelBot.this.updateEnergy(-1);
 	}
 
 }

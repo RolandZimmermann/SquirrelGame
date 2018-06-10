@@ -3,9 +3,6 @@ package de.hsa.game.SquirrelGame.core.board;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,11 +25,12 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
-import de.hsa.games.fatsquirrel.botapi.BotController;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
+
 /**
  * Board is the database for the game.
+ * 
  * @author Roland
  *
  */
@@ -52,6 +50,28 @@ public class Board {
 	private List<Entity> addID = new ArrayList<Entity>();
 	private List<MasterSquirrelBot> bots = new ArrayList<MasterSquirrelBot>();
 
+	/**
+	 * Create a Board with the given param.
+	 * 
+	 * @param boardWidth
+	 *            the width of the board
+	 * @param boardHeight
+	 *            the Height of the board
+	 * @param countBadPlant
+	 *            the amount of bad plants in the game
+	 * @param countGoodPlant
+	 *            the amount of the good plants in the game
+	 * @param countBadBeast
+	 *            the amount of the bad beasts in the game
+	 * @param countGoodBeast
+	 *            the amount of the good beasts in the game
+	 * @param countHandOperatedMastersquirrel
+	 *            the amount of the squirrels controlled by the player
+	 * @param countWall
+	 *            the amount of wallstructures in the game
+	 * @param bots
+	 *            an array of names for the bots
+	 */
 	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
 			int countGoodBeast, int countHandOperatedMastersquirrel, int countWall, String[] bots) {
 
@@ -86,7 +106,7 @@ public class Board {
 				randomY = -1;
 				break;
 			}
-			
+
 			for (int j = 0; j < BoardConfig.WALL_LENGTH; j++) {
 				XY newXY = new XY(start.get(0).x + randomX * j, start.get(0).y + randomY * j);
 				if (newXY.x < 1 || newXY.y < 1 || newXY.x > BOARD_WIDTH - 1 || newXY.y > BOARD_HEIGHT - 1) {
@@ -167,6 +187,28 @@ public class Board {
 
 	}
 
+	/**
+	 * Create a Board with the given param (used for training a neural net).
+	 * 
+	 * @param boardWidth
+	 *            the width of the board
+	 * @param boardHeight
+	 *            the Height of the board
+	 * @param countBadPlant
+	 *            the amount of bad plants in the game
+	 * @param countGoodPlant
+	 *            the amount of the good plants in the game
+	 * @param countBadBeast
+	 *            the amount of the bad beasts in the game
+	 * @param countGoodBeast
+	 *            the amount of the good beasts in the game
+	 * @param countHandOperatedMastersquirrel
+	 *            the amount of the squirrels controlled by the player
+	 * @param countWall
+	 *            the amount of wallstructures in the game
+	 * @param bots
+	 *            an array of botcontrollerfactorys to be placed in the game
+	 */
 	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
 			int countGoodBeast, int countHandOperatedMastersquirrel, int countWall, BotControllerFactory[] bots) {
 
@@ -230,6 +272,14 @@ public class Board {
 
 	}
 
+	/**
+	 * Kills and replaces an entity to a new position
+	 * 
+	 * @param entity
+	 *            which entity to be replaced
+	 * @param newPos
+	 *            the new position where the new entity is going to be
+	 */
 	public void killandReplace(Entity entity, XY newPos) {
 		if (entity instanceof GoodPlant) {
 			getAddID().add(new GoodPlant(id++, new XY(newPos.x, newPos.y)));
@@ -247,16 +297,39 @@ public class Board {
 		logger.finer(entity.toString() + newPos.toString());
 	}
 
+	/**
+	 * Kills a given entity
+	 * 
+	 * @param entity
+	 *            = the entity to be killed
+	 */
 	public void kill(Entity entity) {
 		getRemoveID().add(entity);
 		logger.finer(entity.toString());
 	}
 
+	/**
+	 * Spawn a mini squirrel
+	 * 
+	 * @param master
+	 *            the master
+	 * @param xy
+	 *            the position of the mini squirrel
+	 * @param energy
+	 *            the energy of the minisquirrel
+	 */
 	public void spawnMiniSquirrel(MasterSquirrel master, XY xy, int energy) {
 		getAddID().add(new MiniSquirrel(id++, xy, energy, master));
 		logger.finer("Spawning mini squirrel: " + xy.toString() + energy);
 	}
 
+	/**
+	 * A method to generate random location for entitys
+	 * 
+	 * @param count
+	 *            = the amount of random location
+	 * @return an ArrayList of new Positions
+	 */
 	private ArrayList<XY> generateRandomLocations(int count) {
 
 		ArrayList<XY> randomLocations = new ArrayList<>();
@@ -283,6 +356,11 @@ public class Board {
 		return randomLocations;
 	}
 
+	/**
+	 * generates a two dimensional array of the Board
+	 * 
+	 * @return a two dimensional array of the Board
+	 */
 	public Entity[][] flatten() {
 
 		Entity[][] entityarry = new Entity[BOARD_HEIGHT][BOARD_WIDTH];
@@ -294,10 +372,22 @@ public class Board {
 		return entityarry;
 	}
 
+	/**
+	 * Sets the boards view
+	 * 
+	 * @param boardView boardview to be set
+	 */
 	public void setBoardView(BoardView boardView) {
 		this.boardView = boardView;
 	}
 
+	/**
+	 * Updates every entity in the database, delets and also creates new entitys
+	 * 
+	 * @param moveCommand
+	 *            the move command for the mastersquirrel controlled by the player
+	 * @param entityContext an interface
+	 */
 	public void update(MoveCommand moveCommand, EntityContext entityContext) {
 		for (int i = 0; i < getEntitySet().size(); i++) {
 			Entity c = getEntitySet().get(i);
@@ -343,6 +433,18 @@ public class Board {
 		return entitySet.toString();
 	}
 
+	/**
+	 * spawn a mini squirrel with the given botfactory
+	 * 
+	 * @param master
+	 *            the master of the mini squirrel
+	 * @param xy
+	 *            the position of the mini squirrel
+	 * @param energy
+	 *            the energy of the mini squirrel
+	 * @param botControllerFacotry
+	 *            the botfactory to create a botcontroller
+	 */
 	public void spawnMiniSquirrelBot(MasterSquirrel master, XY xy, int energy,
 			BotControllerFactory botControllerFacotry) {
 		getAddID().add(new MiniSquirrelBot(master, id++, xy, energy, botControllerFacotry));
