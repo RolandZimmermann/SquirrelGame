@@ -1,0 +1,14 @@
+Anleitung:
+
+Um einen Bot zu implementieren, muss eine Java Klasse erstellt werden, die folgende Interfaces
+aus dem de.hsa.games.fatsquirrel.botapi implementieren: BotController und BotControllerFactory.
+Es können auch mehre Klassen genutzt werden um einen Bot zu erstellen, nur sind die zwei
+Interfaces dringend zu implementieren.
+Die nextStep Methode aus dem BotController Interface, wird in jeder Runde des Spiels aufgerufen.
+Durch die Übergabe des ControllerContext, kann der Bot mit dem Spiel interagieren.
+Die verfügbaren Methoden, sind aus der Javadoc des Interfaces zu entnehmen.
+Die Methoden der BotControllerFactory, liefern jeweils die Implementierung des Bots für den
+MasterSquirrel beziehungsweise des MiniSquirrels.
+
+Die allgemeinen Spielregeln, sind hier einsehbar:
+http://www.hs-augsburg.de/homes/meixner/prog/prog2praktikum/Spielregeln.pdf
