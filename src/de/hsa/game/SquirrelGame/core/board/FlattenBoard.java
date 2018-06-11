@@ -1,3 +1,4 @@
+
 package de.hsa.game.SquirrelGame.core.board;
 
 import java.util.Random;

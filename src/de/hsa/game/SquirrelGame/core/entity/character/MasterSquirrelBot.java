@@ -16,26 +16,50 @@ import de.hsa.games.fatsquirrel.botapi.SpawnException;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
+/**
+ * Implements the {@code MasterSquirrel} as bot.
+ * @author reich
+ *
+ */
 public class MasterSquirrelBot extends MasterSquirrel {
 	BotControllerFactory botControllerFactory;
 	BotController masterBotController;
 
 	private int wallCounter = 0;
 
+	/**
+	 * Creates new {@code MasterSquirrelBot}
+	 * @param id
+	 * @param position
+	 * @param botControllerFactory
+	 *     Creates a new {@code MasterBotController}.
+	 *     	 */
 	public MasterSquirrelBot(int id, XY position, BotControllerFactory botControllerFactory) {
 		super(id, position);
 		this.botControllerFactory = botControllerFactory;
 		masterBotController = this.botControllerFactory.createMasterBotController();
 	}
 
+	/**
+	 * Implements {@code ControllerContext}
+	 * @author reich
+	 *
+	 */
 	public class ControllerContextImpl implements ControllerContext {
 		private EntityContext entityContext;
 		private final int VISION = 31;
-
+		
+		/**
+		 * Creates new {@code ControllerContextImpl}
+		 * @param entityContext
+		 */
 		public ControllerContextImpl(EntityContext entityContext) {
 			this.entityContext = entityContext;
 		}
 
+		/**
+		 * Returns the lowest left {@code XY}.
+		 */
 		@Override
 		public XY getViewLowerLeft() {
 			int x = getPositionXY().x - VISION / 2;
@@ -51,6 +75,9 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			return new XY(x, y);
 		}
 
+		/**
+         * Returns the highest right {@code XY}.
+         */
 		@Override
 		public XY getViewUpperRight() {
 			int x = getPositionXY().x + VISION / 2;
@@ -66,6 +93,9 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			return new XY(x, y);
 		}
 
+		/**
+		 * Returns the {@code entity} at the given {@code XY}.
+		 */
 		@Override
 		public EntityType getEntityAt(XY xy) {
 			if (!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y
@@ -99,11 +129,17 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			return null;
 		}
 
+		/**
+		 * Moves the Bot in given direction.
+		 */
 		@Override
 		public void move(XY direction) {
 			entityContext.tryMove(MasterSquirrelBot.this, direction);
 		}
-
+		
+		/**
+		 * Spawns a {@code MiniBot} if energy is not lower than 100 and x or y bigger than 1.
+		 */
 		@Override
 		public void spawnMiniBot(XY direction, int energy) {
 			if (energy < 100 && Math.abs(direction.x) > 1 && Math.abs(direction.y) > 1) {
@@ -126,7 +162,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public int getEnergy() {
 			return MasterSquirrelBot.this.getEnergy();
 		}
-
+		
 		@Override
 		public void implode(int impactRadius) {
 			throw new UnsupportedOperationException("Only for minisquirrels");
@@ -137,6 +173,9 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			return MasterSquirrelBot.this.getPositionXY();
 		}
 
+		/**
+		 * Tests if the {@code entity} on given {@code XY} is its own.
+		 */
 		@Override
 		public boolean isMine(XY xy) {
 			if (!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y
@@ -163,7 +202,9 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			return 0;
 		}
 	}
-
+	/**
+	 * Moves the {@code MasterSquirrelBot}.
+	 */
 	@Override
 	public void nextStep(EntityContext entityContext) {
 
