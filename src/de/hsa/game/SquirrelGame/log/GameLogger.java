@@ -6,7 +6,11 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
+/**
+ * Class to log game events
+ * @author reich
+ *
+ */
 public class GameLogger {
 	public static Level loggerLevel = Level.INFO;
 	private static Logger logger = Logger.getLogger(GameLogger.class.getName());
@@ -41,7 +45,9 @@ public class GameLogger {
 //		return log;
 //	}
 
-
+/**
+ *initialize logger 
+ */
 	public static void init() {
 		InputStream ins = null;
 		try {

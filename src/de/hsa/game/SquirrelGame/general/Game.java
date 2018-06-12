@@ -23,7 +23,11 @@ import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
-
+/**
+ * Class initialize game
+ * @author reich
+ *
+ */
 public abstract class Game {
 	private static Logger logger = Logger.getLogger(Game.class.getName());
 
@@ -41,7 +45,11 @@ public abstract class Game {
 	private BotControllerFactory[] bots;
 
 	private MoveCommand moveCommand = null;
-
+/**
+ * create game with given methode
+ * @param state
+ * @param ui
+ */
 	public Game(State state, UI ui) {
 		this.state = state;
 		this.ui = ui;
@@ -49,7 +57,9 @@ public abstract class Game {
 
 		init();
 	}
-
+/**
+ *  initialize the board
+ */
 	private void init() {
 		if (!training) {
 			this.state.setBoard(BoardFactory.createBoard());
@@ -86,7 +96,9 @@ public abstract class Game {
 		state.getBoard().setBoardView(this.boardView);
 
 	}
-
+/**
+ * Select the bot 
+ */
 	private void selectBots() {
 		if (oldAI) {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
@@ -182,7 +194,10 @@ public abstract class Game {
 
 		return null;
 	}
-
+/**
+ * starts the different threads
+ * @throws InterruptedException
+ */
 	public void run() throws InterruptedException {
 		if (multi) {
 			Timer t = new Timer();
@@ -227,16 +242,22 @@ public abstract class Game {
 			}
 		}
 	}
-
+/**
+ * renders ui
+ */
 	public void render() {
 		ui.render(boardView);
 	}
-
+/**
+ * set the {@code moveCommand}
+ */
 	public void processInput() {
 		moveCommand = ui.getCommand();
 
 	}
-
+/**
+ * updates the {@code state} and the {@code boardView}
+ */
 	public void update() {
 		if (gameSteps > 0) {
 			state.update(moveCommand, entityContext);

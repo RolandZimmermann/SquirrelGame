@@ -21,7 +21,11 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
-
+/**
+ * Class implements the interface UI
+ * @author reich
+ *
+ */
 public class ConsoleUI implements UI {
 	private static Logger logger = Logger.getLogger(ConsoleUI.class.getName());
 	
@@ -32,7 +36,9 @@ public class ConsoleUI implements UI {
 	private boolean outputMasterEnergy = false;
 	private boolean outputHelp = false;
 	private boolean outputall = false;
-
+/**
+ * returns MoveCommand
+ */
 	public MoveCommand getCommand() {
 		Command command = null;
 
@@ -73,7 +79,9 @@ public class ConsoleUI implements UI {
 		logger.finer("returned Command");
 		return null;
 	}
-
+	/**
+	 * Renders board on console
+	 */
 	public void render(BoardView boardView) {
 		ArrayList<Entity> entitysToOutput = new ArrayList<>();
 		clearConsole();
@@ -143,7 +151,9 @@ public class ConsoleUI implements UI {
 		
 		logger.finest("Updated UI");
 	}
-
+/**
+ * Clears the console 
+ */
 	private void clearConsole() {
 		for (int i = 0; i < 100; i++)
 			outputStream.println();

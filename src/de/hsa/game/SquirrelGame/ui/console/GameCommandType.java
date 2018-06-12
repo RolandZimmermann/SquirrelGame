@@ -2,7 +2,11 @@ package de.hsa.game.SquirrelGame.ui.console;
 
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.ui.exceptions.WrongParamInputException;
-
+/**
+ * Enum for different {@code GameCommandType}
+ * @author reich
+ *
+ */
 public enum GameCommandType implements CommandTypeInfo, Executeable {
 
 	HELP("help", " list all commands") {
@@ -321,12 +325,20 @@ public enum GameCommandType implements CommandTypeInfo, Executeable {
 	private String helpText;
 	private Class<?> paramType1;
 	private Class<?> paramType2;
-
+/**
+ * Create new GameCommandType with name and helpText
+ * @param name
+ * @param helpText
+ */
 	private GameCommandType(String name, String helpText) {
 		this.name = name;
 		this.helpText = helpText;
 	}
-
+	/**
+	 * Create new GameCommandType with name, helptext and two parameter type
+	 * @param name
+	 * @param helpText
+	 */
 	private GameCommandType(String name, String helpText, Class<?> paramType1, Class<?> paramType2) {
 		this.name = name;
 		this.helpText = helpText;
