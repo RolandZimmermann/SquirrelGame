@@ -2,7 +2,11 @@ package de.hsa.game.SquirrelGame.core;
 
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Represents board
+ * @author reich
+ *
+ */
 public interface BoardView {
 	public void update();
 	public XY getSize();

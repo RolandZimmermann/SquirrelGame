@@ -3,9 +3,16 @@ package de.hsa.game.SquirrelGame.gamestats;
 import java.util.Random;
 
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Class with methods for XY class
+ * @author reich
+ *
+ */
 public final class XYsupport {
-     
+     /**
+      * 
+      * @return random direction
+      */
     public static XY randomMove() {
        Random random = new Random();
        int direct = random.nextInt(8);
@@ -40,7 +47,12 @@ public final class XYsupport {
        
        
     }
-    
+    /**
+     * checks if xy1 and xy2 the same
+     * @param xy1
+     * @param xy2
+     * @return
+     */
     public static boolean equalPosition(XY xy1, XY xy2) {
     	if (xy1.x== xy2.x && xy1.y == xy2.y) {
     		return true;

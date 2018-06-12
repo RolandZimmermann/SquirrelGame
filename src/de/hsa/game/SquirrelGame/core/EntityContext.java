@@ -8,7 +8,11 @@ import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Interface of EntityContext class
+ * @author reich
+ *
+ */
 public interface EntityContext {
 	public XY getSize();
 	

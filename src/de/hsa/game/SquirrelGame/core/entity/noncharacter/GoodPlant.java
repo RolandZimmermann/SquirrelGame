@@ -2,7 +2,11 @@ package de.hsa.game.SquirrelGame.core.entity.noncharacter;
 
 import de.hsa.game.SquirrelGame.gamestats.Energy;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Implements entities not moveable
+ * @author reich
+ *
+ */
 public class GoodPlant extends NonCharacter{
 
     public GoodPlant(int id, XY position) {
