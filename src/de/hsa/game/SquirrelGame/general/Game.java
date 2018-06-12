@@ -23,8 +23,10 @@ import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
+
 /**
  * Class initialize game
+ * 
  * @author reich
  *
  */
@@ -45,11 +47,13 @@ public abstract class Game {
 	private BotControllerFactory[] bots;
 
 	private MoveCommand moveCommand = null;
-/**
- * create game with given methode
- * @param state
- * @param ui
- */
+
+	/**
+	 * create game with given methode
+	 * 
+	 * @param state
+	 * @param ui
+	 */
 	public Game(State state, UI ui) {
 		this.state = state;
 		this.ui = ui;
@@ -57,9 +61,10 @@ public abstract class Game {
 
 		init();
 	}
-/**
- *  initialize the board
- */
+
+	/**
+	 * initialize the board
+	 */
 	private void init() {
 		if (!training) {
 			this.state.setBoard(BoardFactory.createBoard());
@@ -75,13 +80,22 @@ public abstract class Game {
 					selectBots();
 				}
 			} else {
+				MaToRoKi ki = null;
+				if (state.loadObject() != null) {
+					ki = state.loadObject();
+					System.out.println("Geladen");
+				}
 				if (bots == null) {
 					bots = new BotControllerFactory[population];
 					for (int i = 0; i < bots.length; i++) {
-						bots[i] = new MaToRoKi();
+						if (ki == null) {
+							bots[i] = new MaToRoKi();
+						} else {
+							bots[i] = ki;
+							
+						}
 					}
 				} else {
-
 					selectBots();
 				}
 			}
@@ -96,9 +110,10 @@ public abstract class Game {
 		state.getBoard().setBoardView(this.boardView);
 
 	}
-/**
- * Select the bot 
- */
+
+	/**
+	 * Select the bot
+	 */
 	private void selectBots() {
 		if (oldAI) {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
@@ -130,16 +145,15 @@ public abstract class Game {
 			MasterSquirrelBot best = oldbots.get(0);
 
 			for (MasterSquirrelBot e : oldbots) {
-				e.updateEnergy(-1000);
-				if (e.getEnergy() < 0) {
-					e.updateEnergy(-e.getEnergy());
-				}
+				e.fitness();
+				e.fitness=-1000;
+				
 
-				if (best.getEnergy() < e.getEnergy()) {
+				if (best.fitness < e.fitness) {
 					best = e;
 				}
 
-				totalfitness += e.getEnergy();
+				totalfitness += e.fitness;
 			}
 
 			bots[0] = (BotControllerFactory) ((MaToRoKi) best.getBotController());
@@ -156,7 +170,7 @@ public abstract class Game {
 					MasterSquirrelBot parent1 = selectParent(oldbots);
 					MasterSquirrelBot parent2 = selectParent(oldbots);
 
-					if (parent1.getEnergy() < parent2.getEnergy()) {
+					if (parent1.fitness < parent2.fitness) {
 						child = ((MaToRoKi) parent2.getBotController())
 								.crossover(((MaToRoKi) parent1.getBotController()).getGenome());
 					} else {
@@ -179,14 +193,14 @@ public abstract class Game {
 		float totalfitness = 0;
 
 		for (int i = 0; i < oldbots.size(); i++) {
-			totalfitness += oldbots.get(i).getEnergy();
+			totalfitness += oldbots.get(i).fitness;
 		}
 
 		float rand = (float) (Math.random() * totalfitness);
 		float runningSum = 0;
 
 		for (int i = 0; i < oldbots.size(); i++) {
-			runningSum += oldbots.get(i).getEnergy();
+			runningSum += oldbots.get(i).fitness;
 			if (runningSum >= rand) {
 				return oldbots.get(i);
 			}
@@ -194,10 +208,12 @@ public abstract class Game {
 
 		return null;
 	}
-/**
- * starts the different threads
- * @throws InterruptedException
- */
+
+	/**
+	 * starts the different threads
+	 * 
+	 * @throws InterruptedException
+	 */
 	public void run() throws InterruptedException {
 		if (multi) {
 			Timer t = new Timer();
@@ -242,22 +258,25 @@ public abstract class Game {
 			}
 		}
 	}
-/**
- * renders ui
- */
+
+	/**
+	 * renders ui
+	 */
 	public void render() {
 		ui.render(boardView);
 	}
-/**
- * set the {@code moveCommand}
- */
+
+	/**
+	 * set the {@code moveCommand}
+	 */
 	public void processInput() {
 		moveCommand = ui.getCommand();
 
 	}
-/**
- * updates the {@code state} and the {@code boardView}
- */
+
+	/**
+	 * updates the {@code state} and the {@code boardView}
+	 */
 	public void update() {
 		if (gameSteps > 0) {
 			state.update(moveCommand, entityContext);
@@ -270,12 +289,10 @@ public abstract class Game {
 			init();
 		}
 	}
-	
-	public State getState () {
+
+	public State getState() {
 		return this.state;
-		
-		
+
 	}
-	
-	
+
 }

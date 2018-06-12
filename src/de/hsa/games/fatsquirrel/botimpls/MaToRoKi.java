@@ -1,5 +1,6 @@
 package de.hsa.games.fatsquirrel.botimpls;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +11,7 @@ import de.hsa.games.fatsquirrel.botapi.OutOfViewException;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
-public class MaToRoKi implements BotController, BotControllerFactory {
+public class MaToRoKi implements BotController, BotControllerFactory, Serializable {
 
 	private Genome genome = start();
 	public static ArrayList<connectionHistory> innovationHistory = new ArrayList<connectionHistory>();
@@ -183,14 +184,14 @@ public class MaToRoKi implements BotController, BotControllerFactory {
 	}
 }
 
-class Genome {
+class Genome implements Serializable {
 
 	ArrayList<connectionGene> genes = new ArrayList<connectionGene>();// a list of connections between nodes which
 																		// represent the NN
 	ArrayList<Node> nodes = new ArrayList<Node>();// list of nodes
 	int inputs;
 	int outputs;
-	int layers = 2;
+	int layers = 5;
 	int nextNode = 0;
 	int biasNode;
 	ArrayList<Node> network = new ArrayList<Node>(); // a list of the nodes in the order that they need to be considered
@@ -591,7 +592,7 @@ class Genome {
 
 }
 
-class Node {
+class Node implements Serializable {
 
 	int number;
 	float inputSum = 0; // current sum i.e. before activiation
@@ -651,7 +652,7 @@ class Node {
 	}
 }
 
-class connectionGene {
+class connectionGene implements Serializable {
 	Node fromNode;
 	Node toNode;
 	float weight;
@@ -690,7 +691,7 @@ class connectionGene {
 	}
 }
 
-class connectionHistory {
+class connectionHistory implements Serializable{
 	int fromNode;
 	int toNode;
 	int innovationNumber;

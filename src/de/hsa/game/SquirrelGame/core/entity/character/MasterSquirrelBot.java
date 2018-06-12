@@ -18,6 +18,7 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 /**
  * Implements the {@code MasterSquirrel} as bot.
+ * 
  * @author reich
  *
  */
@@ -25,15 +26,18 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	BotControllerFactory botControllerFactory;
 	BotController masterBotController;
 
+	public int fitness = 0;
+
 	private int wallCounter = 0;
 
 	/**
 	 * Creates new {@code MasterSquirrelBot}
+	 * 
 	 * @param id
 	 * @param position
 	 * @param botControllerFactory
-	 *     Creates a new {@code MasterBotController}.
-	 *     	 */
+	 *            Creates a new {@code MasterBotController}.
+	 */
 	public MasterSquirrelBot(int id, XY position, BotControllerFactory botControllerFactory) {
 		super(id, position);
 		this.botControllerFactory = botControllerFactory;
@@ -42,15 +46,17 @@ public class MasterSquirrelBot extends MasterSquirrel {
 
 	/**
 	 * Implements {@code ControllerContext}
+	 * 
 	 * @author reich
 	 *
 	 */
 	public class ControllerContextImpl implements ControllerContext {
 		private EntityContext entityContext;
 		private final int VISION = 31;
-		
+
 		/**
 		 * Creates new {@code ControllerContextImpl}
+		 * 
 		 * @param entityContext
 		 */
 		public ControllerContextImpl(EntityContext entityContext) {
@@ -64,10 +70,10 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public XY getViewLowerLeft() {
 			int x = getPositionXY().x - VISION / 2;
 			int y = getPositionXY().y + VISION / 2;
-			
-			if(x < 0) {
+
+			if (x < 0) {
 				x = 0;
-			} 
+			}
 			if (y > entityContext.getSize().y) {
 				y = entityContext.getSize().y;
 			}
@@ -76,19 +82,19 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		}
 
 		/**
-         * Returns the highest right {@code XY}.
-         */
+		 * Returns the highest right {@code XY}.
+		 */
 		@Override
 		public XY getViewUpperRight() {
 			int x = getPositionXY().x + VISION / 2;
 			int y = getPositionXY().y - VISION / 2;
-			
+
 			if (x > entityContext.getSize().x) {
 				x = entityContext.getSize().x;
 			}
-			if(y < 0) {
+			if (y < 0) {
 				y = 0;
-			} 
+			}
 
 			return new XY(x, y);
 		}
@@ -135,10 +141,28 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		@Override
 		public void move(XY direction) {
 			entityContext.tryMove(MasterSquirrelBot.this, direction);
+			if (direction != XY.ZERO_ZERO) {
+				MasterSquirrelBot.this.fitness += 10;
+				try {
+					EntityType collision = getEntityAt(direction);
+					if (collision == EntityType.BAD_BEAST) {
+						MasterSquirrelBot.this.fitness -= 50;
+					} else if (collision == EntityType.GOOD_BEAST) {
+						MasterSquirrelBot.this.fitness += 50;
+					} else if (collision == EntityType.BAD_PLANT) {
+						MasterSquirrelBot.this.fitness -= 20;
+					} else if (collision == EntityType.GOOD_PLANT) {
+						MasterSquirrelBot.this.fitness += 20;
+					}
+				} catch (Exception e) {
+				}
+			} else
+				MasterSquirrelBot.this.fitness -= 20;
 		}
-		
+
 		/**
-		 * Spawns a {@code MiniBot} if energy is not lower than 100 and x or y bigger than 1.
+		 * Spawns a {@code MiniBot} if energy is not lower than 100 and x or y bigger
+		 * than 1.
 		 */
 		@Override
 		public void spawnMiniBot(XY direction, int energy) {
@@ -162,7 +186,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public int getEnergy() {
 			return MasterSquirrelBot.this.getEnergy();
 		}
-		
+
 		@Override
 		public void implode(int impactRadius) {
 			throw new UnsupportedOperationException("Only for minisquirrels");
@@ -202,6 +226,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			return 0;
 		}
 	}
+
 	/**
 	 * Moves the {@code MasterSquirrelBot}.
 	 */
@@ -212,13 +237,21 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			this.updateEnergy(-this.getEnergy());
 		}
 		if (wallCounter == 0) {
-			 masterBotController.nextStep(new ControllerContextImpl(entityContext));
-//			masterBotController
-//					.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
-
-		}else {
-			wallCounter--;}
+			masterBotController.nextStep(new ControllerContextImpl(entityContext));
+			// masterBotController
+			// .nextStep((ControllerContext) ProxyFactory.newInstance(new
+			// ControllerContextImpl(entityContext)));
+		} else {
+			wallCounter--;
+			this.fitness -= 20;
 		}
+	}
+
+	public int fitness() {
+		int score = this.getEnergy();
+		fitness += score;
+		return fitness;
+	}
 
 	public Object getBotController() {
 		return this.masterBotController;
@@ -227,6 +260,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	@Override
 	public void wallCollison() {
 		wallCounter = 4;
+		this.fitness -= 100;
 	}
 
 }

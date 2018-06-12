@@ -42,6 +42,7 @@ public class FxUI extends Scene implements UI {
 	private Label msgLabel;
 	private static final int CELL_SIZE = 16;
 	private static MoveCommand moveCommand;
+	private static boolean render = true;
 
 	private static Image sprWall;
 	private static Image sprGoodPlant;
@@ -122,6 +123,7 @@ public class FxUI extends Scene implements UI {
 	}
 
 	public static FxUI createInstance(XY xy) {
+		Platform.runLater(() -> { loadImages();});
 		loadImages();
 		Canvas boardCanvas = new Canvas(xy.x * CELL_SIZE, xy.y * CELL_SIZE);
 		Label statusLabel = new Label();
@@ -170,6 +172,9 @@ public class FxUI extends Scene implements UI {
 				case C:
                     setCommand(MoveCommand.DOWNRIGHT);
                     break;
+				case F:
+					render = !render;
+					break;
 					
 					
 				default:
@@ -187,17 +192,29 @@ public class FxUI extends Scene implements UI {
 			@Override
 			public void run() {
 				repaintBoardCanvas(view);
+				//repaintBoardCanvas2();
 			}
 		});
+	}
+	
+	@SuppressWarnings({ "restriction", "restriction" })
+	private void repaintBoardCanvas2() {
+		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
+		gc.drawImage(sprBadBeast, 10, 10);
+		gc.drawImage(sprMasterSquirrel, 20, 20);
+		gc.drawImage(sprWall, 30, 30);
 	}
 
 	@SuppressWarnings("restriction")
 	private void repaintBoardCanvas(BoardView view) {
+		if (!render) {
+			return;
+		}
 		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
 		XY viewSize = view.getSize();
 		
-		gc.drawImage(sprGoodBeast, 0, 0);
+		
 
 		gc.setFill(Color.DARKOLIVEGREEN);
 		gc.fillRect(0, 0, viewSize.x * CELL_SIZE, viewSize.y * CELL_SIZE);
@@ -245,6 +262,7 @@ public class FxUI extends Scene implements UI {
 						gc.setFill(Color.MAGENTA);
 						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
+						System.out.println(sprMasterSquirrel);
 						gc.drawImage(sprMasterSquirrel, x, y);
 					}
 				} else if (entity instanceof MiniSquirrel) {
@@ -265,6 +283,8 @@ public class FxUI extends Scene implements UI {
 			}
 		}
 		
+		
+		gc.drawImage(sprMasterSquirrel, 1*CELL_SIZE, 1*CELL_SIZE);
 		logger.finest("Updated UI");
 
 	}
