@@ -81,7 +81,7 @@ public abstract class Game {
 				}
 			} else {
 				MaToRoKi ki = null;
-				if (state.loadObject() != null) {
+				if (state.loadObject() != null && bots == null) {
 					ki = state.loadObject();
 					System.out.println("Geladen");
 				}
@@ -92,7 +92,7 @@ public abstract class Game {
 							bots[i] = new MaToRoKi();
 						} else {
 							bots[i] = ki;
-							
+
 						}
 					}
 				} else {
@@ -146,8 +146,6 @@ public abstract class Game {
 
 			for (MasterSquirrelBot e : oldbots) {
 				e.fitness();
-				e.fitness=-1000;
-				
 
 				if (best.fitness < e.fitness) {
 					best = e;
@@ -155,9 +153,13 @@ public abstract class Game {
 
 				totalfitness += e.fitness;
 			}
+			
+			
 
 			bots[0] = (BotControllerFactory) ((MaToRoKi) best.getBotController());
-			System.out.println((((MaToRoKi) best.getBotController()).toString()) + " | " + best.getEnergy());
+			System.out.println((((MaToRoKi) best.getBotController()).toString()) + " || " + best.fitness);
+			state.saveObject((MaToRoKi) best.getBotController());
+			System.out.println("SAVED");
 
 			for (int i = 1; i < population; i++) {
 
@@ -206,7 +208,7 @@ public abstract class Game {
 			}
 		}
 
-		return null;
+		return oldbots.get((int) (Math.random()*oldbots.size()));
 	}
 
 	/**

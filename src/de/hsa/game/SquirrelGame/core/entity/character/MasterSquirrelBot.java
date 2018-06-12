@@ -140,24 +140,27 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		 */
 		@Override
 		public void move(XY direction) {
-			entityContext.tryMove(MasterSquirrelBot.this, direction);
+
 			if (direction != XY.ZERO_ZERO) {
-				MasterSquirrelBot.this.fitness += 10;
+				MasterSquirrelBot.this.fitness += 100;
 				try {
 					EntityType collision = getEntityAt(direction);
 					if (collision == EntityType.BAD_BEAST) {
-						MasterSquirrelBot.this.fitness -= 50;
+						MasterSquirrelBot.this.fitness -= 500;
 					} else if (collision == EntityType.GOOD_BEAST) {
-						MasterSquirrelBot.this.fitness += 50;
+						MasterSquirrelBot.this.fitness += 500;
 					} else if (collision == EntityType.BAD_PLANT) {
-						MasterSquirrelBot.this.fitness -= 20;
+						MasterSquirrelBot.this.fitness -= 200;
 					} else if (collision == EntityType.GOOD_PLANT) {
-						MasterSquirrelBot.this.fitness += 20;
+						MasterSquirrelBot.this.fitness += 200;
+					} else if (collision == EntityType.MASTER_SQUIRREL) {
+						MasterSquirrelBot.this.fitness -= 700;
 					}
 				} catch (Exception e) {
 				}
 			} else
-				MasterSquirrelBot.this.fitness -= 20;
+				MasterSquirrelBot.this.fitness -= 200;
+			entityContext.tryMove(MasterSquirrelBot.this, direction);
 		}
 
 		/**
@@ -236,20 +239,24 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		if (this.getEnergy() < 0) {
 			this.updateEnergy(-this.getEnergy());
 		}
+		fitness--;
+		XY oldposition = this.getPositionXY();
 		if (wallCounter == 0) {
-			masterBotController.nextStep(new ControllerContextImpl(entityContext));
-			// masterBotController
-			// .nextStep((ControllerContext) ProxyFactory.newInstance(new
-			// ControllerContextImpl(entityContext)));
+			// masterBotController.nextStep(new ControllerContextImpl(entityContext));
+			masterBotController
+					.nextStep((ControllerContext) ProxyFactory.newInstance(new ControllerContextImpl(entityContext)));
 		} else {
 			wallCounter--;
 			this.fitness -= 20;
+		}
+		if (this.getPositionXY().x == oldposition.x && this.getPositionXY().y == oldposition.y) {
+			fitness -= 130;
 		}
 	}
 
 	public int fitness() {
 		int score = this.getEnergy();
-		fitness += score;
+		fitness += score - 1000;
 		return fitness;
 	}
 

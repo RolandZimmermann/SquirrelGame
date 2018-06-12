@@ -9,7 +9,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -80,10 +82,6 @@ public class State {
 
 		bots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 		
-		MaToRoKi best = (MaToRoKi) bots.get(0).getBotController();
-		saveObject(best);
-		System.out.println("SAVED");
-
 		System.out.println("Bot-Scores:");
 		logger.info("Bot-Scores:");
 		for (MasterSquirrelBot bot : bots) {
@@ -134,6 +132,8 @@ public class State {
 	 * called when the programm closes to save every score in a properties file
 	 */
 	public void save() {
+		
+		saveObject((MaToRoKi) board.getBots().get(0).getBotController());
 
 		Properties prop = new Properties();
 		OutputStream output = null;
@@ -186,13 +186,19 @@ public class State {
 		return e;
 	}
 	
-	private void saveObject(MaToRoKi e) {
+	public void saveObject(MaToRoKi e) {
 		OutputStream fos = null;
 		
 		
 		try {
-			fos = new FileOutputStream(new File("bots/MaToRoKi.ser"));
+			String timeStamp = new SimpleDateFormat("HH_ddMMyy").format(Calendar.getInstance().getTime());
+			fos = new FileOutputStream(new File("bots/MaToRoKi"+ timeStamp+".ser"));
 			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(e);
+			out.close();
+			fos.close();
+			fos = new FileOutputStream(new File("bots/MaToRoKi.ser"));
+			out = new ObjectOutputStream(fos);
 			out.writeObject(e);
 			out.close();
 			fos.close();
