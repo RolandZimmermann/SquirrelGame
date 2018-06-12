@@ -7,20 +7,35 @@ import java.io.PrintStream;
 import de.hsa.game.SquirrelGame.ui.exceptions.NoSuchCommandException;
 import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
 import de.hsa.game.SquirrelGame.ui.exceptions.WrongParamCountException;
-
+/**
+ * Read commands from commandline
+ * @author reich
+ *
+ */
 public class CommandScanner {
 
 	private CommandTypeInfo[] commandTypeInfos;
 	private BufferedReader inputReader;
 	private PrintStream outputStream;
-
+/**
+ * Create new CommandScanner
+ * @param commandTypeInfos
+ * @param inputReader
+ * @param outputStream
+ */
 	public CommandScanner(CommandTypeInfo[] commandTypeInfos, BufferedReader inputReader, PrintStream outputStream) {
 		this.commandTypeInfos = commandTypeInfos;
 		this.inputReader = inputReader;
 		this.outputStream = outputStream;
 
 	}
-
+/**
+ * Read next character
+ * @return
+ * @throws ScanException
+ * @throws IOException
+ * @throws NumberFormatException
+ */
 	public Command next() throws ScanException, IOException, NumberFormatException {
 		String command = inputReader.readLine();
 		String[] params = command.split(" ");

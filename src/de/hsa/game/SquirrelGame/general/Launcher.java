@@ -19,100 +19,119 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Main class of the project
+ * 
+ * @author reich
+ *
+ */
 public class Launcher extends Application {
 
-	private static Board board = BoardFactory.createBoard();
+    private static Board board = BoardFactory.createBoard();
 
-	private static Game game;
+    private static Game game;
 
-	private static final GameMode gameMode = GameMode.JFX;
-	
-	private static Logger logger = Logger.getLogger(Launcher.class.getName());
+    private static final GameMode gameMode = GameMode.JFX;
 
-	public static void main(String[] args) {
-		
-		BoardConfig.load();
-		GameLogger.init();
-		logger.info("START");
+    private static Logger logger = Logger.getLogger(Launcher.class.getName());
 
-		if (gameMode == GameMode.CONSOLE) {
-			logger.info("Starting Console Mode");
-			game = new GameImpl(new State(board), new ConsoleUI());
-			startGame(game);
-		} else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
-			Application.launch(args);
-		}
+    /**
+     * starts the game
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
 
-	}
+        BoardConfig.load();
+        GameLogger.init();
+        logger.info("START");
 
-	private static void start3dGame(Stage primaryStage) {
-		Fx3dUI fxUI = Fx3dUI.createInstance(BoardConfig.getSize());
+        if (gameMode == GameMode.CONSOLE) {
+            logger.info("Starting Console Mode");
+            game = new GameImpl(new State(board), new ConsoleUI());
+            startGame(game);
+        } else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
+            Application.launch(args);
+        }
 
-		game = new GameImpl(new State(board), fxUI);
-		primaryStage.setScene(fxUI);
-		primaryStage.setTitle("MaToRo");
-		fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent evt) {
-			game.getState().save();
-				System.exit(-1);
-			}
-		});
+    }
 
-		primaryStage.show();
+    /**
+     * starts game in 3d
+     * 
+     * @param primaryStage
+     */
+    private static void start3dGame(Stage primaryStage) {
+        Fx3dUI fxUI = Fx3dUI.createInstance(BoardConfig.getSize());
 
-		startGame(game);
-		
-	}
+        game = new GameImpl(new State(board), fxUI);
+        primaryStage.setScene(fxUI);
+        primaryStage.setTitle("MaToRo");
+        fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent evt) {
+                game.getState().save();
+                System.exit(-1);
+            }
+        });
 
-	private static void startGame(Game game) {
+        primaryStage.show();
 
-		Timer t = new Timer();
-		t.schedule(new TimerTask() {
+        startGame(game);
 
-			@Override
-			public void run() {
-				try {
-					game.run();
-				} catch (InterruptedException e) {
-					logger.log(Level.SEVERE, e.getMessage(), e);
-					e.printStackTrace();
-				}
+    }
+/**
+ * starts game
+ * @param game
+ */
+    private static void startGame(Game game) {
 
-			}
-		}, 1000);
-	}
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
 
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		
-		if(gameMode == GameMode.JFX3D) {
-			logger.info("Starting JFX3D game");
-			start3dGame(primaryStage);
-			return;
-		}
-		
-		logger.info("Starting JFX game");
-		
-		FxUI fxUI = FxUI.createInstance(BoardConfig.getSize());
+            @Override
+            public void run() {
+                try {
+                    game.run();
+                } catch (InterruptedException e) {
+                    logger.log(Level.SEVERE, e.getMessage(), e);
+                    e.printStackTrace();
+                }
 
-		primaryStage.setScene(fxUI);
-		primaryStage.setTitle("MaToRo");
-		fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent evt) {
-				game.getState().save();
-				System.exit(-1);
-			}
-		});
+            }
+        }, 1000);
+    }
+/**
+ * starts game with set mode (3d or console)
+ */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-		primaryStage.show();
-		
-		game = new GameImpl(new State(board), fxUI);
+        if (gameMode == GameMode.JFX3D) {
+            logger.info("Starting JFX3D game");
+            start3dGame(primaryStage);
+            return;
+        }
 
-		startGame(game);
-	}
+        logger.info("Starting JFX game");
 
+        FxUI fxUI = FxUI.createInstance(BoardConfig.getSize());
+
+        primaryStage.setScene(fxUI);
+        primaryStage.setTitle("MaToRo");
+        fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent evt) {
+                game.getState().save();
+                System.exit(-1);
+            }
+        });
+
+        primaryStage.show();
+
+        game = new GameImpl(new State(board), fxUI);
+
+        startGame(game);
+    }
 
 }

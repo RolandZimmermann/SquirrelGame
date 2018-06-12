@@ -22,7 +22,11 @@ import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedM
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Class to test flattenboard
+ * @author reich
+ *
+ */
 public class FlattenBoardTest {
 
 	@Spy

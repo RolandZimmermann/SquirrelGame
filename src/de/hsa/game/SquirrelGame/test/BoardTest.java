@@ -22,7 +22,11 @@ import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Class to test board
+ * @author reich
+ *
+ */
 public class BoardTest {
 	
 	Board board;

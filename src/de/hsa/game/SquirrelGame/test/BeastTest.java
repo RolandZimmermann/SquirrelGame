@@ -17,7 +17,11 @@ import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.PlayerEntity;
 import de.hsa.games.fatsquirrel.util.XY;
-
+/**
+ * Class to test methods from bad and good beasts
+ * @author reich
+ *
+ */
 public class BeastTest {
 
 	@Mock
@@ -35,14 +39,18 @@ public class BeastTest {
 		when(entityContext.nearestPlayerEntity(any(XY.class))).thenReturn(any(PlayerEntity.class));
 	}
 	
-	
+	/**
+	 * moves {@code goodbeast} to 
+	 */
 	@Test
 	public void testNextStepGoodBeast1() {
 		goodBeast.nextStep(entityContext);
 		verify(entityContext).nearestPlayerEntity(pos);
 		verify(entityContext).tryMove(any(GoodBeast.class), any(XY.class));
 	}
-
+	/**
+     * moves {@code goodbeast} to 
+     */
 	@Test
 	public void testNextStepGoodBeast2() {
 		goodBeast.nextStep(entityContext);
@@ -50,7 +58,9 @@ public class BeastTest {
 		goodBeast.nextStep(entityContext);
 		verify(entityContext, times(1)).tryMove(any(GoodBeast.class), any(XY.class));
 	}
-	
+	/**
+     * moves {@code badbeast} to 
+     */
 	@Test
 	public void testNextStepBadBeast1() {
 		badBeast.nextStep(entityContext);

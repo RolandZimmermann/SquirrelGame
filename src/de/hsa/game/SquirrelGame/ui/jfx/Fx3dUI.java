@@ -28,7 +28,11 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-
+/**
+ * Class for Fx3dUI extends Scene and implements interface UI
+ * @author reich
+ *
+ */
 public class Fx3dUI extends Scene implements UI {
 	
 	private static Logger logger = Logger.getLogger(Fx3dUI.class.getName());
@@ -54,7 +58,10 @@ public class Fx3dUI extends Scene implements UI {
 	private Group objGoodBeast;
 	private Group objMasterSquirrel;
 	private Group objMiniSquirrel;
-
+/**
+ * Creates new Fx3dUI
+ * @param root
+ */
 	public Fx3dUI(Group root) {
 		super(root, sceneWidth, sceneHeight, true, SceneAntialiasing.BALANCED);
 		this.root = root;
@@ -62,7 +69,11 @@ public class Fx3dUI extends Scene implements UI {
 		editScene();
 		logger.fine("loaded 3D scene");
 	}
-
+/**
+ * Creates new instance of giv
+ * @param xy
+ * @return
+ */
 	public static Fx3dUI createInstance(XY xy) {
 
 		Group root = new Group();
