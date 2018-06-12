@@ -13,7 +13,6 @@ public class XY {
 	public static final XY RIGHT_DOWN = new XY(1, 1);
 	public static final XY LEFT_UP = new XY(-1, -1);
 	public static final XY LEFT_DOWN = new XY(-1, 1);
-	public static final String test="s";
 
 	public XY(int x, int y) {
 		this.x = x;
