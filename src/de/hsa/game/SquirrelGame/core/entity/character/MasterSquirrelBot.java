@@ -251,6 +251,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		}
 		if (this.getPositionXY().x == oldposition.x && this.getPositionXY().y == oldposition.y) {
 			fitness -= 130;
+		} else {
+			fitness += 100;
 		}
 	}
 
