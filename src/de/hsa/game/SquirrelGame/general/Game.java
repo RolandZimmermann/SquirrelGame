@@ -37,7 +37,7 @@ public abstract class Game {
 	private UI ui;
 	private BoardView boardView;
 	private EntityContext entityContext;
-	private int FPS = 60;
+	private int FPS = 10000000;
 	private boolean multi = true;
 	private boolean training = true;
 	private boolean oldAI = false;
