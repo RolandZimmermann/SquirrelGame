@@ -1,10 +1,13 @@
-Jun 12, 2018 3:24:34 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: bots\MaToRoKi.ser (Das System kann die angegebene Datei nicht finden)
-java.io.FileNotFoundException: bots\MaToRoKi.ser (Das System kann die angegebene Datei nicht finden)
-	at java.io.FileInputStream.open0(Native Method)
-	at java.io.FileInputStream.open(FileInputStream.java:195)
-	at java.io.FileInputStream.<init>(FileInputStream.java:138)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:175)
+Jun 13, 2018 8:44:27 PM de.hsa.game.SquirrelGame.core.board.State loadObject
+SCHWERWIEGEND: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 3180004334054692974, local class serialVersionUID = 354394585490071672
+java.io.InvalidClassException: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 3180004334054692974, local class serialVersionUID = 354394585490071672
+	at java.io.ObjectStreamClass.initNonProxy(Unknown Source)
+	at java.io.ObjectInputStream.readNonProxyDesc(Unknown Source)
+	at java.io.ObjectInputStream.readClassDesc(Unknown Source)
+	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
+	at java.io.ObjectInputStream.readObject0(Unknown Source)
+	at java.io.ObjectInputStream.readObject(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:177)
 	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:84)
 	at de.hsa.game.SquirrelGame.general.Game.<init>(Game.java:62)
 	at de.hsa.game.SquirrelGame.general.GameImpl.<init>(GameImpl.java:13)
@@ -17,5 +20,21 @@ java.io.FileNotFoundException: bots\MaToRoKi.ser (Das System kann die angegebene
 	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
-	at java.lang.Thread.run(Thread.java:748)
+	at java.lang.Thread.run(Unknown Source)
+
+Jun 13, 2018 8:44:31 PM de.hsa.game.SquirrelGame.core.board.State loadObject
+SCHWERWIEGEND: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 3180004334054692974, local class serialVersionUID = 354394585490071672
+java.io.InvalidClassException: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 3180004334054692974, local class serialVersionUID = 354394585490071672
+	at java.io.ObjectStreamClass.initNonProxy(Unknown Source)
+	at java.io.ObjectInputStream.readNonProxyDesc(Unknown Source)
+	at java.io.ObjectInputStream.readClassDesc(Unknown Source)
+	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
+	at java.io.ObjectInputStream.readObject0(Unknown Source)
+	at java.io.ObjectInputStream.readObject(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:177)
+	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:84)
+	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:292)
+	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:230)
+	at java.util.TimerThread.mainLoop(Unknown Source)
+	at java.util.TimerThread.run(Unknown Source)
 

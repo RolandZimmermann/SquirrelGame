@@ -26,6 +26,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
+import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.util.XY;
 
 /**
@@ -49,6 +50,8 @@ public class Board {
 	private List<Entity> removeID = new ArrayList<Entity>();
 	private List<Entity> addID = new ArrayList<Entity>();
 	private List<MasterSquirrelBot> bots = new ArrayList<MasterSquirrelBot>();
+	
+	private MaToRoKi best;
 
 	/**
 	 * Create a Board with the given param.
@@ -504,5 +507,13 @@ public class Board {
 		getAddID().add(new MiniSquirrelBot(master, id++, xy, energy, botControllerFacotry));
 		logger.finer("Spawning mini squirrel: " + xy.toString() + energy);
 
+	}
+
+	public MaToRoKi getBest() {
+		return best;
+	}
+	
+	public void setBest(MaToRoKi e) {
+		this.best = e;
 	}
 }

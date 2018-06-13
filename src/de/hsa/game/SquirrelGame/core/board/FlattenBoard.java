@@ -17,6 +17,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
+import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.util.XY;
 
 /**
@@ -442,5 +443,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	public Entity[][] getCells() {
 		return cells;
+	}
+
+	@Override
+	public MaToRoKi getBest() {
+		return database.getBest();
 	}
 }

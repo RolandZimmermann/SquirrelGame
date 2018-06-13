@@ -83,6 +83,7 @@ public abstract class Game {
 				MaToRoKi ki = null;
 				if (state.loadObject() != null && bots == null) {
 					ki = state.loadObject();
+					state.getBoard().setBest(ki);
 					System.out.println("Geladen");
 				}
 				if (bots == null) {
@@ -154,7 +155,7 @@ public abstract class Game {
 				totalfitness += e.fitness;
 			}
 			
-			
+			state.getBoard().setBest((MaToRoKi) best.getBotController());
 
 			bots[0] = (BotControllerFactory) ((MaToRoKi) best.getBotController());
 			System.out.println((((MaToRoKi) best.getBotController()).toString()) + " || " + best.fitness);
