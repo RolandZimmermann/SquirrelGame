@@ -191,7 +191,7 @@ public class State {
 		
 		
 		try {
-			String timeStamp = new SimpleDateFormat("HH_ddMMyy").format(Calendar.getInstance().getTime());
+			String timeStamp = new SimpleDateFormat("ddMMyy_HH").format(Calendar.getInstance().getTime());
 			fos = new FileOutputStream(new File("bots/MaToRoKi"+ timeStamp+".ser"));
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(e);
