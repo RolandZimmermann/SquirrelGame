@@ -22,6 +22,7 @@ import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
+import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
 
 /**
  * A class that knows the board and scores
@@ -132,9 +133,11 @@ public class State {
 	 * called when the programm closes to save every score in a properties file
 	 */
 	public void save() {
-		
+		if(!BoardConfig.OLD_AI && BoardConfig.TRAINING) {
 		saveObject((MaToRoKi) board.getBots().get(0).getBotController());
-
+		} else if (BoardConfig.TRAINING && BoardConfig.OLD_AI){
+			saveObject((MaToRoKiold) board.getBots().get(0).getBotController());
+		}
 		Properties prop = new Properties();
 		OutputStream output = null;
 		try {
@@ -165,6 +168,7 @@ public class State {
 				}
 			}
 		}
+		
 
 	}
 	
@@ -186,6 +190,26 @@ public class State {
 		return e;
 	}
 	
+	public MaToRoKiold loadNN() {
+		MaToRoKiold oldAI = null;
+		
+		try {
+			FileInputStream fis = new FileInputStream(new File("bots/oldbots/MaToRoKiold.ser"));
+			ObjectInputStream in = new ObjectInputStream(fis);
+			Object e =  in.readObject();
+			oldAI = new MaToRoKiold();
+			oldAI.setNn(e);
+			in.close();
+			fis.close();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			logger.log(Level.SEVERE, e1.getMessage(), e1);
+			return null;
+		}
+		
+		return oldAI;
+	}
+	
 	public void saveObject(MaToRoKi e) {
 		OutputStream fos = null;
 		
@@ -204,6 +228,28 @@ public class State {
 			fos.close();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
+			logger.log(Level.SEVERE, e1.getMessage(), e1);
+		}
+	}
+	
+	public void saveObject(MaToRoKiold e) {
+		OutputStream fos = null;
+		
+		
+		
+		try {
+			String timeStamp = new SimpleDateFormat("ddMMyy_HH").format(Calendar.getInstance().getTime());
+			fos = new FileOutputStream(new File("bots/oldbots/MaToRoKiold"+ timeStamp+".ser"));
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(e.getNn());
+			out.close();
+			fos.close();
+			fos = new FileOutputStream(new File("bots/oldbots/MaToRoKiold.ser"));
+			out = new ObjectOutputStream(fos);
+			out.writeObject(e.getNn());
+			out.close();
+			fos.close();
+		} catch (Exception e1) {
 			logger.log(Level.SEVERE, e1.getMessage(), e1);
 		}
 	}

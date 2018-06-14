@@ -39,8 +39,8 @@ public abstract class Game {
 	private EntityContext entityContext;
 	private int FPS = 10000000;
 	private boolean multi = true;
-	private boolean training = true;
-	private boolean oldAI = false;
+	private boolean training = BoardConfig.TRAINING;
+	private boolean oldAI = BoardConfig.OLD_AI;
 	private int gameSteps;
 
 	private int population = 30;
@@ -70,10 +70,20 @@ public abstract class Game {
 			this.state.setBoard(BoardFactory.createBoard());
 		} else {
 			if (oldAI) {
+				MaToRoKiold ki = null;
+				if (state.loadNN() != null && bots == null) {
+					ki = state.loadNN();
+					System.out.println("Geladen");
+				}
 				if (bots == null) {
 					bots = new BotControllerFactory[population];
 					for (int i = 0; i < bots.length; i++) {
-						bots[i] = new MaToRoKiold();
+						if (ki == null) {
+							bots[i] = new MaToRoKiold();
+						} else {
+							bots[i] = ki;
+
+						}
 					}
 				} else {
 
@@ -118,26 +128,25 @@ public abstract class Game {
 	private void selectBots() {
 		if (oldAI) {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
+			MasterSquirrelBot best = oldbots.get(0);
 			for (MasterSquirrelBot e : oldbots) {
-				e.updateEnergy(-1000);
-				if (e.getEnergy() < 0) {
-					e.updateEnergy(-e.getEnergy());
+				e.fitness();
+				if(e.fitness > best.fitness) {
+					best = e;
 				}
 			}
 
-			oldbots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
+			// oldbots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 
-			List<MasterSquirrelBot> newbots = new ArrayList<>();
-			for (MasterSquirrelBot e : oldbots) {
-				for (int i = 0; i < e.getEnergy() + 1; i++) {
-					newbots.add(e);
-				}
-			}
-
+			state.saveObject((MaToRoKiold) best.getBotController());
+			System.out.println("Saved");
+			
 			for (int i = 0; i < population; i++) {
-				MaToRoKiold a = (MaToRoKiold) newbots.get((int) Math.random() * newbots.size()).getBotController();
+				MasterSquirrelBot b = selectParent(oldbots);
+				MaToRoKiold a = (MaToRoKiold) b.getBotController();
 				a.mutate(0.4);
 				bots[i] = (BotControllerFactory) a;
+				System.out.println(b.fitness);
 			}
 		} else {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
@@ -154,7 +163,7 @@ public abstract class Game {
 
 				totalfitness += e.fitness;
 			}
-			
+
 			state.getBoard().setBest((MaToRoKi) best.getBotController());
 
 			bots[0] = (BotControllerFactory) ((MaToRoKi) best.getBotController());
@@ -209,7 +218,7 @@ public abstract class Game {
 			}
 		}
 
-		return oldbots.get((int) (Math.random()*oldbots.size()));
+		return oldbots.get((int) (Math.random() * oldbots.size()));
 	}
 
 	/**

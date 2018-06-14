@@ -27,6 +27,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	BotController masterBotController;
 
 	public int fitness = 0;
+	private int collectedEnergy = 0;
+	private int totalEnergy = 0;
 
 	private int wallCounter = 0;
 
@@ -158,8 +160,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 					}
 				} catch (Exception e) {
 				}
-			} else
-				MasterSquirrelBot.this.fitness -= 200;
+			} 
 			entityContext.tryMove(MasterSquirrelBot.this, direction);
 		}
 
@@ -239,7 +240,6 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		if (this.getEnergy() < 0) {
 			this.updateEnergy(-this.getEnergy());
 		}
-		fitness--;
 		XY oldposition = this.getPositionXY();
 		if (wallCounter == 0) {
 			// masterBotController.nextStep(new ControllerContextImpl(entityContext));
@@ -249,16 +249,19 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			wallCounter--;
 			this.fitness -= 20;
 		}
-		if (this.getPositionXY().x == oldposition.x && this.getPositionXY().y == oldposition.y) {
-			fitness -= 130;
-		} else {
+		if (this.getPositionXY().x != oldposition.x || this.getPositionXY().y != oldposition.y) {
 			fitness += 100;
+		}
+		if(collectedEnergy < this.getEnergy()) {
+			totalEnergy += this.getEnergy() - collectedEnergy;
+			collectedEnergy = this.getEnergy();
+		} else {
+			collectedEnergy = this.getEnergy();
 		}
 	}
 
 	public int fitness() {
-		int score = this.getEnergy();
-		fitness += score - 1000;
+		fitness += totalEnergy - 1000;
 		return fitness;
 	}
 
@@ -269,7 +272,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	@Override
 	public void wallCollison() {
 		wallCounter = 4;
-		this.fitness -= 100;
+		this.fitness -= 10000;
 	}
 
 }

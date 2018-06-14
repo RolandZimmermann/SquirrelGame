@@ -70,6 +70,10 @@ public class BoardConfig {
 	 */
 	public static int GAME_STEPS = 300;
 
+	public static boolean TRAINING = false;
+
+	public static boolean OLD_AI = false;
+
 	public static XY getSize() {
 		return new XY(WIDTH_SIZE, HEIGHT_SIZE);
 	}
@@ -96,6 +100,10 @@ public class BoardConfig {
 			COUNT_BOTS = prop.getProperty("COUNT_BOTS").split(",");
 			GAME_STEPS = Integer.parseInt(prop.getProperty("GAME_STEPS"));
 			WALL_LENGTH = Integer.parseInt(prop.getProperty("WALL_LENGTH"));
+			int training = Integer.parseInt(prop.getProperty("TRAINING"));
+			int oldAI = Integer.parseInt(prop.getProperty("OLD_AI"));
+			TRAINING = training < 1 ? false : true;
+			OLD_AI = oldAI < 1 ? false : true;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

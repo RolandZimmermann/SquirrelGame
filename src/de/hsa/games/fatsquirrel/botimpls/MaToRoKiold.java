@@ -1,5 +1,6 @@
 package de.hsa.games.fatsquirrel.botimpls;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
 import de.hsa.games.fatsquirrel.botapi.BotController;
@@ -11,14 +12,15 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 public class MaToRoKiold implements BotController, BotControllerFactory {
 
-	private NeuralNetwork nn = new NeuralNetwork(961, 500, 500, 17);
+	private NeuralNetwork nn = new NeuralNetwork(963, 500, 500, 500, 500, 17);
 
 	public NeuralNetwork getNn() {
 		return nn;
 	}
 
-	public void setNn(NeuralNetwork nn) {
-		this.nn = nn;
+	public void setNn(Object e) {
+		if (!(e instanceof NeuralNetwork))
+			this.nn = (NeuralNetwork) e;
 	}
 
 	@Override
@@ -42,12 +44,13 @@ public class MaToRoKiold implements BotController, BotControllerFactory {
 
 	@Override
 	public void nextStep(ControllerContext view) {
-		double[][] input = new double[961][1];
+		double[][] input = new double[963][1];
 
 		EntityType entity = EntityType.NONE;
 		XY topleft = new XY(view.getViewLowerLeft().x - 31 / 2, view.getViewUpperRight().y + 31 / 2);
 		XY downright = new XY(view.getViewUpperRight().x + 31 / 2, view.getViewLowerLeft().y - 31 / 2);
 
+		input[962][0] = view.getEnergy();
 		for (int i = topleft.y; i < downright.y; i++) {
 			for (int j = topleft.x; j < downright.x; j++) {
 
@@ -165,11 +168,13 @@ public class MaToRoKiold implements BotController, BotControllerFactory {
 	}
 }
 
-class NeuralNetwork {
+class NeuralNetwork implements Serializable {
 
 	private int inputNodes;
 	private int hiddenNodes;
 	private int hiddenNodes2;
+	private int hiddenNodes3;
+	private int hiddenNodes4;
 	private int outputNodes;
 
 	private double mutationRate;
@@ -177,27 +182,42 @@ class NeuralNetwork {
 	private Matrix weightsIH;
 	private Matrix weightsHH;
 	private Matrix weightsOH;
+	private Matrix weightsHH2;
+	private Matrix weightsHH3;
 	private Matrix biasH;
 	private Matrix biasH2;
+	private Matrix biasH3;
+	private Matrix biasH4;
 	private Matrix biasO;
 
-	public NeuralNetwork(int inputNodes, int hiddenNodes, int hiddenNodes2, int outputNodes) {
+	public NeuralNetwork(int inputNodes, int hiddenNodes, int hiddenNodes2, int hiddenNodes3, int hiddenNodes4,
+			int outputNodes) {
 		this.inputNodes = inputNodes;
 		this.hiddenNodes = hiddenNodes;
 		this.hiddenNodes2 = hiddenNodes2;
+		this.hiddenNodes3 = hiddenNodes3;
+		this.hiddenNodes4 = hiddenNodes4;
 		this.outputNodes = outputNodes;
 
 		this.weightsIH = new Matrix(this.hiddenNodes, this.inputNodes);
 		this.weightsHH = new Matrix(this.hiddenNodes2, this.hiddenNodes);
-		this.weightsOH = new Matrix(this.outputNodes, this.hiddenNodes2);
+		this.weightsHH2 = new Matrix(this.hiddenNodes3, this.hiddenNodes2);
+		this.weightsHH3 = new Matrix(this.hiddenNodes4, this.hiddenNodes3);
+		this.weightsOH = new Matrix(this.outputNodes, this.hiddenNodes4);
 		this.weightsIH.randomize();
 		this.weightsHH.randomize();
+		this.weightsHH2.randomize();
+		this.weightsHH3.randomize();
 		this.weightsOH.randomize();
 		this.biasH = new Matrix(this.hiddenNodes, 1);
 		this.biasH2 = new Matrix(this.hiddenNodes2, 1);
+		this.biasH3 = new Matrix(this.hiddenNodes3, 1);
+		this.biasH4 = new Matrix(this.hiddenNodes4, 1);
 		this.biasO = new Matrix(this.outputNodes, 1);
 		this.biasH.randomize();
 		this.biasH2.randomize();
+		this.biasH3.randomize();
+		this.biasH4.randomize();
 		this.biasO.randomize();
 	}
 
@@ -205,6 +225,8 @@ class NeuralNetwork {
 		this.inputNodes = neuralNetwork.inputNodes;
 		this.hiddenNodes = neuralNetwork.hiddenNodes;
 		this.hiddenNodes2 = neuralNetwork.hiddenNodes2;
+		this.hiddenNodes3 = neuralNetwork.hiddenNodes3;
+		this.hiddenNodes4 = neuralNetwork.hiddenNodes4;
 		this.outputNodes = neuralNetwork.outputNodes;
 
 		this.weightsIH = new Matrix(neuralNetwork.weightsIH);
@@ -213,36 +235,50 @@ class NeuralNetwork {
 
 		this.biasH = new Matrix(neuralNetwork.biasH);
 		this.biasH2 = new Matrix(neuralNetwork.biasH2);
+		this.biasH3 = new Matrix(neuralNetwork.biasH3);
+		this.biasH4 = new Matrix(neuralNetwork.biasH4);
 		this.biasO = new Matrix(neuralNetwork.biasO);
 	}
 
 	public Matrix feedforward(Matrix input) {
 		Matrix hidden = null;
 		Matrix hidden2 = null;
+		Matrix hidden3 = null;
+
+		// 1.HiddenLayer
 		try {
 			hidden = Matrix.multiply(this.weightsIH, input);
 			hidden.addMatrix(this.biasH);
 			hidden.map(this::sigmoid);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		// 2.HiddenLayer
 		try {
 			hidden2 = Matrix.multiply(this.weightsHH, hidden);
-			hidden2.addMatrix(this.biasH);
+			hidden2.addMatrix(this.biasH2);
 			hidden2.map(this::sigmoid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		// 3.HiddenLayer
+		try {
+			hidden3 = Matrix.multiply(this.weightsHH2, hidden2);
+			hidden3.addMatrix(this.biasH3);
+			hidden3.map(this::sigmoid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// 4.HiddenLayer
 		Matrix output = null;
 		try {
-			output = Matrix.multiply(this.weightsOH, hidden2);
+			output = Matrix.multiply(this.weightsOH, hidden3);
 			output.addMatrix(this.biasH);
 			output.map(this::sigmoid);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -256,10 +292,14 @@ class NeuralNetwork {
 
 		this.weightsIH.map(this::mutation);
 		this.weightsHH.map(this::mutation);
+		this.weightsHH2.map(this::mutation);
+		this.weightsHH3.map(this::mutation);
 		this.weightsOH.map(this::mutation);
 		this.biasH.map(this::mutation);
 		this.biasO.map(this::mutation);
 		this.biasH2.map(this::mutation);
+		this.biasH3.map(this::mutation);
+		this.biasH4.map(this::mutation);
 	}
 
 	public double sigmoid(Double x) {
@@ -276,7 +316,7 @@ class NeuralNetwork {
 
 }
 
-class Matrix {
+class Matrix implements Serializable {
 
 	private int rows;
 	private int cols;
