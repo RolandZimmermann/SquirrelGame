@@ -129,18 +129,24 @@ public abstract class Game {
 		if (oldAI) {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
 			MasterSquirrelBot best = oldbots.get(0);
+			float totalfitness = 0;
 			for (MasterSquirrelBot e : oldbots) {
 				e.fitness();
-				if(e.fitness > best.fitness) {
+				if (e.fitness < 0) {
+					e.fitness = 0;
+				}
+				if (e.fitness > best.fitness) {
 					best = e;
 				}
+				
+				totalfitness += e.fitness;
 			}
 
 			// oldbots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 
 			state.saveObject((MaToRoKiold) best.getBotController());
 			System.out.println("Saved");
-			
+
 			for (int i = 0; i < population; i++) {
 				MasterSquirrelBot b = selectParent(oldbots);
 				MaToRoKiold a = (MaToRoKiold) b.getBotController();
@@ -148,6 +154,8 @@ public abstract class Game {
 				bots[i] = (BotControllerFactory) a;
 				System.out.println(b.fitness);
 			}
+			
+			System.out.println("TotalFitness: " + totalfitness);
 		} else {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
 
@@ -156,6 +164,10 @@ public abstract class Game {
 
 			for (MasterSquirrelBot e : oldbots) {
 				e.fitness();
+
+				if (e.fitness < 0) {
+					e.fitness = 0;
+				}
 
 				if (best.fitness < e.fitness) {
 					best = e;
@@ -170,6 +182,7 @@ public abstract class Game {
 			System.out.println((((MaToRoKi) best.getBotController()).toString()) + " || " + best.fitness);
 			state.saveObject((MaToRoKi) best.getBotController());
 			System.out.println("SAVED");
+			System.out.println("TotalFitness: " + totalfitness );
 
 			for (int i = 1; i < population; i++) {
 
