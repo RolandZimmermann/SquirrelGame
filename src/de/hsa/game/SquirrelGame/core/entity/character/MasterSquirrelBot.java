@@ -1,6 +1,7 @@
 package de.hsa.game.SquirrelGame.core.entity.character;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
+import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
@@ -144,7 +145,6 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		public void move(XY direction) {
 
 			if (direction != XY.ZERO_ZERO) {
-				MasterSquirrelBot.this.fitness += 100;
 				try {
 					EntityType collision = getEntityAt(direction);
 					if (collision == EntityType.BAD_BEAST) {
@@ -160,7 +160,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 					}
 				} catch (Exception e) {
 				}
-			} 
+			}
 			entityContext.tryMove(MasterSquirrelBot.this, direction);
 		}
 
@@ -249,10 +249,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			wallCounter--;
 			this.fitness -= 20;
 		}
-		if (this.getPositionXY().x != oldposition.x || this.getPositionXY().y != oldposition.y) {
-			fitness += 100;
-		}
-		if(collectedEnergy < this.getEnergy()) {
+		if (collectedEnergy < this.getEnergy()) {
 			totalEnergy += this.getEnergy() - collectedEnergy;
 			collectedEnergy = this.getEnergy();
 		} else {
@@ -261,8 +258,9 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	}
 
 	public int fitness() {
-		fitness += totalEnergy - 1000;
-		return fitness;
+		fitness += (totalEnergy)/3;
+		fitness += (this.getEnergy()-1000)*3;
+		return (fitness / BoardConfig.GAME_STEPS);
 	}
 
 	public Object getBotController() {
@@ -273,6 +271,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 	public void wallCollison() {
 		wallCounter = 4;
 		this.fitness -= 10000;
+		this.totalEnergy = 0;
 	}
 
 }

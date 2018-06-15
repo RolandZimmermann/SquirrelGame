@@ -73,6 +73,14 @@ public class BoardConfig {
 	public static boolean TRAINING = false;
 
 	public static boolean OLD_AI = false;
+	
+	public static boolean MULTI_THREAD = true;
+	
+	public static int FPS = 1;
+	
+	public static int CELL_SIZE = 32;
+	
+	public static boolean WITH_BOTS = true;
 
 	public static XY getSize() {
 		return new XY(WIDTH_SIZE, HEIGHT_SIZE);
@@ -104,6 +112,12 @@ public class BoardConfig {
 			int oldAI = Integer.parseInt(prop.getProperty("OLD_AI"));
 			TRAINING = training < 1 ? false : true;
 			OLD_AI = oldAI < 1 ? false : true;
+			FPS = Integer.parseInt(prop.getProperty("FPS"));
+			int multithread = Integer.parseInt(prop.getProperty("MULTI_THREAD"));
+			MULTI_THREAD = multithread < 1 ? false : true;
+			CELL_SIZE = Integer.parseInt(prop.getProperty("CELL_SIZE"));
+			int withBots  = Integer.parseInt(prop.getProperty("WITH_BOTS"));
+			WITH_BOTS = withBots < 1 ? false : true;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

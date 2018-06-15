@@ -1,15 +1,13 @@
-Jun 13, 2018 8:44:57 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 354394585490071672, local class serialVersionUID = 3180004334054692974
-java.io.InvalidClassException: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 354394585490071672, local class serialVersionUID = 3180004334054692974
-	at java.io.ObjectStreamClass.initNonProxy(Unknown Source)
-	at java.io.ObjectInputStream.readNonProxyDesc(Unknown Source)
-	at java.io.ObjectInputStream.readClassDesc(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:177)
-	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:84)
-	at de.hsa.game.SquirrelGame.general.Game.<init>(Game.java:62)
+Jun 15, 2018 12:31:33 PM de.hsa.game.SquirrelGame.core.board.Board <init>
+SCHWERWIEGEND: de.hsa.games.fatsquirrel.botimpls.0
+java.lang.ClassNotFoundException: de.hsa.games.fatsquirrel.botimpls.0
+	at java.net.URLClassLoader.findClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.board.Board.<init>(Board.java:168)
+	at de.hsa.game.SquirrelGame.core.board.BoardFactory.createBoard(BoardFactory.java:19)
+	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:69)
+	at de.hsa.game.SquirrelGame.general.Game.<init>(Game.java:61)
 	at de.hsa.game.SquirrelGame.general.GameImpl.<init>(GameImpl.java:13)
 	at de.hsa.game.SquirrelGame.general.Launcher.start(Launcher.java:132)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
@@ -22,19 +20,17 @@ java.io.InvalidClassException: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local
 	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
 	at java.lang.Thread.run(Unknown Source)
 
-Jun 13, 2018 8:45:01 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 354394585490071672, local class serialVersionUID = 3180004334054692974
-java.io.InvalidClassException: de.hsa.games.fatsquirrel.botimpls.MaToRoKi; local class incompatible: stream classdesc serialVersionUID = 354394585490071672, local class serialVersionUID = 3180004334054692974
-	at java.io.ObjectStreamClass.initNonProxy(Unknown Source)
-	at java.io.ObjectInputStream.readNonProxyDesc(Unknown Source)
-	at java.io.ObjectInputStream.readClassDesc(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:177)
-	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:84)
-	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:292)
-	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:230)
+Jun 15, 2018 12:31:40 PM de.hsa.game.SquirrelGame.core.board.Board <init>
+SCHWERWIEGEND: de.hsa.games.fatsquirrel.botimpls.0
+java.lang.ClassNotFoundException: de.hsa.games.fatsquirrel.botimpls.0
+	at java.net.URLClassLoader.findClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.board.Board.<init>(Board.java:168)
+	at de.hsa.game.SquirrelGame.core.board.BoardFactory.createBoard(BoardFactory.java:19)
+	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:69)
+	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:311)
+	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:250)
 	at java.util.TimerThread.mainLoop(Unknown Source)
 	at java.util.TimerThread.run(Unknown Source)
 

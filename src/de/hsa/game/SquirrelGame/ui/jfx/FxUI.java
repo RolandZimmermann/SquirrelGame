@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
+import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
@@ -44,7 +45,7 @@ public class FxUI extends Scene implements UI {
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
-	private static final int CELL_SIZE = 4;
+	private static final int CELL_SIZE = BoardConfig.CELL_SIZE;
 	private static MoveCommand moveCommand;
 	private static boolean render = true;
 

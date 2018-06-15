@@ -37,12 +37,11 @@ public abstract class Game {
 	private UI ui;
 	private BoardView boardView;
 	private EntityContext entityContext;
-	private int FPS = 10000000;
-	private boolean multi = true;
+	private int FPS = BoardConfig.FPS;
+	private boolean multi = BoardConfig.MULTI_THREAD;
 	private boolean training = BoardConfig.TRAINING;
 	private boolean oldAI = BoardConfig.OLD_AI;
 	private int gameSteps;
-
 	private int population = 30;
 	private BotControllerFactory[] bots;
 
@@ -119,7 +118,6 @@ public abstract class Game {
 		this.boardView = flattenBoard;
 		this.entityContext = flattenBoard;
 		state.getBoard().setBoardView(this.boardView);
-
 	}
 
 	/**
@@ -296,7 +294,6 @@ public abstract class Game {
 	 */
 	public void processInput() {
 		moveCommand = ui.getCommand();
-
 	}
 
 	/**
@@ -317,7 +314,6 @@ public abstract class Game {
 
 	public State getState() {
 		return this.state;
-
 	}
 
 }

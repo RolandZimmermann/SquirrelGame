@@ -45,6 +45,8 @@ public class Board {
 	private BoardView boardView;
 
 	private int id;
+	
+	private boolean withBots = BoardConfig.WITH_BOTS;
 
 	private List<Entity> entitySet = new ArrayList<Entity>();
 	private List<Entity> removeID = new ArrayList<Entity>();
@@ -149,6 +151,10 @@ public class Board {
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < bots.length; i++) {
+			
+			if(!withBots) {
+				break;
+			}
 
 			URL[] urls = null;
 			try {
