@@ -48,6 +48,7 @@ public class FxUI extends Scene implements UI {
 	private static final int CELL_SIZE = BoardConfig.CELL_SIZE;
 	private static MoveCommand moveCommand;
 	private static boolean render = true;
+	private static boolean moreinfo = false;
 
 	private static Image sprWall;
 	private static Image sprGoodPlant;
@@ -182,6 +183,9 @@ public class FxUI extends Scene implements UI {
 				case F:
 					render = !render;
 					break;
+				case M:
+					moreinfo = !moreinfo;
+					break;
 				default:
 					break;
 
@@ -259,12 +263,18 @@ public class FxUI extends Scene implements UI {
 							System.out.println(sprMasterSquirrel);
 							gc.drawImage(sprMasterSquirrel, x, y);
 						}
+						if(moreinfo) {
+							gc.strokeRect(x-(CELL_SIZE*31)/2, y-(CELL_SIZE*31)/2, CELL_SIZE*31, CELL_SIZE*31);
+						}
 					} else if (entity instanceof MiniSquirrel) {
 						if (sprMiniSquirrel.isError()) {
 							gc.setFill(Color.BLUEVIOLET);
 							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 						} else {
 							gc.drawImage(sprMiniSquirrel, x, y);
+						}
+						if(moreinfo) {
+							gc.strokeOval(x-(CELL_SIZE*10)/2, y-(CELL_SIZE*10)/2, CELL_SIZE*10, CELL_SIZE*10);
 						}
 					} else {
 						if (sprEmpty.isError()) {

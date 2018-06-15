@@ -59,6 +59,7 @@ public abstract class Game {
 		this.gameSteps = 0;
 
 		init();
+		state.load();
 	}
 
 	/**
@@ -66,7 +67,11 @@ public abstract class Game {
 	 */
 	private void init() {
 		if (!training) {
-			this.state.setBoard(BoardFactory.createBoard());
+			if (BoardConfig.WITH_BOTS) {
+				this.state.setBoard(BoardFactory.createBoard());
+			} else {
+				this.state.setBoard(BoardFactory.createPlayerBoard());
+			}
 		} else {
 			if (oldAI) {
 				MaToRoKiold ki = null;
@@ -92,7 +97,7 @@ public abstract class Game {
 				MaToRoKi ki = null;
 				if (state.loadObject() != null && bots == null) {
 					ki = state.loadObject();
-					state.getBoard().setBest(ki);
+					//state.getBoard().setBest(ki);
 					System.out.println("Geladen");
 				}
 				if (bots == null) {
@@ -108,6 +113,7 @@ public abstract class Game {
 				} else {
 					selectBots();
 				}
+
 			}
 			this.state.setBoard(BoardFactory.createTrainingBoard(bots));
 			this.state.load();
@@ -136,7 +142,7 @@ public abstract class Game {
 				if (e.fitness > best.fitness) {
 					best = e;
 				}
-				
+
 				totalfitness += e.fitness;
 			}
 
@@ -152,7 +158,7 @@ public abstract class Game {
 				bots[i] = (BotControllerFactory) a;
 				System.out.println(b.fitness);
 			}
-			
+
 			System.out.println("TotalFitness: " + totalfitness);
 		} else {
 			List<MasterSquirrelBot> oldbots = state.getBoard().getBots();
@@ -180,7 +186,7 @@ public abstract class Game {
 			System.out.println((((MaToRoKi) best.getBotController()).toString()) + " || " + best.fitness);
 			state.saveObject((MaToRoKi) best.getBotController());
 			System.out.println("SAVED");
-			System.out.println("TotalFitness: " + totalfitness );
+			System.out.println("TotalFitness: " + totalfitness);
 
 			for (int i = 1; i < population; i++) {
 

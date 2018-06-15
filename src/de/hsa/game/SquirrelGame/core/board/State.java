@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
@@ -37,9 +38,7 @@ public class State {
 
 	private Logger logger = Logger.getLogger(State.class.getName());
 
-	public State(Board board) {
-		this.board = board;
-		load();
+	public State() {
 	}
 
 	public void update(MoveCommand moveCommand, EntityContext entityContext) {
@@ -63,79 +62,136 @@ public class State {
 	}
 
 	/**
-	 * called everytime the game ends and a new one starts
-	 * handels the scores of the game
+	 * called everytime the game ends and a new one starts handels the scores of the
+	 * game
 	 */
 	public void restart() {
-		List<MasterSquirrelBot> bots = board.getBots();
-		for (MasterSquirrelBot e : bots) {
-			if (e.getEnergy() < 0) {
-				e.updateEnergy(-e.getEnergy());
+		if (BoardConfig.WITH_BOTS) {
+			List<MasterSquirrelBot> bots = board.getBots();
+			for (MasterSquirrelBot e : bots) {
+				if (e.getEnergy() < 0) {
+					e.updateEnergy(-e.getEnergy());
+				}
+
+				map.get(e.getBotController().getClass().getName()).add(e.getEnergy());
+
+				int score = e.getEnergy();
+				if (score > highscore) {
+					highscore = score;
+				}
 			}
 
-			map.get(e.getBotController().getClass().getName()).add(e.getEnergy());
+			bots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 
-			int score = e.getEnergy();
-			if (score > highscore) {
-				highscore = score;
+			System.out.println("Bot-Scores:");
+			logger.info("Bot-Scores:");
+			for (MasterSquirrelBot bot : bots) {
+				System.out.println(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
+				logger.info(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
 			}
-		}
+			System.out.println("Highscore: " + highscore);
+			logger.info("Highcore: " + highscore);
+			System.out.println();
+		} else {
+			List<HandOperatedMasterSquirrel> player = board.getPlayer();
+			for (HandOperatedMasterSquirrel e : player) {
+				if (e.getEnergy() < 0) {
+					e.updateEnergy(-e.getEnergy());
+				}
 
-		bots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
-		
-		System.out.println("Bot-Scores:");
-		logger.info("Bot-Scores:");
-		for (MasterSquirrelBot bot : bots) {
-			System.out.println(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
-			logger.info(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
+				map.get(e.getName()).add(e.getEnergy());
+				int score = e.getEnergy();
+				if (score > highscore) {
+					highscore = score;
+				}
+			}
+			player.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
+
+			System.out.println("Player-Scores:");
+			logger.info("Player-Scores:");
+			for (HandOperatedMasterSquirrel e : player) {
+				System.out.println(e.getName() + "\t\t| Score:" + e.getEnergy());
+				logger.info(e.getName() + "\t\t| Score:" + e.getEnergy());
+			}
+			System.out.println("Highscore: " + highscore);
+			logger.info("Highcore: " + highscore);
+			System.out.println();
 		}
-		System.out.println("Highscore: " + highscore);
-		logger.info("Highcore: " + highscore);
-		System.out.println();
 	}
-	
+
 	/**
-	 * called when starting the game first time to load the score from a properties file
+	 * called when starting the game first time to load the score from a properties
+	 * file
 	 */
 	public void load() {
-		List<MasterSquirrelBot> e = board.getBots();
-		for (MasterSquirrelBot i : e) {
-			map.put(i.getBotController().getClass().getName(), new ArrayList<Integer>());
-		}
-		Properties prop = new Properties();
-		InputStream input = null;
+		if (BoardConfig.WITH_BOTS) {
+			List<MasterSquirrelBot> e = board.getBots();
+			for (MasterSquirrelBot i : e) {
+				map.put(i.getBotController().getClass().getName(), new ArrayList<Integer>());
+			}
+			Properties prop = new Properties();
+			InputStream input = null;
 
-		try {
-			input = new FileInputStream("ressource/configs/highscore.properties");
-			prop.load(input);
-			highscore = Integer.parseInt(prop.getProperty("highscore"));
+			try {
+				input = new FileInputStream("ressource/configs/highscore.properties");
+				prop.load(input);
+				highscore = Integer.parseInt(prop.getProperty("highscore"));
 
-		} catch (IOException o) {
-			// TODO Auto-generated catch block
+			} catch (IOException o) {
+				// TODO Auto-generated catch block
 
-			logger.log(Level.SEVERE, o.getMessage(), o);
-			;
-		} finally {
+				logger.log(Level.SEVERE, o.getMessage(), o);
 
-			if (input != null) {
+			} finally {
 
-				try {
-					input.close();
-				} catch (IOException o) {
-					logger.log(Level.SEVERE, o.getMessage(), o);
+				if (input != null) {
+
+					try {
+						input.close();
+					} catch (IOException o) {
+						logger.log(Level.SEVERE, o.getMessage(), o);
+					}
+				}
+			}
+		} else {
+			List<HandOperatedMasterSquirrel> player = board.getPlayer();
+			for (HandOperatedMasterSquirrel i : player) {
+				map.put(i.getName(), new ArrayList<Integer>());
+			}
+			Properties prop = new Properties();
+			InputStream input = null;
+
+			try {
+				input = new FileInputStream("ressource/configs/highscorePlayer.properties");
+				prop.load(input);
+				highscore = Integer.parseInt(prop.getProperty("highscore"));
+
+			} catch (IOException o) {
+				// TODO Auto-generated catch block
+
+				logger.log(Level.SEVERE, o.getMessage(), o);
+
+			} finally {
+
+				if (input != null) {
+
+					try {
+						input.close();
+					} catch (IOException o) {
+						logger.log(Level.SEVERE, o.getMessage(), o);
+					}
 				}
 			}
 		}
-
 	}
 
 	/**
 	 * called when the programm closes to save every score in a properties file
 	 */
 	public void save() {
-		if(!BoardConfig.OLD_AI && BoardConfig.TRAINING) {
-		saveObject((MaToRoKi) board.getBots().get(0).getBotController());
-		} else if (BoardConfig.TRAINING && BoardConfig.OLD_AI){
+		if (!BoardConfig.OLD_AI && BoardConfig.TRAINING) {
+			saveObject((MaToRoKi) board.getBots().get(0).getBotController());
+		} else if (BoardConfig.TRAINING && BoardConfig.OLD_AI) {
 			saveObject((MaToRoKiold) board.getBots().get(0).getBotController());
 		}
 		Properties prop = new Properties();
@@ -168,13 +224,12 @@ public class State {
 				}
 			}
 		}
-		
 
 	}
-	
+
 	public MaToRoKi loadObject() {
 		MaToRoKi e = null;
-		
+
 		try {
 			FileInputStream fis = new FileInputStream(new File("bots/MaToRoKi.ser"));
 			ObjectInputStream in = new ObjectInputStream(fis);
@@ -186,17 +241,17 @@ public class State {
 			logger.log(Level.SEVERE, e1.getMessage(), e1);
 			return null;
 		}
-		
+
 		return e;
 	}
-	
+
 	public MaToRoKiold loadNN() {
 		MaToRoKiold oldAI = null;
-		
+
 		try {
 			FileInputStream fis = new FileInputStream(new File("bots/oldbots/MaToRoKiold.ser"));
 			ObjectInputStream in = new ObjectInputStream(fis);
-			Object e =  in.readObject();
+			Object e = in.readObject();
 			oldAI = new MaToRoKiold();
 			oldAI.setNn(e);
 			in.close();
@@ -206,17 +261,16 @@ public class State {
 			logger.log(Level.SEVERE, e1.getMessage(), e1);
 			return null;
 		}
-		
+
 		return oldAI;
 	}
-	
+
 	public void saveObject(MaToRoKi e) {
 		OutputStream fos = null;
-		
-		
+
 		try {
 			String timeStamp = new SimpleDateFormat("ddMMyy_HH").format(Calendar.getInstance().getTime());
-			fos = new FileOutputStream(new File("bots/MaToRoKi"+ timeStamp+".ser"));
+			fos = new FileOutputStream(new File("bots/MaToRoKi" + timeStamp + ".ser"));
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(e);
 			out.close();
@@ -231,15 +285,13 @@ public class State {
 			logger.log(Level.SEVERE, e1.getMessage(), e1);
 		}
 	}
-	
+
 	public void saveObject(MaToRoKiold e) {
 		OutputStream fos = null;
-		
-		
-		
+
 		try {
 			String timeStamp = new SimpleDateFormat("ddMMyy_HH").format(Calendar.getInstance().getTime());
-			fos = new FileOutputStream(new File("bots/oldbots/MaToRoKiold"+ timeStamp+".ser"));
+			fos = new FileOutputStream(new File("bots/oldbots/MaToRoKiold" + timeStamp + ".ser"));
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(e.getNn());
 			out.close();

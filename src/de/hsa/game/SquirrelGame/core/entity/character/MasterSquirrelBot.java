@@ -249,12 +249,12 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			wallCounter--;
 			this.fitness -= 20;
 		}
-		if (collectedEnergy < this.getEnergy()) {
-			totalEnergy += this.getEnergy() - collectedEnergy;
-			collectedEnergy = this.getEnergy();
-		} else {
-			collectedEnergy = this.getEnergy();
-		}
+//		if (collectedEnergy < this.getEnergy()) {
+//			totalEnergy += this.getEnergy() - collectedEnergy;
+//			collectedEnergy = this.getEnergy();
+//		} else {
+//			collectedEnergy = this.getEnergy();
+//		}
 	}
 
 	public int fitness() {

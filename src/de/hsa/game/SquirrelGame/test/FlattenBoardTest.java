@@ -48,7 +48,7 @@ public class FlattenBoardTest {
 	
 
 		testBoard = BoardFactory.createBoard();
-		testBoard.spawnMiniSquirrel(new HandOperatedMasterSquirrel(22, new XY(23, 23)), new XY(2, 1), 100);
+		testBoard.spawnMiniSquirrel(new HandOperatedMasterSquirrel(22, new XY(23, 23), "test"), new XY(2, 1), 100);
 		newtestflattenboard = spy(new FlattenBoard(testBoard));
 
 		// doesnt work with a mock system. need a prepared full board
@@ -79,7 +79,7 @@ public class FlattenBoardTest {
 	@Test
 	public void testTryMoveMiniSquirrelXY() {
 
-		newtestflattenboard.tryMove(new MiniSquirrel(10, new XY(1, 1), 100, new HandOperatedMasterSquirrel(99, new XY(32,32))), new XY(1, 0));
+		newtestflattenboard.tryMove(new MiniSquirrel(10, new XY(1, 1), 100, new HandOperatedMasterSquirrel(99, new XY(32,32), "test")), new XY(1, 0));
 		verify(newtestflattenboard).tryMove(any(MiniSquirrel.class), any(XY.class));
 		verify(newtestflattenboard).checkCollision(any(Entity.class), any(XY.class));
 	}
@@ -100,7 +100,7 @@ public class FlattenBoardTest {
 
 	@Test
 	public void testTryMoveMasterSquirrelXY() {
-		newtestflattenboard.tryMove(new HandOperatedMasterSquirrel(10, new XY(1, 1)), new XY(1, 0));
+		newtestflattenboard.tryMove(new HandOperatedMasterSquirrel(10, new XY(1, 1), "test"), new XY(1, 0));
 		verify(newtestflattenboard).tryMove(any(HandOperatedMasterSquirrel.class), any(XY.class));
 		verify(newtestflattenboard).checkCollision(any(Entity.class), any(XY.class));
 	}
@@ -143,7 +143,7 @@ public class FlattenBoardTest {
 		
 		//Exception even without mocks???
 		
-		newtestflattenboard.impload(new MiniSquirrel(30, new XY(1, 1), 100, new HandOperatedMasterSquirrel(21, new XY(52, 34))), 3);
+		newtestflattenboard.impload(new MiniSquirrel(30, new XY(1, 1), 100, new HandOperatedMasterSquirrel(21, new XY(52, 34), "test")), 3);
 		verify(newtestflattenboard).impload(any(MiniSquirrel.class), any(int.class));
 		verify(newtestflattenboard, atLeastOnce()).getCells();
 	}

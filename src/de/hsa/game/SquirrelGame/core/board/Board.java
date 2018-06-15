@@ -45,13 +45,12 @@ public class Board {
 	private BoardView boardView;
 
 	private int id;
-	
-	private boolean withBots = BoardConfig.WITH_BOTS;
 
 	private List<Entity> entitySet = new ArrayList<Entity>();
 	private List<Entity> removeID = new ArrayList<Entity>();
 	private List<Entity> addID = new ArrayList<Entity>();
 	private List<MasterSquirrelBot> bots = new ArrayList<MasterSquirrelBot>();
+	private List<HandOperatedMasterSquirrel> player = new ArrayList<HandOperatedMasterSquirrel>();
 	
 	private MaToRoKi best;
 
@@ -78,15 +77,14 @@ public class Board {
 	 *            an array of names for the bots
 	 */
 	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
-			int countGoodBeast, int countHandOperatedMastersquirrel, int countWall, String[] bots) {
+			int countGoodBeast, int countWall, String[] bots) {
 
 		logger.finer("Initialising");
 
 		this.BOARD_HEIGHT = boardHeight;
 		this.BOARD_WIDTH = boardWidth;
 
-		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
-				+ bots.length;
+		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + bots.length;
 
 		List<XY> setpositions = new ArrayList<XY>();
 
@@ -145,16 +143,8 @@ public class Board {
 			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
-
-		for (int i = 0; i < countHandOperatedMastersquirrel; i++) {
-			getEntitySet().add(new HandOperatedMasterSquirrel(id++, randomlocations.get(0)));
-			randomlocations.remove(0);
-		}
+		
 		for (int i = 0; i < bots.length; i++) {
-			
-			if(!withBots) {
-				break;
-			}
 
 			URL[] urls = null;
 			try {
@@ -200,38 +190,15 @@ public class Board {
 
 	}
 
-	/**
-	 * Create a Board with the given param (used for training a neural net).
-	 * 
-	 * @param boardWidth
-	 *            the width of the board
-	 * @param boardHeight
-	 *            the Height of the board
-	 * @param countBadPlant
-	 *            the amount of bad plants in the game
-	 * @param countGoodPlant
-	 *            the amount of the good plants in the game
-	 * @param countBadBeast
-	 *            the amount of the bad beasts in the game
-	 * @param countGoodBeast
-	 *            the amount of the good beasts in the game
-	 * @param countHandOperatedMastersquirrel
-	 *            the amount of the squirrels controlled by the player
-	 * @param countWall
-	 *            the amount of wallstructures in the game
-	 * @param bots
-	 *            an array of botcontrollerfactorys to be placed in the game
-	 */
 	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
-			int countGoodBeast, int countHandOperatedMastersquirrel, int countWall, BotControllerFactory[] bots) {
+			int countGoodBeast, int handOperatedMasterSquirrel, int countWall, String[] name) {
 
-		logger.finer("Initialising Training Board");
+		logger.finer("Initialising");
 
 		this.BOARD_HEIGHT = boardHeight;
 		this.BOARD_WIDTH = boardWidth;
 
-		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countHandOperatedMastersquirrel
-				+ bots.length;
+		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + handOperatedMasterSquirrel;
 
 		List<XY> setpositions = new ArrayList<XY>();
 
@@ -290,8 +257,118 @@ public class Board {
 			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
-		for (int i = 0; i < countHandOperatedMastersquirrel; i++) {
-			getEntitySet().add(new HandOperatedMasterSquirrel(id++, randomlocations.get(0)));
+		
+		for (int i = 0; i < handOperatedMasterSquirrel; i++) {
+			
+			HandOperatedMasterSquirrel e = new HandOperatedMasterSquirrel(id++, randomlocations.get(0), name[i]);
+			
+			getEntitySet().add(e);
+			getPlayer().add(e);
+			randomlocations.remove(0);
+		}
+
+		for (int i = 0; i < boardHeight; i++) {
+			getEntitySet().add(new Wall(id++, new XY(0, i)));
+		}
+		for (int i = 0; i < boardWidth; i++) {
+			getEntitySet().add(new Wall(id++, new XY(i, 0)));
+		}
+		for (int i = boardHeight; i > 0; i--) {
+			getEntitySet().add(new Wall(id++, new XY(boardWidth - 1, i - 1)));
+		}
+		for (int i = boardWidth; i > 0; i--) {
+			getEntitySet().add(new Wall(id++, new XY(i - 1, boardHeight - 1)));
+		}
+
+	}
+
+	/**
+	 * Create a Board with the given param (used for training a neural net).
+	 * 
+	 * @param boardWidth
+	 *            the width of the board
+	 * @param boardHeight
+	 *            the Height of the board
+	 * @param countBadPlant
+	 *            the amount of bad plants in the game
+	 * @param countGoodPlant
+	 *            the amount of the good plants in the game
+	 * @param countBadBeast
+	 *            the amount of the bad beasts in the game
+	 * @param countGoodBeast
+	 *            the amount of the good beasts in the game
+	 * @param countHandOperatedMastersquirrel
+	 *            the amount of the squirrels controlled by the player
+	 * @param countWall
+	 *            the amount of wallstructures in the game
+	 * @param bots
+	 *            an array of botcontrollerfactorys to be placed in the game
+	 */
+	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
+			int countGoodBeast, int countWall, BotControllerFactory[] bots) {
+
+		logger.finer("Initialising Training Board");
+
+		this.BOARD_HEIGHT = boardHeight;
+		this.BOARD_WIDTH = boardWidth;
+
+		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + bots.length;
+
+		List<XY> setpositions = new ArrayList<XY>();
+
+		for (int i = 0; i < countWall; i++) {
+			ArrayList<XY> start = generateRandomLocations(1, null);
+
+			Random a = new Random();
+			int randomX = 0;
+			int randomY = 0;
+			switch (a.nextInt(4)) {
+			case 0:
+				randomX = 1;
+				randomY = 0;
+				break;
+			case 1:
+				randomX = 0;
+				randomY = 1;
+				break;
+			case 2:
+				randomX = -1;
+				randomY = 0;
+				break;
+			case 3:
+				randomX = 0;
+				randomY = -1;
+				break;
+			}
+
+			for (int j = 0; j < BoardConfig.WALL_LENGTH; j++) {
+				XY newXY = new XY(start.get(0).x + randomX * j, start.get(0).y + randomY * j);
+				if (newXY.x < 1 || newXY.y < 1 || newXY.x > BOARD_WIDTH - 1 || newXY.y > BOARD_HEIGHT - 1) {
+					continue;
+				}
+				getEntitySet().add(new Wall(id++, newXY));
+				setpositions.add(newXY);
+			}
+		}
+
+		List<XY> randomlocations = generateRandomLocations(counter, setpositions);
+
+		for (int i = 0; i < countBadPlant; i++) {
+			getEntitySet().add(new BadPlant(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+
+		for (int i = 0; i < countGoodPlant; i++) {
+			getEntitySet().add(new GoodPlant(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+
+		for (int i = 0; i < countBadBeast; i++) {
+			getEntitySet().add(new BadBeast(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for (int i = 0; i < countGoodBeast; i++) {
+			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
 		for (int i = 0; i < bots.length; i++) {
@@ -491,6 +568,11 @@ public class Board {
 	public List<MasterSquirrelBot> getBots() {
 		return bots;
 	}
+	
+	public List<HandOperatedMasterSquirrel> getPlayer() {
+		return player;
+	}
+
 
 	public String toString() {
 		return entitySet.toString();

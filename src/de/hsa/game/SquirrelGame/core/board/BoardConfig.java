@@ -81,6 +81,8 @@ public class BoardConfig {
 	public static int CELL_SIZE = 32;
 	
 	public static boolean WITH_BOTS = true;
+	
+	public static String[] NAME = {"PLAYER1", "PLAYER2"};
 
 	public static XY getSize() {
 		return new XY(WIDTH_SIZE, HEIGHT_SIZE);
@@ -118,6 +120,7 @@ public class BoardConfig {
 			CELL_SIZE = Integer.parseInt(prop.getProperty("CELL_SIZE"));
 			int withBots  = Integer.parseInt(prop.getProperty("WITH_BOTS"));
 			WITH_BOTS = withBots < 1 ? false : true;
+			NAME = prop.getProperty("NAME").split(",");
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

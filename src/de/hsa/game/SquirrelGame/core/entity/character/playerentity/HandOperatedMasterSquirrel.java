@@ -14,6 +14,7 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 
     private MoveCommand move;
     private int wallCounter = 0;
+    private String name;
 
     /**
      * Create a HandOperatedMasterSquirrel with the given parameter
@@ -23,8 +24,9 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
      * @param position
      *            The position of the MasterSquirrel.
      */
-    public HandOperatedMasterSquirrel(int id, XY position) {
+    public HandOperatedMasterSquirrel(int id, XY position, String name) {
         super(id, position);
+        this.name = name;
     }
 
     /**
@@ -94,6 +96,10 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
     */
     public void wallCollison() {
         wallCounter = 4;
+    }
+    
+    public String getName() {
+    	return this.name;
     }
 
 }

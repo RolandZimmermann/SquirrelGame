@@ -27,7 +27,6 @@ import javafx.stage.WindowEvent;
  */
 public class Launcher extends Application {
 
-    private static Board board = BoardFactory.createBoard();
 
     private static Game game;
 
@@ -48,7 +47,7 @@ public class Launcher extends Application {
 
         if (gameMode == GameMode.CONSOLE) {
             logger.info("Starting Console Mode");
-            game = new GameImpl(new State(board), new ConsoleUI());
+            game = new GameImpl(new State(), new ConsoleUI());
             startGame(game);
         } else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
             Application.launch(args);
@@ -64,7 +63,7 @@ public class Launcher extends Application {
     private static void start3dGame(Stage primaryStage) {
         Fx3dUI fxUI = Fx3dUI.createInstance(BoardConfig.getSize());
 
-        game = new GameImpl(new State(board), fxUI);
+        game = new GameImpl(new State(), fxUI);
         primaryStage.setScene(fxUI);
         primaryStage.setTitle("MaToRo");
         fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -129,7 +128,7 @@ public class Launcher extends Application {
 
         primaryStage.show();
 
-        game = new GameImpl(new State(board), fxUI);
+        game = new GameImpl(new State(), fxUI);
 
         startGame(game);
     }
