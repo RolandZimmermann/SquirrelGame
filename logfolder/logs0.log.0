@@ -1,27 +1,9 @@
-Jun 15, 2018 2:55:20 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: invalid type code: 00
-java.io.StreamCorruptedException: invalid type code: 00
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at java.util.ArrayList.readObject(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at java.io.ObjectStreamClass.invokeReadObject(Unknown Source)
-	at java.io.ObjectInputStream.readSerialData(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.defaultReadFields(Unknown Source)
-	at java.io.ObjectInputStream.readSerialData(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.defaultReadFields(Unknown Source)
-	at java.io.ObjectInputStream.readSerialData(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:236)
+Jun 15, 2018 9:20:17 PM de.hsa.game.SquirrelGame.core.board.State loadObject
+SCHWERWIEGEND: invalid stream header: 00000000
+java.io.StreamCorruptedException: invalid stream header: 00000000
+	at java.io.ObjectInputStream.readStreamHeader(Unknown Source)
+	at java.io.ObjectInputStream.<init>(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:235)
 	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:98)
 	at de.hsa.game.SquirrelGame.general.Game.<init>(Game.java:61)
 	at de.hsa.game.SquirrelGame.general.GameImpl.<init>(GameImpl.java:13)
@@ -36,29 +18,12 @@ java.io.StreamCorruptedException: invalid type code: 00
 	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
 	at java.lang.Thread.run(Unknown Source)
 
-Jun 15, 2018 2:55:26 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: invalid type code: 00
-java.io.StreamCorruptedException: invalid type code: 00
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at java.util.ArrayList.readObject(Unknown Source)
-	at sun.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at java.io.ObjectStreamClass.invokeReadObject(Unknown Source)
-	at java.io.ObjectInputStream.readSerialData(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.defaultReadFields(Unknown Source)
-	at java.io.ObjectInputStream.readSerialData(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.defaultReadFields(Unknown Source)
-	at java.io.ObjectInputStream.readSerialData(Unknown Source)
-	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:236)
+Jun 15, 2018 9:20:23 PM de.hsa.game.SquirrelGame.core.board.State loadObject
+SCHWERWIEGEND: invalid stream header: 00000000
+java.io.StreamCorruptedException: invalid stream header: 00000000
+	at java.io.ObjectInputStream.readStreamHeader(Unknown Source)
+	at java.io.ObjectInputStream.<init>(Unknown Source)
+	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:235)
 	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:98)
 	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:317)
 	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:256)
