@@ -79,7 +79,7 @@ public class Launcher extends Application {
         startGame(game);
 
     }
-/**
+/**	
  * starts game
  * @param game
  */

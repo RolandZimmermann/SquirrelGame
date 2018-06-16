@@ -270,7 +270,7 @@ public class State {
 
 		try {
 			String timeStamp = new SimpleDateFormat("ddMMyy_HH").format(Calendar.getInstance().getTime());
-			fos = new FileOutputStream(new File("bots/MaToRoKi" + timeStamp + ".ser"));
+			fos = new FileOutputStream(new File("bots/MaToRoKinew" + timeStamp + ".ser"));
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(e);
 			out.close();
