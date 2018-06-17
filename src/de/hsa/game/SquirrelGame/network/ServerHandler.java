@@ -78,8 +78,6 @@ public class ServerHandler {
 			if(events != null) {
 				for(String k : events) {
 					event.put(connections.get(i), k);
-					System.out.println(event.size());
-					System.out.println(k);
 				}
 			}
 		}
@@ -88,5 +86,4 @@ public class ServerHandler {
 	public Vector<ServerConnection> getConnections() {
 		return this.connections;
 	}
-
 }

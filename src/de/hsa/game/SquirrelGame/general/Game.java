@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +20,7 @@ import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
+import de.hsa.game.SquirrelGame.network.ServerConnection;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
@@ -44,6 +46,7 @@ public abstract class Game {
 	private int gameSteps;
 	private int population = 30;
 	private BotControllerFactory[] bots;
+	private Vector<ServerConnection> serverConnections;
 
 	private MoveCommand moveCommand = null;
 
@@ -53,20 +56,26 @@ public abstract class Game {
 	 * @param state
 	 * @param ui
 	 */
-	public Game(State state, UI ui) {
+	public Game(State state, UI ui, Vector<ServerConnection> serverConnections) {
 		this.state = state;
 		this.ui = ui;
 		this.gameSteps = 0;
-
+		this.serverConnections = serverConnections;
 		init();
 		state.load();
+	}
+
+	public int getGameSteps() {
+		return this.gameSteps;
 	}
 
 	/**
 	 * initialize the board
 	 */
 	private void init() {
-		if (!training) {
+		if (BoardConfig.MULTIPLAYER_MODUS) {
+			this.state.setBoard(BoardFactory.createMultiplayerBoard(serverConnections));
+		} else if (!training) {
 			if (BoardConfig.WITH_BOTS) {
 				this.state.setBoard(BoardFactory.createBoard());
 			} else {
@@ -97,7 +106,7 @@ public abstract class Game {
 				MaToRoKi ki = null;
 				if (state.loadObject() != null && bots == null) {
 					ki = state.loadObject();
-					//state.getBoard().setBest(ki);
+					// state.getBoard().setBest(ki);
 					System.out.println("Geladen");
 				}
 				if (bots == null) {
@@ -292,14 +301,18 @@ public abstract class Game {
 	 * renders ui
 	 */
 	public void render() {
-		ui.render(boardView);
+		if (ui != null) {
+			ui.render(boardView);
+		}
 	}
 
 	/**
 	 * set the {@code moveCommand}
 	 */
 	public void processInput() {
-		moveCommand = ui.getCommand();
+		if (ui != null) {
+			moveCommand = ui.getCommand();
+		}
 	}
 
 	/**
@@ -310,7 +323,9 @@ public abstract class Game {
 			state.update(moveCommand, entityContext);
 			boardView.update();
 			moveCommand = null;
-			ui.message("Gamerounds left: " + gameSteps);
+			if (ui != null) {
+				ui.message("Gamerounds left: " + gameSteps);
+			}
 			gameSteps--;
 		} else {
 			this.state.restart();

@@ -40,7 +40,6 @@ public class ServerConnection implements Runnable {
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.writeObject(new Message(Header.CHAT,"HALLO"));
 		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		shouldRun = true;

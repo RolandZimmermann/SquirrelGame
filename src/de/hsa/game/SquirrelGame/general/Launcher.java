@@ -11,6 +11,7 @@ import de.hsa.game.SquirrelGame.core.board.BoardFactory;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.game.SquirrelGame.log.GameLogger;
+import de.hsa.game.SquirrelGame.network.Multiplayer;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.jfx.Fx3dUI;
 import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
@@ -30,7 +31,7 @@ public class Launcher extends Application {
 
     private static Game game;
 
-    private static final GameMode gameMode = GameMode.JFX;
+    private static final GameMode gameMode = GameMode.MULTIPLAYER;
 
     private static Logger logger = Logger.getLogger(Launcher.class.getName());
 
@@ -44,10 +45,16 @@ public class Launcher extends Application {
         BoardConfig.load();
         GameLogger.init();
         logger.info("START");
+        if(gameMode == GameMode.MULTIPLAYER) {
+        	Multiplayer multiplayer = new Multiplayer();
+        	multiplayer.go(args);
+        	return;
+        }
+        
 
         if (gameMode == GameMode.CONSOLE) {
             logger.info("Starting Console Mode");
-            game = new GameImpl(new State(), new ConsoleUI());
+            game = new GameImpl(new State(), new ConsoleUI(), null);
             startGame(game);
         } else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
             Application.launch(args);
@@ -63,7 +70,7 @@ public class Launcher extends Application {
     private static void start3dGame(Stage primaryStage) {
         Fx3dUI fxUI = Fx3dUI.createInstance(BoardConfig.getSize());
 
-        game = new GameImpl(new State(), fxUI);
+        game = new GameImpl(new State(), fxUI, null);
         primaryStage.setScene(fxUI);
         primaryStage.setTitle("MaToRo");
         fxUI.getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -128,7 +135,7 @@ public class Launcher extends Application {
 
         primaryStage.show();
 
-        game = new GameImpl(new State(), fxUI);
+        game = new GameImpl(new State(), fxUI, null);
 
         startGame(game);
     }

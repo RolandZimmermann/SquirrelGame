@@ -66,56 +66,58 @@ public class State {
 	 * game
 	 */
 	public void restart() {
-		if (BoardConfig.WITH_BOTS) {
-			List<MasterSquirrelBot> bots = board.getBots();
-			for (MasterSquirrelBot e : bots) {
-				if (e.getEnergy() < 0) {
-					e.updateEnergy(-e.getEnergy());
+		if (!BoardConfig.MULTIPLAYER_MODUS) {
+			if (BoardConfig.WITH_BOTS) {
+				List<MasterSquirrelBot> bots = board.getBots();
+				for (MasterSquirrelBot e : bots) {
+					if (e.getEnergy() < 0) {
+						e.updateEnergy(-e.getEnergy());
+					}
+
+					map.get(e.getBotController().getClass().getName()).add(e.getEnergy());
+
+					int score = e.getEnergy();
+					if (score > highscore) {
+						highscore = score;
+					}
 				}
 
-				map.get(e.getBotController().getClass().getName()).add(e.getEnergy());
+				bots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 
-				int score = e.getEnergy();
-				if (score > highscore) {
-					highscore = score;
+				System.out.println("Bot-Scores:");
+				logger.info("Bot-Scores:");
+				for (MasterSquirrelBot bot : bots) {
+					System.out.println(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
+					logger.info(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
 				}
-			}
+				System.out.println("Highscore: " + highscore);
+				logger.info("Highcore: " + highscore);
+				System.out.println();
+			} else {
+				List<HandOperatedMasterSquirrel> player = board.getPlayer();
+				for (HandOperatedMasterSquirrel e : player) {
+					if (e.getEnergy() < 0) {
+						e.updateEnergy(-e.getEnergy());
+					}
 
-			bots.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
-
-			System.out.println("Bot-Scores:");
-			logger.info("Bot-Scores:");
-			for (MasterSquirrelBot bot : bots) {
-				System.out.println(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
-				logger.info(bot.getBotController().getClass().getName() + "| Score:" + bot.getEnergy());
-			}
-			System.out.println("Highscore: " + highscore);
-			logger.info("Highcore: " + highscore);
-			System.out.println();
-		} else {
-			List<HandOperatedMasterSquirrel> player = board.getPlayer();
-			for (HandOperatedMasterSquirrel e : player) {
-				if (e.getEnergy() < 0) {
-					e.updateEnergy(-e.getEnergy());
+					map.get(e.getName()).add(e.getEnergy());
+					int score = e.getEnergy();
+					if (score > highscore) {
+						highscore = score;
+					}
 				}
+				player.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 
-				map.get(e.getName()).add(e.getEnergy());
-				int score = e.getEnergy();
-				if (score > highscore) {
-					highscore = score;
+				System.out.println("Player-Scores:");
+				logger.info("Player-Scores:");
+				for (HandOperatedMasterSquirrel e : player) {
+					System.out.println(e.getName() + "\t\t| Score:" + e.getEnergy());
+					logger.info(e.getName() + "\t\t| Score:" + e.getEnergy());
 				}
+				System.out.println("Highscore: " + highscore);
+				logger.info("Highcore: " + highscore);
+				System.out.println();
 			}
-			player.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
-
-			System.out.println("Player-Scores:");
-			logger.info("Player-Scores:");
-			for (HandOperatedMasterSquirrel e : player) {
-				System.out.println(e.getName() + "\t\t| Score:" + e.getEnergy());
-				logger.info(e.getName() + "\t\t| Score:" + e.getEnergy());
-			}
-			System.out.println("Highscore: " + highscore);
-			logger.info("Highcore: " + highscore);
-			System.out.println();
 		}
 	}
 
@@ -124,61 +126,62 @@ public class State {
 	 * file
 	 */
 	public void load() {
-		if (BoardConfig.WITH_BOTS) {
-			List<MasterSquirrelBot> e = board.getBots();
-			for (MasterSquirrelBot i : e) {
-				map.put(i.getBotController().getClass().getName(), new ArrayList<Integer>());
-			}
-			Properties prop = new Properties();
-			InputStream input = null;
+		if (!BoardConfig.MULTIPLAYER_MODUS) {
+			if (BoardConfig.WITH_BOTS) {
+				List<MasterSquirrelBot> e = board.getBots();
+				for (MasterSquirrelBot i : e) {
+					map.put(i.getBotController().getClass().getName(), new ArrayList<Integer>());
+				}
+				Properties prop = new Properties();
+				InputStream input = null;
 
-			try {
-				input = new FileInputStream("ressource/configs/highscore.properties");
-				prop.load(input);
-				highscore = Integer.parseInt(prop.getProperty("highscore"));
+				try {
+					input = new FileInputStream("ressource/configs/highscore.properties");
+					prop.load(input);
+					highscore = Integer.parseInt(prop.getProperty("highscore"));
 
-			} catch (IOException o) {
-				// TODO Auto-generated catch block
+				} catch (IOException o) {
 
-				logger.log(Level.SEVERE, o.getMessage(), o);
+					logger.log(Level.SEVERE, o.getMessage(), o);
 
-			} finally {
+				} finally {
 
-				if (input != null) {
+					if (input != null) {
 
-					try {
-						input.close();
-					} catch (IOException o) {
-						logger.log(Level.SEVERE, o.getMessage(), o);
+						try {
+							input.close();
+						} catch (IOException o) {
+							logger.log(Level.SEVERE, o.getMessage(), o);
+						}
 					}
 				}
-			}
-		} else {
-			List<HandOperatedMasterSquirrel> player = board.getPlayer();
-			for (HandOperatedMasterSquirrel i : player) {
-				map.put(i.getName(), new ArrayList<Integer>());
-			}
-			Properties prop = new Properties();
-			InputStream input = null;
+			} else {
+				List<HandOperatedMasterSquirrel> player = board.getPlayer();
+				for (HandOperatedMasterSquirrel i : player) {
+					map.put(i.getName(), new ArrayList<Integer>());
+				}
+				Properties prop = new Properties();
+				InputStream input = null;
 
-			try {
-				input = new FileInputStream("ressource/configs/highscorePlayer.properties");
-				prop.load(input);
-				highscore = Integer.parseInt(prop.getProperty("highscore"));
+				try {
+					input = new FileInputStream("ressource/configs/highscorePlayer.properties");
+					prop.load(input);
+					highscore = Integer.parseInt(prop.getProperty("highscore"));
 
-			} catch (IOException o) {
-				// TODO Auto-generated catch block
+				} catch (IOException o) {
+					// TODO Auto-generated catch block
 
-				logger.log(Level.SEVERE, o.getMessage(), o);
+					logger.log(Level.SEVERE, o.getMessage(), o);
 
-			} finally {
+				} finally {
 
-				if (input != null) {
+					if (input != null) {
 
-					try {
-						input.close();
-					} catch (IOException o) {
-						logger.log(Level.SEVERE, o.getMessage(), o);
+						try {
+							input.close();
+						} catch (IOException o) {
+							logger.log(Level.SEVERE, o.getMessage(), o);
+						}
 					}
 				}
 			}
@@ -189,42 +192,43 @@ public class State {
 	 * called when the programm closes to save every score in a properties file
 	 */
 	public void save() {
-		if (!BoardConfig.OLD_AI && BoardConfig.TRAINING) {
-			saveObject((MaToRoKi) board.getBots().get(0).getBotController());
-		} else if (BoardConfig.TRAINING && BoardConfig.OLD_AI) {
-			saveObject((MaToRoKiold) board.getBots().get(0).getBotController());
-		}
-		Properties prop = new Properties();
-		OutputStream output = null;
-		try {
-			output = new FileOutputStream("ressource/configs/highscore.properties");
-			List<MasterSquirrelBot> bots = board.getBots();
-			for (MasterSquirrelBot e : bots) {
-
-				prop.setProperty(e.getBotController().getClass().getName(),
-						map.get(e.getBotController().getClass().getName()).toString());
+		if (!BoardConfig.MULTIPLAYER_MODUS) {
+			if (!BoardConfig.OLD_AI && BoardConfig.TRAINING) {
+				saveObject((MaToRoKi) board.getBots().get(0).getBotController());
+			} else if (BoardConfig.TRAINING && BoardConfig.OLD_AI) {
+				saveObject((MaToRoKiold) board.getBots().get(0).getBotController());
 			}
-			prop.setProperty("highscore", Integer.toString(highscore));
+			Properties prop = new Properties();
+			OutputStream output = null;
+			try {
+				output = new FileOutputStream("ressource/configs/highscore.properties");
+				List<MasterSquirrelBot> bots = board.getBots();
+				for (MasterSquirrelBot e : bots) {
 
-			prop.store(output, null);
+					prop.setProperty(e.getBotController().getClass().getName(),
+							map.get(e.getBotController().getClass().getName()).toString());
+				}
+				prop.setProperty("highscore", Integer.toString(highscore));
 
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			e.printStackTrace();
+				prop.store(output, null);
 
-		} finally {
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, e.getMessage(), e);
+				e.printStackTrace();
 
-			if (output != null) {
+			} finally {
 
-				try {
+				if (output != null) {
 
-					output.close();
-				} catch (IOException e) {
-					logger.log(Level.SEVERE, e.getMessage(), e);
+					try {
+
+						output.close();
+					} catch (IOException e) {
+						logger.log(Level.SEVERE, e.getMessage(), e);
+					}
 				}
 			}
 		}
-
 	}
 
 	public MaToRoKi loadObject() {

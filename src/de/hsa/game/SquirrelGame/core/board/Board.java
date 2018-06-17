@@ -6,6 +6,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ import de.hsa.game.SquirrelGame.core.entity.character.Character;
 import de.hsa.game.SquirrelGame.core.entity.character.GoodBeast;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.core.entity.character.MiniSquirrelBot;
+import de.hsa.game.SquirrelGame.core.entity.character.MultiplayerMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MiniSquirrel;
@@ -25,8 +27,11 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
+import de.hsa.game.SquirrelGame.network.ServerConnection;
+import de.hsa.game.SquirrelGame.network.View;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
+import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
 /**
@@ -51,7 +56,8 @@ public class Board {
 	private List<Entity> addID = new ArrayList<Entity>();
 	private List<MasterSquirrelBot> bots = new ArrayList<MasterSquirrelBot>();
 	private List<HandOperatedMasterSquirrel> player = new ArrayList<HandOperatedMasterSquirrel>();
-	
+	private Vector<MultiplayerMasterSquirrel> multiplayer = new Vector<>();
+
 	private MaToRoKi best;
 
 	/**
@@ -143,7 +149,7 @@ public class Board {
 			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
-		
+
 		for (int i = 0; i < bots.length; i++) {
 
 			URL[] urls = null;
@@ -257,11 +263,11 @@ public class Board {
 			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
 			randomlocations.remove(0);
 		}
-		
+
 		for (int i = 0; i < handOperatedMasterSquirrel; i++) {
-			
+
 			HandOperatedMasterSquirrel e = new HandOperatedMasterSquirrel(id++, randomlocations.get(0), name[i]);
-			
+
 			getEntitySet().add(e);
 			getPlayer().add(e);
 			randomlocations.remove(0);
@@ -393,6 +399,112 @@ public class Board {
 			getEntitySet().add(new Wall(id++, new XY(i - 1, boardHeight - 1)));
 		}
 
+	}
+
+	/**
+	 * for muliplayer mode
+	 * 
+	 * @param boardWidth
+	 * @param boardHeight
+	 * @param countBadPlant
+	 * @param countGoodPlant
+	 * @param countBadBeast
+	 * @param countGoodBeast
+	 * @param countWall
+	 * @param serverConnections
+	 */
+	public Board(int boardWidth, int boardHeight, int countBadPlant, int countGoodPlant, int countBadBeast,
+			int countGoodBeast, int countWall, Vector<ServerConnection> serverConnections) {
+
+		logger.finer("Initialising Training Board");
+
+		this.BOARD_HEIGHT = boardHeight;
+		this.BOARD_WIDTH = boardWidth;
+
+		int countMultiplayer = serverConnections.size();
+
+		int counter = countBadPlant + countGoodPlant + countBadBeast + countGoodBeast + countMultiplayer;
+
+		List<XY> setpositions = new ArrayList<XY>();
+
+		for (int i = 0; i < countWall; i++) {
+			ArrayList<XY> start = generateRandomLocations(1, null);
+
+			Random a = new Random();
+			int randomX = 0;
+			int randomY = 0;
+			switch (a.nextInt(4)) {
+			case 0:
+				randomX = 1;
+				randomY = 0;
+				break;
+			case 1:
+				randomX = 0;
+				randomY = 1;
+				break;
+			case 2:
+				randomX = -1;
+				randomY = 0;
+				break;
+			case 3:
+				randomX = 0;
+				randomY = -1;
+				break;
+			}
+
+			for (int j = 0; j < BoardConfig.WALL_LENGTH; j++) {
+				XY newXY = new XY(start.get(0).x + randomX * j, start.get(0).y + randomY * j);
+				if (newXY.x < 1 || newXY.y < 1 || newXY.x > BOARD_WIDTH - 1 || newXY.y > BOARD_HEIGHT - 1) {
+					continue;
+				}
+				getEntitySet().add(new Wall(id++, newXY));
+				setpositions.add(newXY);
+			}
+		}
+
+		List<XY> randomlocations = generateRandomLocations(counter, setpositions);
+
+		for (int i = 0; i < countBadPlant; i++) {
+			getEntitySet().add(new BadPlant(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+
+		for (int i = 0; i < countGoodPlant; i++) {
+			getEntitySet().add(new GoodPlant(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+
+		for (int i = 0; i < countBadBeast; i++) {
+			getEntitySet().add(new BadBeast(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for (int i = 0; i < countGoodBeast; i++) {
+			getEntitySet().add(new GoodBeast(id++, randomlocations.get(0)));
+			randomlocations.remove(0);
+		}
+		for (int i = 0; i < countMultiplayer; i++) {
+
+			MultiplayerMasterSquirrel msq = new MultiplayerMasterSquirrel(id++, randomlocations.get(0),
+					serverConnections.get(0));
+
+			getEntitySet().add(msq);
+			randomlocations.remove(0);
+			serverConnections.remove(0);
+			getMultiplayer().add(msq);
+		}
+
+		for (int i = 0; i < boardHeight; i++) {
+			getEntitySet().add(new Wall(id++, new XY(0, i)));
+		}
+		for (int i = 0; i < boardWidth; i++) {
+			getEntitySet().add(new Wall(id++, new XY(i, 0)));
+		}
+		for (int i = boardHeight; i > 0; i--) {
+			getEntitySet().add(new Wall(id++, new XY(boardWidth - 1, i - 1)));
+		}
+		for (int i = boardWidth; i > 0; i--) {
+			getEntitySet().add(new Wall(id++, new XY(i - 1, boardHeight - 1)));
+		}
 	}
 
 	/**
@@ -568,11 +680,14 @@ public class Board {
 	public List<MasterSquirrelBot> getBots() {
 		return bots;
 	}
-	
+
 	public List<HandOperatedMasterSquirrel> getPlayer() {
 		return player;
 	}
 
+	public Vector<MultiplayerMasterSquirrel> getMultiplayer() {
+		return this.multiplayer;
+	}
 
 	public String toString() {
 		return entitySet.toString();
@@ -600,8 +715,45 @@ public class Board {
 	public MaToRoKi getBest() {
 		return best;
 	}
-	
+
 	public void setBest(MaToRoKi e) {
 		this.best = e;
+	}
+
+	public View generateView(ServerConnection sc) {
+		EntityType[][] entityType = new EntityType[32][32];
+		for (MultiplayerMasterSquirrel msq : multiplayer) {
+			if (msq.getServerConnection() == sc) {
+				for (int y = msq.getPositionXY().y - 15; y < msq.getPositionXY().y + 15; y++) {
+					for (int x = msq.getPositionXY().x - 15; x < msq.getPositionXY().x + 15; x++) {
+						if (y > 0 && y < boardView.getSize().y && x > 0 && x < boardView.getSize().y) {
+							Entity entity = boardView.getEntityType(x, y);
+							if (entity instanceof Wall) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.WALL;
+							} else if (entity instanceof GoodPlant) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.GOOD_PLANT;
+							} else if (entity instanceof GoodBeast) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.GOOD_BEAST;
+							} else if (entity instanceof BadBeast) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.BAD_BEAST;
+							} else if (entity instanceof BadPlant) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.BAD_PLANT;
+							} else if (entity instanceof MasterSquirrel) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)]= EntityType.MASTER_SQUIRREL;
+							} else if (entity instanceof MiniSquirrel) {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.MINI_SQUIRREL;
+							} else {
+								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.NONE;
+							}
+						} else {
+							entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.NONE;
+						}
+					}
+				}
+				return new View(entityType);
+			}
+		}
+
+		return null;
 	}
 }

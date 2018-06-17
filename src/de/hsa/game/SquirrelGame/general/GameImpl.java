@@ -1,6 +1,10 @@
 package de.hsa.game.SquirrelGame.general;
 
+import java.util.List;
+import java.util.Vector;
+
 import de.hsa.game.SquirrelGame.core.board.State;
+import de.hsa.game.SquirrelGame.network.ServerConnection;
 import de.hsa.game.SquirrelGame.ui.UI;
 /**
  * implements abstract class game
@@ -9,8 +13,8 @@ import de.hsa.game.SquirrelGame.ui.UI;
  */
 public class GameImpl extends Game {
 
-	public GameImpl(State state, UI ui) {
-		super(state, ui);
+	public GameImpl(State state, UI ui, Vector<ServerConnection> serverConnections) {
+		super(state, ui, serverConnections);
 	}
 
 }

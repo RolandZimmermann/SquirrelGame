@@ -1,32 +1,8 @@
-Jun 15, 2018 9:20:17 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: invalid stream header: 00000000
-java.io.StreamCorruptedException: invalid stream header: 00000000
-	at java.io.ObjectInputStream.readStreamHeader(Unknown Source)
-	at java.io.ObjectInputStream.<init>(Unknown Source)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:235)
-	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:98)
-	at de.hsa.game.SquirrelGame.general.Game.<init>(Game.java:61)
-	at de.hsa.game.SquirrelGame.general.GameImpl.<init>(GameImpl.java:13)
-	at de.hsa.game.SquirrelGame.general.Launcher.start(Launcher.java:131)
-	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
-	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$175(PlatformImpl.java:326)
-	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at com.sun.javafx.application.PlatformImpl.lambda$runLater$174(PlatformImpl.java:294)
-	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
-	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
-	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
-	at java.lang.Thread.run(Unknown Source)
-
-Jun 15, 2018 9:20:23 PM de.hsa.game.SquirrelGame.core.board.State loadObject
-SCHWERWIEGEND: invalid stream header: 00000000
-java.io.StreamCorruptedException: invalid stream header: 00000000
-	at java.io.ObjectInputStream.readStreamHeader(Unknown Source)
-	at java.io.ObjectInputStream.<init>(Unknown Source)
-	at de.hsa.game.SquirrelGame.core.board.State.loadObject(State.java:235)
-	at de.hsa.game.SquirrelGame.general.Game.init(Game.java:98)
-	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:317)
-	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:256)
+Jun 18, 2018 12:39:07 AM de.hsa.game.SquirrelGame.general.Game$1 run
+SCHWERWIEGEND: sleep interrupted
+java.lang.InterruptedException: sleep interrupted
+	at java.lang.Thread.sleep(Native Method)
+	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:267)
 	at java.util.TimerThread.mainLoop(Unknown Source)
 	at java.util.TimerThread.run(Unknown Source)
 

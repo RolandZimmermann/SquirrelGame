@@ -106,7 +106,6 @@ public class TestClient extends Application{
 		update.setOnAction(e -> {
 			Vector<String> chatMessanges = client.getChatMessage();
 			for(String s : chatMessanges) {
-				System.out.println(s);
 				if (textAreaCount < 100) {
 					textArea.setText(textArea.getText() + "\n" + s);
 					textAreaCount++;
@@ -118,19 +117,44 @@ public class TestClient extends Application{
 			textArea.appendText("");
 			
 			this.view = client.getView();
+			if(this.view == null) {
+				return;
+			}
 			
 			GraphicsContext gc = canvas.getGraphicsContext2D();
+			gc.setFill(Color.BLACK);
 			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-			gc.setFill(Color.DARKOLIVEGREEN);
+			
 			int CELL_HEIGHT = (int) (canvas.getHeight()/31);
 			int CELL_WIDTH = (int) (canvas.getWidth()/31);
 			
 			for(int y = 0; y < canvas.getHeight(); y+=CELL_HEIGHT) {
 				for(int x = 0; x < canvas.getWidth(); x+=CELL_WIDTH) {
 					EntityType entityType = view.getEntityAt(new XY(x/CELL_WIDTH,y/CELL_HEIGHT));
-					if(entityType == null) {
+					if(entityType == EntityType.NONE) {
 						gc.setFill(Color.DARKOLIVEGREEN);
 						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.WALL) {
+						gc.setFill(Color.ORANGE);
+						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.BAD_BEAST) {
+						gc.setFill(Color.RED);
+						gc.fillOval(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.BAD_PLANT) {
+						gc.setFill(Color.DARKRED);
+						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.GOOD_BEAST) {
+						gc.setFill(Color.LIGHTGREEN);
+						gc.fillOval(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.GOOD_PLANT) {
+						gc.setFill(Color.LIMEGREEN);
+						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.MASTER_SQUIRREL) {
+						gc.setFill(Color.HOTPINK);
+						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+					} else if(entityType == EntityType.MINI_SQUIRREL) {
+						gc.setFill(Color.PURPLE);
+						gc.fillOval(x, y, CELL_WIDTH, CELL_HEIGHT);
 					}
 				}
 			}
@@ -146,7 +170,6 @@ public class TestClient extends Application{
 		
 		scene.setOnKeyPressed(e -> {
 			client.setMessage(new Message(Header.ACTION, e.getCode().getName()));
-			
 		});
 		
 		return scene;

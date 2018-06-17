@@ -1,5 +1,9 @@
 package de.hsa.game.SquirrelGame.core.board;
 
+import java.util.List;
+import java.util.Vector;
+
+import de.hsa.game.SquirrelGame.network.ServerConnection;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 
 /**
@@ -38,6 +42,12 @@ public class BoardFactory {
 		return new Board(BoardConfig.WIDTH_SIZE, BoardConfig.HEIGHT_SIZE, BoardConfig.COUNT_BADPLANT,
 				BoardConfig.COUNT_GOODPLANT, BoardConfig.COUNT_BADBEAST, BoardConfig.COUNT_GOODBEAST,
 				BoardConfig.COUNT_WALL, bots);
+	}
+
+	public static Board createMultiplayerBoard(Vector<ServerConnection> serverConnection) {
+		return new Board(BoardConfig.WIDTH_SIZE, BoardConfig.HEIGHT_SIZE, BoardConfig.COUNT_BADPLANT,
+				BoardConfig.COUNT_GOODPLANT, BoardConfig.COUNT_BADBEAST, BoardConfig.COUNT_GOODBEAST,
+				BoardConfig.COUNT_WALL, serverConnection);
 	}
 
 }

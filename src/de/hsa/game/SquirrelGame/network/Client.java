@@ -126,7 +126,6 @@ public class Client implements Runnable {
 				messageIn = (Message) in.readObject();
 				if(messageIn.getHeader() == Header.CHAT) {
 					chatMessages.add((String) messageIn.getObject());
-					System.out.println("NEW MESSAGE");
 				}
 				if(messageIn.getHeader() == Header.UPDATE) {
 					view = (View) messageIn.getObject();
