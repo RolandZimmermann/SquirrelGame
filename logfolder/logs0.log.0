@@ -1,4 +1,4 @@
-Jun 16, 2018 7:19:46 PM de.hsa.game.SquirrelGame.core.board.State loadObject
+Jun 17, 2018 10:36:20 AM de.hsa.game.SquirrelGame.core.board.State loadObject
 SCHWERWIEGEND: bots\MaToRoKi.ser (Das System kann die angegebene Datei nicht finden)
 java.io.FileNotFoundException: bots\MaToRoKi.ser (Das System kann die angegebene Datei nicht finden)
 	at java.io.FileInputStream.open0(Native Method)
@@ -19,7 +19,7 @@ java.io.FileNotFoundException: bots\MaToRoKi.ser (Das System kann die angegebene
 	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
 	at java.lang.Thread.run(Unknown Source)
 
-Jun 16, 2018 7:19:52 PM de.hsa.game.SquirrelGame.core.board.State loadObject
+Jun 17, 2018 10:36:25 AM de.hsa.game.SquirrelGame.core.board.State loadObject
 SCHWERWIEGEND: bots\MaToRoKi.ser (Das System kann die angegebene Datei nicht finden)
 java.io.FileNotFoundException: bots\MaToRoKi.ser (Das System kann die angegebene Datei nicht finden)
 	at java.io.FileInputStream.open0(Native Method)

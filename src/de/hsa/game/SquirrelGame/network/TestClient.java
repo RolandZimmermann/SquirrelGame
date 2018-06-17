@@ -1,0 +1,154 @@
+package de.hsa.game.SquirrelGame.network;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
+
+import de.hsa.game.SquirrelGame.network.Message.Header;
+import de.hsa.games.fatsquirrel.core.EntityType;
+import de.hsa.games.fatsquirrel.util.XY;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+public class TestClient extends Application{
+	
+	Client client = new Client("localhost", 4242);
+	Thread thread = new Thread(client);
+	Button update;
+	
+	private int textAreaCount;
+	private View view;
+	
+	public static void main(String[] args) {
+		Application.launch(args);		
+		}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Scene newScene = createScene();
+		thread.start();
+		
+		primaryStage.setScene(newScene);
+		primaryStage.show();
+		primaryStage.setTitle("CLIENT");
+		
+		primaryStage.setOnCloseRequest(e -> {
+			client.setMessage(new Message(Header.CHAT, "DISCONNECTED!"));
+			client = null;
+			for (Thread threads : Thread.getAllStackTraces().keySet()) {
+				threads.interrupt();
+				threads = null;
+			}
+		});
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				while (true) {
+					update.fire();
+				}
+			}
+		}, 1000);
+		
+		client.setMessage(new Message(Header.CHAT, "*CONNECTED*"));
+	}
+
+	private Scene createScene() {
+		AnchorPane root = new AnchorPane();
+		TextArea textArea = new TextArea();
+		TextField input = new TextField();
+		Button update = new Button();
+		Label label = new Label("Chat:");
+		
+		Canvas canvas = new Canvas(1260, 450);
+		
+		this.update = update;
+		
+		AnchorPane.setBottomAnchor(label, 15d);
+		AnchorPane.setLeftAnchor(label, 10d);
+		AnchorPane.setLeftAnchor(input, 50d);
+		AnchorPane.setBottomAnchor(input, 10d);
+		AnchorPane.setBottomAnchor(textArea, 50d);
+		AnchorPane.setLeftAnchor(canvas, 10d);
+		AnchorPane.setRightAnchor(canvas, 10d);
+		AnchorPane.setTopAnchor(canvas, 10d);
+		AnchorPane.setBottomAnchor(canvas, 450d);
+		root.getChildren().addAll(textArea,input,label,canvas);
+		
+		Scene scene = new Scene(root, 1280, 720);
+		
+		textArea.textProperty().addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+				textArea.setScrollTop(Double.MAX_VALUE); // this will scroll to the bottom
+				// use Double.MIN_VALUE to scroll to the top
+			}
+		});
+		
+		textArea.setPrefHeight(200d);
+		textArea.setPrefWidth(500d);
+		textArea.setEditable(false);
+		textArea.setMouseTransparent(true);
+		textArea.setFocusTraversable(false);
+		
+		update.setOnAction(e -> {
+			Vector<String> chatMessanges = client.getChatMessage();
+			for(String s : chatMessanges) {
+				System.out.println(s);
+				if (textAreaCount < 100) {
+					textArea.setText(textArea.getText() + "\n" + s);
+					textAreaCount++;
+				} else {
+					textArea.clear();
+					textAreaCount = 0;
+				}
+			}
+			textArea.appendText("");
+			
+			this.view = client.getView();
+			
+			GraphicsContext gc = canvas.getGraphicsContext2D();
+			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+			gc.setFill(Color.DARKOLIVEGREEN);
+			int CELL_HEIGHT = (int) (canvas.getHeight()/31);
+			int CELL_WIDTH = (int) (canvas.getWidth()/31);
+			
+			for(int y = 0; y < canvas.getHeight(); y+=CELL_HEIGHT) {
+				for(int x = 0; x < canvas.getWidth(); x+=CELL_WIDTH) {
+					EntityType entityType = view.getEntityAt(new XY(x/CELL_WIDTH,y/CELL_HEIGHT));
+					if(entityType == null) {
+						gc.setFill(Color.DARKOLIVEGREEN);
+						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);
+					}
+				}
+			}
+		});
+		
+		input.setOnAction(e -> {
+			client.setMessage(new Message(Header.CHAT,input.getText()));
+			input.deselect();
+			root.requestFocus();
+		});
+		
+		
+		
+		scene.setOnKeyPressed(e -> {
+			client.setMessage(new Message(Header.ACTION, e.getCode().getName()));
+			
+		});
+		
+		return scene;
+	}
+}

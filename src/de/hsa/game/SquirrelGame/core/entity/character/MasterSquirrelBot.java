@@ -259,7 +259,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 
 	public int fitness() {
 		fitness += (totalEnergy)/3;
-		fitness += (this.getEnergy()-1000)*3;
+	//	fitness += (this.getEnergy()-1000)*2;
 		return (fitness / BoardConfig.GAME_STEPS);
 	}
 
