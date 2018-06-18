@@ -1,8 +1,21 @@
-Jun 18, 2018 12:42:31 AM de.hsa.game.SquirrelGame.general.Game$1 run
-SCHWERWIEGEND: sleep interrupted
-java.lang.InterruptedException: sleep interrupted
-	at java.lang.Thread.sleep(Native Method)
-	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:267)
-	at java.util.TimerThread.mainLoop(Unknown Source)
-	at java.util.TimerThread.run(Unknown Source)
+Jun 18, 2018 5:27:22 PM de.hsa.game.SquirrelGame.proxy.ProxyBot invoke
+SCHWERWIEGEND: 92
+java.lang.ArrayIndexOutOfBoundsException: 92
+	at de.hsa.game.SquirrelGame.core.board.FlattenBoard.checkCollision(FlattenBoard.java:326)
+	at de.hsa.game.SquirrelGame.core.board.FlattenBoard.tryMove(FlattenBoard.java:192)
+	at de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot$ControllerContextImpl.move(MasterSquirrelBot.java:164)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at de.hsa.game.SquirrelGame.proxy.ProxyBot.invoke(ProxyBot.java:24)
+	at com.sun.proxy.$Proxy0.move(Unknown Source)
+	at de.hsa.games.fatsquirrel.botimpls.HalfRandomBot2.nextStep(HalfRandomBot2.java:81)
+	at de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot.nextStep(MasterSquirrelBot.java:247)
+	at de.hsa.game.SquirrelGame.core.board.Board.update(Board.java:648)
+	at de.hsa.game.SquirrelGame.core.board.State.update(State.java:45)
+	at de.hsa.game.SquirrelGame.general.Game.update(Game.java:323)
+	at de.hsa.game.SquirrelGame.general.Game$1.run(Game.java:265)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
 

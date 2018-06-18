@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.network.Message.Header;
 import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
@@ -28,7 +29,7 @@ public class TestClient extends Application{
 	Button update;
 	
 	private int textAreaCount;
-	private View view;
+	private byte[][] view;
 	
 	public static void main(String[] args) {
 		Application.launch(args);		
@@ -63,6 +64,7 @@ public class TestClient extends Application{
 		}, 1000);
 		
 		client.setMessage(new Message(Header.CHAT, "*CONNECTED*"));
+		client.setMessage(new Message(Header.ACTION, "W"));
 	}
 
 	private Scene createScene() {
@@ -130,7 +132,35 @@ public class TestClient extends Application{
 			
 			for(int y = 0; y < canvas.getHeight(); y+=CELL_HEIGHT) {
 				for(int x = 0; x < canvas.getWidth(); x+=CELL_WIDTH) {
-					EntityType entityType = view.getEntityAt(new XY(x/CELL_WIDTH,y/CELL_HEIGHT));
+					byte entity = view[y/CELL_HEIGHT][x/CELL_WIDTH];
+					EntityType entityType = EntityType.NONE;
+					switch(entity) {
+					case 0:
+						entityType = EntityType.NONE;
+						break;
+					case 1:
+						entityType = EntityType.GOOD_BEAST;
+						break;
+					case 2:
+						entityType = EntityType.GOOD_PLANT;
+						break;
+					case 3:
+						entityType = EntityType.BAD_BEAST;
+						break;
+					case 4:
+						entityType = EntityType.BAD_PLANT;
+						break;
+					case 5:
+						entityType = EntityType.WALL;
+						break;
+					case 6:
+						entityType = EntityType.MASTER_SQUIRREL;
+						break;
+					case 7:
+						entityType = EntityType.MINI_SQUIRREL;
+						break;
+					}
+					
 					if(entityType == EntityType.NONE) {
 						gc.setFill(Color.DARKOLIVEGREEN);
 						gc.fillRect(x, y, CELL_WIDTH, CELL_HEIGHT);

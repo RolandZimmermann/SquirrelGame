@@ -57,6 +57,8 @@ public class MultiplayerMasterSquirrel extends MasterSquirrel {
 				moveDirection = MoveCommand.UPRIGHT;
 			} else if (command.equals("SPACE")) {
 				moveDirection = MoveCommand.MINI_DOWN;
+			} else {
+				moveDirection = MoveCommand.NON;
 			}
 		}
 	}

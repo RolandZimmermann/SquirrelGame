@@ -28,7 +28,6 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.game.SquirrelGame.network.ServerConnection;
-import de.hsa.game.SquirrelGame.network.View;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.core.EntityType;
@@ -485,11 +484,10 @@ public class Board {
 		for (int i = 0; i < countMultiplayer; i++) {
 
 			MultiplayerMasterSquirrel msq = new MultiplayerMasterSquirrel(id++, randomlocations.get(0),
-					serverConnections.get(0));
+					serverConnections.get(i));
 
 			getEntitySet().add(msq);
 			randomlocations.remove(0);
-			serverConnections.remove(0);
 			getMultiplayer().add(msq);
 		}
 
@@ -720,8 +718,8 @@ public class Board {
 		this.best = e;
 	}
 
-	public View generateView(ServerConnection sc) {
-		EntityType[][] entityType = new EntityType[32][32];
+	public byte[][] generateView(ServerConnection sc) {
+		byte[][] entityType = new byte[32][32];
 		for (MultiplayerMasterSquirrel msq : multiplayer) {
 			if (msq.getServerConnection() == sc) {
 				for (int y = msq.getPositionXY().y - 15; y < msq.getPositionXY().y + 15; y++) {
@@ -729,28 +727,28 @@ public class Board {
 						if (y > 0 && y < boardView.getSize().y && x > 0 && x < boardView.getSize().y) {
 							Entity entity = boardView.getEntityType(x, y);
 							if (entity instanceof Wall) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.WALL;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 5;
 							} else if (entity instanceof GoodPlant) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.GOOD_PLANT;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 2;
 							} else if (entity instanceof GoodBeast) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.GOOD_BEAST;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 1;
 							} else if (entity instanceof BadBeast) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.BAD_BEAST;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 3;
 							} else if (entity instanceof BadPlant) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.BAD_PLANT;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 4;
 							} else if (entity instanceof MasterSquirrel) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)]= EntityType.MASTER_SQUIRREL;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 6;
 							} else if (entity instanceof MiniSquirrel) {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.MINI_SQUIRREL;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 7;
 							} else {
-								entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.NONE;
+								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 0;
 							}
 						} else {
-							entityType[y-(msq.getPositionXY().y - 15)][x- (msq.getPositionXY().x - 15)] = EntityType.NONE;
+							entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 0;
 						}
 					}
 				}
-				return new View(entityType);
+				return entityType;
 			}
 		}
 

@@ -213,7 +213,7 @@ public class Multiplayer extends Application {
 				@Override
 				public void run() {
 					try {
-						game = new GameImpl(new State(), null, (Vector<ServerConnection>) serverHandler.getConnections().clone());
+						game = new GameImpl(new State(), null, (Vector<ServerConnection>) serverHandler.getConnections());
 						player = game.getState().getBoard().getMultiplayer();
 						game.run();
 					} catch (InterruptedException e) {
