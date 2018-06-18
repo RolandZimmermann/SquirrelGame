@@ -74,11 +74,9 @@ public class ServerHandler {
 					this.chatMessage.add(connections.get(i).getName() + ": " + j);
 				}
 			}
-			Vector<String> events = connections.get(i).getEvents();
+			String events = connections.get(i).getEvents();
 			if(events != null) {
-				for(String k : events) {
-					event.put(connections.get(i), k);
-				}
+				event.put(connections.get(i), events);
 			}
 		}
 	}

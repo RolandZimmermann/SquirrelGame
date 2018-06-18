@@ -24,6 +24,9 @@ public class MultiplayerMasterSquirrel extends MasterSquirrel {
 
 	@Override
 	public void nextStep(EntityContext entityContext) {
+		if(this.getEnergy() < 0) {
+			this.updateEnergy(-this.getEnergy());
+		}
 		if (wallCounter == 0) {
 			if (moveDirection != null) {
 				if (moveDirection == MoveCommand.MINI_DOWN) {
@@ -55,8 +58,6 @@ public class MultiplayerMasterSquirrel extends MasterSquirrel {
 				moveDirection = MoveCommand.DOWNLEFT;
 			} else if (command.equals("X")) {
 				moveDirection = MoveCommand.UPRIGHT;
-			} else if (command.equals("SPACE")) {
-				moveDirection = MoveCommand.MINI_DOWN;
 			} else {
 				moveDirection = MoveCommand.NON;
 			}

@@ -44,6 +44,8 @@ public class TestClient extends Application{
 		primaryStage.show();
 		primaryStage.setTitle("CLIENT");
 		
+		System.setProperty("headless.geometry", "1600x1200-32");
+		
 		primaryStage.setOnCloseRequest(e -> {
 			client.setMessage(new Message(Header.CHAT, "DISCONNECTED!"));
 			client = null;
@@ -124,14 +126,12 @@ public class TestClient extends Application{
 			}
 			
 			GraphicsContext gc = canvas.getGraphicsContext2D();
-			gc.setFill(Color.BLACK);
-			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 			
-			int CELL_HEIGHT = (int) (canvas.getHeight()/31);
-			int CELL_WIDTH = (int) (canvas.getWidth()/31);
+			int CELL_HEIGHT = (int) (canvas.getHeight()/view.length);
+			int CELL_WIDTH = (int) (canvas.getWidth()/view[0].length);
 			
-			for(int y = 0; y < canvas.getHeight(); y+=CELL_HEIGHT) {
-				for(int x = 0; x < canvas.getWidth(); x+=CELL_WIDTH) {
+			for(int y = 0; y < CELL_HEIGHT * view.length; y+=CELL_HEIGHT) {
+				for(int x = 0; x < CELL_WIDTH * view[0].length; x+=CELL_WIDTH) {
 					byte entity = view[y/CELL_HEIGHT][x/CELL_WIDTH];
 					EntityType entityType = EntityType.NONE;
 					switch(entity) {
@@ -195,8 +195,6 @@ public class TestClient extends Application{
 			input.deselect();
 			root.requestFocus();
 		});
-		
-		
 		
 		scene.setOnKeyPressed(e -> {
 			client.setMessage(new Message(Header.ACTION, e.getCode().getName()));

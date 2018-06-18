@@ -160,7 +160,6 @@ public class Multiplayer extends Application {
 
 		start.setOnAction(e -> {
 			startGame();
-			started = true;
 		});
 
 		Scene scene = new Scene(root, 800, 600);
@@ -171,10 +170,12 @@ public class Multiplayer extends Application {
 	private void updateActions() {
 		if (started) {
 			Map<ServerConnection, String> actions = serverHandler.getEvents();
+			player = game.getState().getBoard().getMultiplayer();
 			for (ServerConnection sc : actions.keySet()) {
 				for (MultiplayerMasterSquirrel msb : player) {
 					if (msb.getServerConnection() == sc) {
 						msb.setCommand(actions.get(sc));
+						actions.put(sc, "");
 					}
 				}
 			}
@@ -198,7 +199,7 @@ public class Multiplayer extends Application {
 				}
 
 				for (ServerConnection sc : serverHandler.getConnections()) {
-					sc.setMessage(new Message(Header.CHAT, "SERVER: Restarting!"));
+					sc.setMessage(new Message(Header.CHAT, "\nSERVER: Restarting!"));
 				}
 			}
 		}
@@ -215,7 +216,9 @@ public class Multiplayer extends Application {
 					try {
 						game = new GameImpl(new State(), null, (Vector<ServerConnection>) serverHandler.getConnections());
 						player = game.getState().getBoard().getMultiplayer();
+						Thread.sleep(1000);
 						game.run();
+						started = true;
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

@@ -29,9 +29,9 @@ import javafx.stage.WindowEvent;
 public class Launcher extends Application {
 
 
-    private static Game game;
+    private static Game game; 
 
-    private static final GameMode gameMode = GameMode.JFX;
+    private static final GameMode gameMode = GameMode.MULTIPLAYER;
 
     private static Logger logger = Logger.getLogger(Launcher.class.getName());
 

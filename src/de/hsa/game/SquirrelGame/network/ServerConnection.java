@@ -89,15 +89,13 @@ public class ServerConnection implements Runnable {
 		return chat;
 	}
 
-	public Vector<String> getEvents() {
-		Vector<String> event = new Vector<String>();
-		int size = events.size();
-		for (int i = 0; i < size ; i++) {
-			event.add(events.get(0));
-			events.remove(0);
+	public String getEvents() {
+		if(events.isEmpty()) {
+			return null;
 		}
-		
-		return event;
+		String toReturn = events.get(0);
+		events.clear();
+		return toReturn;
 	}
 	
 	public String getName() {

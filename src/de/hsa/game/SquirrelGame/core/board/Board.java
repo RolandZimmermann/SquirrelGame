@@ -724,7 +724,7 @@ public class Board {
 			if (msq.getServerConnection() == sc) {
 				for (int y = msq.getPositionXY().y - 15; y < msq.getPositionXY().y + 15; y++) {
 					for (int x = msq.getPositionXY().x - 15; x < msq.getPositionXY().x + 15; x++) {
-						if (y > 0 && y < boardView.getSize().y && x > 0 && x < boardView.getSize().y) {
+						if (y >= 0 && y < boardView.getSize().y && x >= 0 && x < boardView.getSize().y) {
 							Entity entity = boardView.getEntityType(x, y);
 							if (entity instanceof Wall) {
 								entityType[y - (msq.getPositionXY().y - 15)][x - (msq.getPositionXY().x - 15)] = 5;

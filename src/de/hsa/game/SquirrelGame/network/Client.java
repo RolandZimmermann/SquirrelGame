@@ -27,7 +27,7 @@ public class Client implements Runnable {
 	private Vector<Message> messageOut = new Vector<>();
 	
 	private Vector<String> chatMessages = new Vector<>();
-	private byte[][] view;
+	private Vector<byte[][]> views = new Vector<>();
 
 	public Client(String address, int port) {
 		this.port = port;
@@ -48,7 +48,12 @@ public class Client implements Runnable {
 	}
 	
 	public byte[][] getView() {
-		return this.view;
+		if(views.isEmpty()) {
+			return null;
+		}
+		byte[][] toReturn = views.get(0);
+		views.clear();
+		return toReturn;
 	}
 
 	public Vector<String> getChatMessage() {
@@ -128,7 +133,7 @@ public class Client implements Runnable {
 					chatMessages.add((String) messageIn.getObject());
 				}
 				if(messageIn.getHeader() == Header.UPDATE) {
-					view = (byte[][]) messageIn.getObject();
+					views.add((byte[][]) messageIn.getObject());
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				shouldRun = false;
