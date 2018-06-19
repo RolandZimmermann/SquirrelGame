@@ -100,21 +100,25 @@ public class Multiplayer extends Application {
 	private Scene createPane() {
 		AnchorPane root = new AnchorPane();
 		Label playerOnline = new Label();
-		TextField textField = new TextField("CHAT:");
+		TextField textField = new TextField();
+		Label chat = new Label("Chat:");
 		TextArea textArea = new TextArea();
 		Button update = new Button("UPDATE");
 		Button start = new Button("START GAME");
+		Button end = new Button("END GAME");
 
 		playerOnline.setText("Players Online: 0");
 
-		root.getChildren().addAll(playerOnline, start, textField, textArea);
+		root.getChildren().addAll(playerOnline, start, chat, textField, textArea);
 
 		this.update = update;
 
 		AnchorPane.setLeftAnchor(playerOnline, 10d);
 		AnchorPane.setTopAnchor(playerOnline, 10d);
 		AnchorPane.setTopAnchor(textField, 300d);
-		AnchorPane.setLeftAnchor(textField, 10d);
+		AnchorPane.setLeftAnchor(textField, 30d);
+		AnchorPane.setTopAnchor(chat, 200d);
+		AnchorPane.setLeftAnchor(chat, 10d);
 		AnchorPane.setTopAnchor(textArea, 30d);
 		AnchorPane.setLeftAnchor(textArea, 10d);
 		AnchorPane.setBottomAnchor(start, 10d);

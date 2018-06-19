@@ -47,6 +47,7 @@ public abstract class Game {
 	private int population = 30;
 	private BotControllerFactory[] bots;
 	private Vector<ServerConnection> serverConnections;
+	private boolean shouldRun = false;
 
 	private MoveCommand moveCommand = null;
 
@@ -246,6 +247,12 @@ public abstract class Game {
 
 		return oldbots.get((int) (Math.random() * oldbots.size()));
 	}
+	
+	public void endGame() {
+		shouldRun = false;
+		gameSteps = 0;
+		update();
+	}
 
 	/**
 	 * starts the different threads
@@ -253,6 +260,7 @@ public abstract class Game {
 	 * @throws InterruptedException
 	 */
 	public void run() throws InterruptedException {
+		shouldRun = true;
 		if (multi) {
 			Timer t = new Timer();
 			Timer m = new Timer();
@@ -260,7 +268,7 @@ public abstract class Game {
 
 				@Override
 				public void run() {
-					while (true) {
+					while (shouldRun) {
 						render();
 						update();
 						try {
@@ -277,7 +285,7 @@ public abstract class Game {
 
 				@Override
 				public void run() {
-					while (true) {
+					while (shouldRun) {
 						processInput();
 						try {
 							Thread.sleep(1000 / FPS);
@@ -321,6 +329,7 @@ public abstract class Game {
 	public void update() {
 		if (gameSteps > 0) {
 			state.update(moveCommand, entityContext);
+			state.getBoard().getBoardView().setGameSteps(gameSteps);
 			boardView.update();
 			moveCommand = null;
 			if (ui != null) {

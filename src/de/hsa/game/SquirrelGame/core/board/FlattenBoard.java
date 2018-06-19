@@ -32,6 +32,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 	private Entity[][] cells;
 
 	private Board database;
+	
+	private long gameSteps;
 
 	/**
 	 * Constuct an instance with a given dataset
@@ -448,5 +450,16 @@ public class FlattenBoard implements BoardView, EntityContext {
 	@Override
 	public MaToRoKi getBest() {
 		return database.getBest();
+	}
+
+	@Override
+	public long getRemainingSteps() {
+		return gameSteps;
+	}
+	
+	@Override
+	public void setGameSteps(long gameSteps) {
+		this.gameSteps = gameSteps;
+		
 	}
 }

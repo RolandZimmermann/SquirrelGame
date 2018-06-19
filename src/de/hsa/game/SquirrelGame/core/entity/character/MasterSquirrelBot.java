@@ -226,8 +226,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
 
 		@Override
 		public long getRemainingSteps() {
-			// TODO Auto-generated method stub
-			return 0;
+			return entityContext.getRemainingSteps();
 		}
 	}
 

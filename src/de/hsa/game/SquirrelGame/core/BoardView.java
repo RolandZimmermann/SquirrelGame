@@ -13,4 +13,5 @@ public interface BoardView {
 	public XY getSize();
 	public Entity getEntityType(int x, int y);
 	public MaToRoKi getBest();
+	public void setGameSteps(long gameSteps);
 }

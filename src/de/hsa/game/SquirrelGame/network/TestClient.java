@@ -130,6 +130,9 @@ public class TestClient extends Application{
 			int CELL_HEIGHT = (int) (canvas.getHeight()/view.length);
 			int CELL_WIDTH = (int) (canvas.getWidth()/view[0].length);
 			
+			gc.setFill(Color.DARKOLIVEGREEN);
+			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+			
 			for(int y = 0; y < CELL_HEIGHT * view.length; y+=CELL_HEIGHT) {
 				for(int x = 0; x < CELL_WIDTH * view[0].length; x+=CELL_WIDTH) {
 					byte entity = view[y/CELL_HEIGHT][x/CELL_WIDTH];

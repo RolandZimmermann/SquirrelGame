@@ -1,5 +1,7 @@
 package de.hsa.games.fatsquirrel.botimpls;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import de.hsa.games.fatsquirrel.botapi.BotController;
@@ -11,14 +13,27 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 public class HalfRandomBot2 implements BotController, BotControllerFactory {
 
+	int MINI_ENERGY_SAVEAREA = 101;
+	
 	@Override
 	public void nextStep(ControllerContext view) {
 		double nearest = 999999999;
+		double nearestBadThing = 999999999;
+		
+		
+		
+		
+		
+		double saveArea = 5;
+		double MAX_BAD_THINGS = 3;
+		
+		List<EntityType> badThings = new ArrayList<>();
 
 		EntityType entity = EntityType.NONE;
 		EntityType targetType = EntityType.NONE;
 
 		XY target = XY.ZERO_ZERO;
+		XY badTarget = XY.ZERO_ZERO;
 		XY us = view.locate();
 		XY topleft = new XY(view.getViewLowerLeft().x, view.getViewUpperRight().y);
 		XY downright = new XY(view.getViewUpperRight().x, view.getViewLowerLeft().y);
@@ -66,6 +81,18 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 						nearest = Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2));
 						target = new XY(j, i);
 					}
+					
+					// TODO: MASTERSQUIRREL IN IF
+				} else if (entity == EntityType.BAD_BEAST || entity == EntityType.BAD_PLANT || entity == EntityType.MINI_SQUIRREL) {
+					if (Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2)) < saveArea) {
+						badThings.add(entity);
+					}
+					
+					if (Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2)) < nearestBadThing) {
+						targetType = entity;
+						nearestBadThing = Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2));
+						badTarget = new XY(j, i);
+					}
 				}
 			}
 		}
@@ -74,13 +101,31 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 			AStar aStar = new AStar(downright.y - topleft.y, downright.x - topleft.x, us.y - topleft.y,
 					us.x - topleft.x, target.y - topleft.y, target.x - topleft.x, entityTypeArray);
 			XY move = aStar.getPath();
-			if (move.x == 2 || move.y == 2) {
+			if(badThings.size() >= MAX_BAD_THINGS) {
+				XY free = freeSaveArea(us, view);
+				if(free != null) {
+					view.spawnMiniBot(free, MINI_ENERGY_SAVEAREA);
+					return;
+				}
+			}
+			if (move.x == 2 || move.y == 2) { //TODO: Change it!
 				int moveX = Math.random() < 0.5 ? 1 : -1;
 				int moveY = Math.random() < 0.5 ? 1 : -1;
 				view.move(new XY(moveX, moveY));
 				return;
 			}
 			view.move(move);
+			return;
+		} else if(nearestBadThing != 999999999) {
+			
+			
+			
+			
+			
+			int moveX = Math.random() < 0.5 ? 1 : -1;
+			int moveY = Math.random() < 0.5 ? 1 : -1;
+			view.move(new XY(moveX, moveY));
+			return;
 		} else {
 			int moveX = Math.random() < 0.5 ? 1 : -1;
 			int moveY = Math.random() < 0.5 ? 1 : -1;
@@ -124,7 +169,52 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 	@Override
 	public BotController createMiniBotController() {
 		// TODO Auto-generated method stub
+		return new BotController() {
+			
+			@Override
+			public void nextStep(ControllerContext view) {
+				view.implode(6);
+				
+			}
+		};
+	}
+	
+	public XY freeSaveArea(XY us, ControllerContext view) {
+		EntityType entityAtDirection = view.getEntityAt(new XY(us.x, us.y-1));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(0,-1);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x,us.y+1));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(0,1);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x+1,us.y));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(1,0);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x-1,us.y));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(-1,0);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x-1,us.y-1));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(-1,-1);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x+1,us.y-1));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(1,-1);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x-1,us.y+1));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(-1,1);
+		}
+		entityAtDirection = view.getEntityAt(new XY(us.x+1,us.y+1));
+		if(entityAtDirection == EntityType.NONE) {
+			return new XY(1,1);
+		}
+	
 		return null;
+		
 	}
 
 	class AStar {

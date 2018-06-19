@@ -29,4 +29,5 @@ public interface EntityContext {
 	public Entity getEntityType(XY xy);
 	
 	public void impload(Entity entity, int impactRadius);
+	public long getRemainingSteps();
 }

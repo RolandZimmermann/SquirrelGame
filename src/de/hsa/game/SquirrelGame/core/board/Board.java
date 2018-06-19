@@ -629,6 +629,10 @@ public class Board {
 	public void setBoardView(BoardView boardView) {
 		this.boardView = boardView;
 	}
+	
+	public BoardView getBoardView() {
+		return this.boardView;
+	}
 
 	/**
 	 * Updates every entity in the database, delets and also creates new entitys

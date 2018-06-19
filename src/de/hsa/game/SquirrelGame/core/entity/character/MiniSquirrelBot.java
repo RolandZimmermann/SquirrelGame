@@ -197,8 +197,7 @@ public class MiniSquirrelBot extends MiniSquirrel {
 
 		@Override
 		public long getRemainingSteps() {
-			// TODO Auto-generated method stub
-			return 0;
+			return entityContext.getRemainingSteps();
 		}
 	}
 /**
