@@ -124,7 +124,7 @@ public class Multiplayer extends Application {
 		AnchorPane.setBottomAnchor(start, 10d);
 		AnchorPane.setRightAnchor(start, 10d);
 		AnchorPane.setBottomAnchor(end, 10d);
-		AnchorPane.setRightAnchor(end, 110d);
+		AnchorPane.setRightAnchor(end, 130d);
 
 		textArea.textProperty().addListener(new ChangeListener<Object>() {
 			@Override

@@ -72,7 +72,7 @@ public class Client implements Runnable {
 	}
 
 	public void run() {
-		if (!shouldRun) {
+		if (Thread.interrupted()) {
 			try {
 				server.close();
 			} catch (IOException e) {
@@ -102,7 +102,7 @@ public class Client implements Runnable {
 
 	public void send() {
 		try {
-			while (shouldRun) {
+			while (!Thread.interrupted()) {
 				while (this.messageOut.size() > 0) {
 					out.writeObject(this.messageOut.get(0));
 					out.flush();
@@ -123,7 +123,7 @@ public class Client implements Runnable {
 	}
 
 	public void recive() {
-		while (shouldRun) {
+		while (!Thread.interrupted()) {
 			try {
 				if(server.isClosed()) {
 					shouldRun = false;
