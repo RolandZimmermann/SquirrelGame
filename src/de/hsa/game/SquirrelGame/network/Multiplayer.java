@@ -86,7 +86,7 @@ public class Multiplayer extends Application {
 				while (true) {
 					updateActions();
 					try {
-						Thread.sleep(1000/BoardConfig.FPS);
+						Thread.sleep(1000 / BoardConfig.FPS);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -109,20 +109,22 @@ public class Multiplayer extends Application {
 
 		playerOnline.setText("Players Online: 0");
 
-		root.getChildren().addAll(playerOnline, start, chat, textField, textArea);
+		root.getChildren().addAll(playerOnline, start, chat, end, textField, textArea);
 
 		this.update = update;
 
 		AnchorPane.setLeftAnchor(playerOnline, 10d);
 		AnchorPane.setTopAnchor(playerOnline, 10d);
 		AnchorPane.setTopAnchor(textField, 300d);
-		AnchorPane.setLeftAnchor(textField, 30d);
-		AnchorPane.setTopAnchor(chat, 200d);
+		AnchorPane.setLeftAnchor(textField, 60d);
+		AnchorPane.setTopAnchor(chat, 305d);
 		AnchorPane.setLeftAnchor(chat, 10d);
 		AnchorPane.setTopAnchor(textArea, 30d);
 		AnchorPane.setLeftAnchor(textArea, 10d);
 		AnchorPane.setBottomAnchor(start, 10d);
 		AnchorPane.setRightAnchor(start, 10d);
+		AnchorPane.setBottomAnchor(end, 10d);
+		AnchorPane.setRightAnchor(end, 110d);
 
 		textArea.textProperty().addListener(new ChangeListener<Object>() {
 			@Override
@@ -151,6 +153,9 @@ public class Multiplayer extends Application {
 					}
 				}
 			}
+			if (serverHandler.getConnections().size() <= 0) {
+				end.fire();
+			}
 			textArea.appendText("");
 
 			playerOnline.setText("Players Online: " + serverHandler.getConnections().size());
@@ -164,6 +169,10 @@ public class Multiplayer extends Application {
 
 		start.setOnAction(e -> {
 			startGame();
+		});
+
+		end.setOnAction(e -> {
+			endGame();
 		});
 
 		Scene scene = new Scene(root, 800, 600);
@@ -209,6 +218,16 @@ public class Multiplayer extends Application {
 		}
 	}
 
+	private void endGame() {
+		if (started) {
+			game.endGame();
+			for (ServerConnection sc : serverHandler.getConnections()) {
+				sc.setMessage(new Message(Header.CHAT, "\nSERVER: Match Ended!"));
+			}
+			started = false;
+		}
+	}
+
 	private void startGame() {
 		if (!started) {
 			Timer t = new Timer();
@@ -218,7 +237,8 @@ public class Multiplayer extends Application {
 				@Override
 				public void run() {
 					try {
-						game = new GameImpl(new State(), null, (Vector<ServerConnection>) serverHandler.getConnections());
+						game = new GameImpl(new State(), null,
+								(Vector<ServerConnection>) serverHandler.getConnections());
 						player = game.getState().getBoard().getMultiplayer();
 						Thread.sleep(1000);
 						game.run();
