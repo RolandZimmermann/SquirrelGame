@@ -19,6 +19,7 @@ import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
+import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.network.ServerConnection;
 import de.hsa.game.SquirrelGame.ui.UI;
@@ -44,7 +45,7 @@ public abstract class Game {
 	private boolean training = BoardConfig.TRAINING;
 	private boolean oldAI = BoardConfig.OLD_AI;
 	private int gameSteps;
-	private int population = 30;
+	private int population = BoardConfig.AI_POPULATION;
 	private BotControllerFactory[] bots;
 	private Vector<ServerConnection> serverConnections;
 	private boolean shouldRun = false;
@@ -74,7 +75,7 @@ public abstract class Game {
 	 * initialize the board
 	 */
 	private void init() {
-		if (BoardConfig.MULTIPLAYER_MODUS) {
+		if (BoardConfig.gameMode == GameMode.MULTIPLAYER) {
 			this.state.setBoard(BoardFactory.createMultiplayerBoard(serverConnections));
 		} else if (!training) {
 			if (BoardConfig.WITH_BOTS) {

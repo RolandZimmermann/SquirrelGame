@@ -32,14 +32,16 @@ public class Multiplayer extends Application {
 	ServerHandler serverHandler;
 	int counter = 0;
 	int textAreaCount = 0;
+	int port = BoardConfig.PORT;
 	Button update;
 	Vector<MultiplayerMasterSquirrel> player;
 	Game game;
 	private boolean started = false;
+	private boolean shouldRun = true;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		server = new Server(4242);
+		server = new Server(port);
 		serverThread = new Thread(server);
 		socket = server.getServer();
 		serverHandler = new ServerHandler(server.getConnections());
@@ -49,22 +51,21 @@ public class Multiplayer extends Application {
 
 		primaryStage.setScene(root);
 		primaryStage.show();
-		primaryStage.setTitle("Multiplayer SERVER");
+		primaryStage.setTitle("MaToRo Multiplayer Server");
 
 		primaryStage.setOnCloseRequest(e -> {
-			serverThread.interrupt();
+			shouldRun = false;
+			server.stop();
+			server = null;
 			serverThread = null;
-			for (Thread threads : Thread.getAllStackTraces().keySet()) {
-				threads.interrupt();
-				threads = null;
-			}
+			System.exit(0);
 		});
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
-				while (true) {
+				while (shouldRun) {
 					Platform.runLater(() -> {
 						update.fire();
 					});
@@ -83,7 +84,7 @@ public class Multiplayer extends Application {
 
 			@Override
 			public void run() {
-				while (true) {
+				while (shouldRun) {
 					updateActions();
 					try {
 						Thread.sleep(1000 / BoardConfig.FPS);
@@ -102,7 +103,7 @@ public class Multiplayer extends Application {
 		Label playerOnline = new Label();
 		TextField textField = new TextField();
 		Label chat = new Label("Chat:");
-		TextArea textArea = new TextArea();
+		TextArea textArea = new TextArea("Started server at port: " + port);
 		Button update = new Button("UPDATE");
 		Button start = new Button("START GAME");
 		Button end = new Button("END GAME");
@@ -195,22 +196,21 @@ public class Multiplayer extends Application {
 			for (ServerConnection sc : serverHandler.getConnections()) {
 				sc.setMessage(new Message(Header.UPDATE, game.getState().getBoard().generateView(sc)));
 			}
-			if (game.getGameSteps() <= 1) {
+			if (game.getGameSteps() < 1) {
 				Vector<MultiplayerMasterSquirrel> player = game.getState().getBoard().getMultiplayer();
 
 				player.sort((a, b) -> Integer.compare(b.getEnergy(), a.getEnergy()));
 
+				Vector<String> scores = new Vector<>();
+				for (MultiplayerMasterSquirrel msq : player) {
+					scores.add(msq.getServerConnection().getName() + " : " + msq.getEnergy());
+				}
 				for (ServerConnection sc : serverHandler.getConnections()) {
 					sc.setMessage(new Message(Header.CHAT, "SERVER: SCORES:"));
+					for(String s : scores) {
+						sc.setMessage(new Message(Header.CHAT, s));
+					}
 				}
-
-				for (MultiplayerMasterSquirrel msq : player) {
-
-					msq.getServerConnection().setMessage(
-							new Message(Header.CHAT, msq.getServerConnection().getName() + " : " + msq.getEnergy()));
-
-				}
-
 				for (ServerConnection sc : serverHandler.getConnections()) {
 					sc.setMessage(new Message(Header.CHAT, "\nSERVER: Restarting!"));
 				}

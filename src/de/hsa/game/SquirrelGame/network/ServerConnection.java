@@ -148,12 +148,23 @@ public class ServerConnection implements Runnable {
 				shouldRun = false;
 				try {
 					socket.close();
+					return;
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void stop() {
+		shouldRun = false;
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 }

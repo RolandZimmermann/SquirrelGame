@@ -32,7 +32,7 @@ public class Launcher extends Application {
 
     private static Game game; 
 
-    private static final GameMode gameMode = GameMode.MULTIPLAYER;
+    private static GameMode gameMode;
 
     private static Logger logger = Logger.getLogger(Launcher.class.getName());
 
@@ -44,9 +44,13 @@ public class Launcher extends Application {
     public static void main(String[] args) {
 
         BoardConfig.load();
+        gameMode = BoardConfig.gameMode;
         GameLogger.init();
         logger.info("START");
-//        t
+//        MainMenu mainMenu = new MainMenu();
+//        mainMenu.go(args);
+//        return;
+
         if(gameMode == GameMode.MULTIPLAYER) {
         	Multiplayer multiplayer = new Multiplayer();
         	multiplayer.go(args);
@@ -79,6 +83,7 @@ public class Launcher extends Application {
             @Override
             public void handle(WindowEvent evt) {
                 game.getState().save();
+                BoardConfig.save();
                 System.exit(-1);
             }
         });

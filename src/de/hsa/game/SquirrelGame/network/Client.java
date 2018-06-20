@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -31,16 +32,7 @@ public class Client implements Runnable {
 
 	public Client(String address, int port) {
 		this.port = port;
-		try {
-			server = new Socket(address, port);
-			out = new ObjectOutputStream(server.getOutputStream());
-			out.writeObject(new Message(Header.CHAT, "HALLO?"));
-			in = new ObjectInputStream(server.getInputStream());
-			in.readObject();
-			shouldRun = true;
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		this.address = address;
 	}
 
 	public void setMessage(Message messageOut) {
@@ -72,15 +64,6 @@ public class Client implements Runnable {
 	}
 
 	public void run() {
-		if (Thread.interrupted()) {
-			try {
-				server.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-
 		output = new Timer();
 		output.schedule(new TimerTask() {
 
@@ -100,10 +83,19 @@ public class Client implements Runnable {
 
 	}
 
+	public void init() throws UnknownHostException, IOException, ClassNotFoundException {
+		server = new Socket(address, port);
+		out = new ObjectOutputStream(server.getOutputStream());
+		out.writeObject(new Message(Header.CHAT, "HALLO?"));
+		in = new ObjectInputStream(server.getInputStream());
+		in.readObject();
+		shouldRun = true;
+	}
+
 	public void send() {
 		try {
-			while (!Thread.interrupted()) {
-				while (this.messageOut.size() > 0) {
+			while (shouldRun) {
+				while (this.messageOut.size() > 0 && shouldRun) {
 					out.writeObject(this.messageOut.get(0));
 					out.flush();
 					this.messageOut.remove(0);
@@ -112,7 +104,7 @@ public class Client implements Runnable {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					shouldRun = false;
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
 			}
 
@@ -123,7 +115,7 @@ public class Client implements Runnable {
 	}
 
 	public void recive() {
-		while (!Thread.interrupted()) {
+		while (shouldRun) {
 			try {
 				if(server.isClosed() || Thread.interrupted()) {
 					shouldRun = false;
@@ -138,8 +130,18 @@ public class Client implements Runnable {
 			} catch (ClassNotFoundException | IOException e) {
 				shouldRun = false;
 				Thread.currentThread().interrupt();
-				e.printStackTrace();
 			}
 		}
+	}
+
+	public void close() {
+		try {
+			shouldRun = false;
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Thread.currentThread().interrupt();
+		
 	}
 }

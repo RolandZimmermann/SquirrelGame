@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import de.hsa.game.SquirrelGame.core.EntityContext;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
 import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
+import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
@@ -66,7 +67,7 @@ public class State {
 	 * game
 	 */
 	public void restart() {
-		if (!BoardConfig.MULTIPLAYER_MODUS) {
+		if (!(BoardConfig.gameMode == GameMode.MULTIPLAYER)) {
 			if (BoardConfig.WITH_BOTS) {
 				List<MasterSquirrelBot> bots = board.getBots();
 				for (MasterSquirrelBot e : bots) {
@@ -126,7 +127,7 @@ public class State {
 	 * file
 	 */
 	public void load() {
-		if (!BoardConfig.MULTIPLAYER_MODUS) {
+		if (BoardConfig.gameMode != GameMode.MULTIPLAYER) {
 			if (BoardConfig.WITH_BOTS) {
 				List<MasterSquirrelBot> e = board.getBots();
 				for (MasterSquirrelBot i : e) {
@@ -141,7 +142,7 @@ public class State {
 					highscore = Integer.parseInt(prop.getProperty("highscore"));
 
 				} catch (IOException o) {
-
+					highscore = 0;
 					logger.log(Level.SEVERE, o.getMessage(), o);
 
 				} finally {
@@ -192,7 +193,7 @@ public class State {
 	 * called when the programm closes to save every score in a properties file
 	 */
 	public void save() {
-		if (!BoardConfig.MULTIPLAYER_MODUS) {
+		if (BoardConfig.gameMode != GameMode.MULTIPLAYER) {
 			if (!BoardConfig.OLD_AI && BoardConfig.TRAINING) {
 				saveObject((MaToRoKi) board.getBots().get(0).getBotController());
 			} else if (BoardConfig.TRAINING && BoardConfig.OLD_AI) {

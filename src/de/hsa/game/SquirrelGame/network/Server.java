@@ -43,6 +43,13 @@ public class Server implements Runnable{
 	public ServerSocket getServer() {
 		return this.server;
 	}
+
+	public void stop() {
+		for(ServerConnection sc: connections) {
+			sc.stop();
+		}
+		shouldRun = false;		
+	}
 	
 
 }

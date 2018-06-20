@@ -1,12 +1,17 @@
 package de.hsa.game.SquirrelGame.core.board;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.hsa.game.SquirrelGame.core.entity.character.MultiplayerMasterSquirrel;
+import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.games.fatsquirrel.util.XY;
 
 /**
@@ -82,13 +87,19 @@ public class BoardConfig {
 
 	public static boolean WITH_BOTS = true;
 
-	public static String[] NAME = { "PLAYER1", "PLAYER2" };
-
-	public static boolean MULTIPLAYER_MODUS = false;
+	public static String[] NAME = { "PLAYER" };
 
 	public static XY getSize() {
 		return new XY(WIDTH_SIZE, HEIGHT_SIZE);
 	}
+
+	public static String GAME_MODE = "JFX";
+
+	public static GameMode gameMode = GameMode.JFX;
+
+	public static int AI_POPULATION = 30;
+	
+	public static int PORT = 54321;
 
 	/**
 	 * Loads a config file to change default settings
@@ -108,7 +119,6 @@ public class BoardConfig {
 			COUNT_BADBEAST = Integer.parseInt(prop.getProperty("COUNT_BADBEAST"));
 			COUNT_GOODPLANT = Integer.parseInt(prop.getProperty("COUNT_GOODPLANT"));
 			COUNT_BADPLANT = Integer.parseInt(prop.getProperty("COUNT_BADPLANT"));
-			COUNT_HANDOPERATED_MASTERSQUIRREL = Integer.parseInt(prop.getProperty("COUNT_HANDOPERATED_MASTERSQUIRREL"));
 			COUNT_BOTS = prop.getProperty("COUNT_BOTS").split(",");
 			GAME_STEPS = Integer.parseInt(prop.getProperty("GAME_STEPS"));
 			WALL_LENGTH = Integer.parseInt(prop.getProperty("WALL_LENGTH"));
@@ -117,14 +127,29 @@ public class BoardConfig {
 			TRAINING = training < 1 ? false : true;
 			OLD_AI = oldAI < 1 ? false : true;
 			FPS = Integer.parseInt(prop.getProperty("FPS"));
+			if (FPS <= 0) {
+				FPS = 1;
+			}
 			int multithread = Integer.parseInt(prop.getProperty("MULTI_THREAD"));
 			MULTI_THREAD = multithread < 1 ? false : true;
 			CELL_SIZE = Integer.parseInt(prop.getProperty("CELL_SIZE"));
 			int withBots = Integer.parseInt(prop.getProperty("WITH_BOTS"));
 			WITH_BOTS = withBots < 1 ? false : true;
-			NAME = prop.getProperty("NAME").split(",");
-			int multiplayerModus = Integer.parseInt(prop.getProperty("MULTIPLAYER_MODUS"));
-			MULTIPLAYER_MODUS = multiplayerModus < 1 ? false : true;
+			try {
+				int getAIPop = Integer.parseInt(prop.getProperty("AI_POPULATION"));
+				AI_POPULATION = getAIPop;
+			} catch (NumberFormatException k) {
+			}
+			GAME_MODE = prop.getProperty("GAME_MODE");
+			try {
+				gameMode = GameMode.valueOf(GAME_MODE);
+			} catch (Exception u) {
+				gameMode = GameMode.JFX;
+			}
+			try {
+				PORT = Integer.parseInt(prop.getProperty("PORT"));
+			} catch (NumberFormatException j) {
+			}
 
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
@@ -139,6 +164,49 @@ public class BoardConfig {
 				}
 			}
 		}
+	}
+
+	public static void save() {
+		Properties prop = new Properties();
+		OutputStream output = null;
+
+		try {
+			output = new FileOutputStream("ressource/configs/BoardConfig.properties");
+
+			prop.setProperty("WIDTH_SIZE", Integer.toString(WIDTH_SIZE));
+			prop.setProperty("HEIGHT_SIZE", Integer.toString(HEIGHT_SIZE));
+			prop.setProperty("COUNT_WALL", Integer.toString(COUNT_WALL));
+			prop.setProperty("COUNT_GOODBEAST", Integer.toString(COUNT_GOODBEAST));
+			prop.setProperty("COUNT_BADBEAST", Integer.toString(COUNT_BADBEAST));
+			prop.setProperty("COUNT_GOODPLANT", Integer.toString(COUNT_GOODPLANT));
+			prop.setProperty("COUNT_BADPLANT", Integer.toString(COUNT_BADPLANT));
+			for (int i = 0; i < COUNT_BOTS.length; i++) {
+				prop.setProperty("COUNT_BOTS", COUNT_BOTS[i]);
+			}
+			prop.setProperty("GAME_STEPS", Integer.toString(GAME_STEPS));
+			prop.setProperty("WALL_LENGTH", Integer.toString(WALL_LENGTH));
+			prop.setProperty("TRAINING", TRAINING ? "1" : "0");
+			prop.setProperty("OLD_AI", OLD_AI ? "1" : "0");
+			prop.setProperty("FPS", Integer.toString(FPS));
+			prop.setProperty("MULTI_THREAD", MULTI_THREAD ? "1" : "0");
+			prop.setProperty("CELL_SIZE", Integer.toString(CELL_SIZE));
+			prop.setProperty("WITH_BOTS", WITH_BOTS ? "1" : "0");
+			prop.setProperty("AI_POPULATION", Integer.toString(AI_POPULATION));
+			prop.setProperty("GAME_MODE", gameMode.name());
+			prop.setProperty("PORT", Integer.toString(PORT));
+			prop.store(output, null);
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+			}
+		}
+
 	}
 
 }
