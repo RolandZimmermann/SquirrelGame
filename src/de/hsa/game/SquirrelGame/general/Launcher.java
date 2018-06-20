@@ -46,22 +46,21 @@ public class Launcher extends Application {
         BoardConfig.load();
         GameLogger.init();
         logger.info("START");
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.go(args);
-//        if(gameMode == GameMode.MULTIPLAYER) {
-//        	Multiplayer multiplayer = new Multiplayer();
-//        	multiplayer.go(args);
-//        	return;
-//        }
-//        
-//
-//        if (gameMode == GameMode.CONSOLE) {
-//            logger.info("Starting Console Mode");
-//            game = new GameImpl(new State(), new ConsoleUI(), null);
-//            startGame(game);
-//        } else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
-//            Application.launch(args);
-//        }
+//        t
+        if(gameMode == GameMode.MULTIPLAYER) {
+        	Multiplayer multiplayer = new Multiplayer();
+        	multiplayer.go(args);
+        	return;
+        }
+        
+
+        if (gameMode == GameMode.CONSOLE) {
+            logger.info("Starting Console Mode");
+            game = new GameImpl(new State(), new ConsoleUI(), null);
+            startGame(game);
+        } else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {
+            Application.launch(args);
+        }
 
     }
 

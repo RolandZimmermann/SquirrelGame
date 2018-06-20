@@ -7,7 +7,7 @@ public class Message implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3222981398741693516L;
+	private static final long serialVersionUID = 1L;
 
 	public enum Header {
 		CHAT,ACTION,UPDATE;

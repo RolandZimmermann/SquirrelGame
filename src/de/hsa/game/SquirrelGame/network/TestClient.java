@@ -4,10 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.network.Message.Header;
 import de.hsa.games.fatsquirrel.core.EntityType;
-import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
