@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 public class TestClient extends Application{
 	
-	Client client = new Client("localhost", 4242);
+	Client client = new Client("25.76.140.236", 4242);
 	Thread thread = new Thread(client);
 	Button update;
 	
@@ -45,7 +45,7 @@ public class TestClient extends Application{
 		System.setProperty("headless.geometry", "1600x1200-32");
 		
 		primaryStage.setOnCloseRequest(e -> {
-			client.setMessage(new Message(Header.CHAT, "DISCONNECTED!"));
+			client.setMessage(new Message(Header.CHAT, "*DISCONNECTED*"));
 			client = null;
 			for (Thread threads : Thread.getAllStackTraces().keySet()) {
 				threads.interrupt();

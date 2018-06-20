@@ -125,7 +125,7 @@ public class Client implements Runnable {
 	public void recive() {
 		while (!Thread.interrupted()) {
 			try {
-				if(server.isClosed()) {
+				if(server.isClosed() || Thread.interrupted()) {
 					shouldRun = false;
 				}
 				messageIn = (Message) in.readObject();
@@ -137,6 +137,7 @@ public class Client implements Runnable {
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				shouldRun = false;
+				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
 		}
