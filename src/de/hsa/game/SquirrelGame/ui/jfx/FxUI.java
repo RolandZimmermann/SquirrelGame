@@ -1,6 +1,7 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,15 +19,22 @@ import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 public class FxUI extends Scene implements UI {
@@ -35,6 +43,8 @@ public class FxUI extends Scene implements UI {
 
 	private Canvas boardCanvas;
 	private Label msgLabel;
+	private TableView<Entity> table;
+	private ObservableList<Entity> player = FXCollections.observableArrayList();
 	private static final int CELL_SIZE = BoardConfig.CELL_SIZE;
 	private static MoveCommand moveCommand;
 	private static boolean render = true;
@@ -49,10 +59,11 @@ public class FxUI extends Scene implements UI {
 	private static Image sprMiniSquirrel;
 	private static Image sprEmpty;
 
-	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel) {
+	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel, TableView table) {
 		super(parent);
 		this.boardCanvas = boardCanvas;
 		this.msgLabel = msgLabel;
+		this.table = table;
 
 		logger.fine("Loaded UI");
 
@@ -126,6 +137,21 @@ public class FxUI extends Scene implements UI {
 		Canvas boardCanvas = new Canvas(xy.x * CELL_SIZE, xy.y * CELL_SIZE);
 		Label statusLabel = new Label();
 		AnchorPane top = new AnchorPane();
+		BorderPane root = new BorderPane();
+
+		TableView<Entity> table = new TableView<Entity>();
+		table.setEditable(false);
+		TableColumn<Entity, Integer> idCol = new TableColumn<Entity, Integer>("ID");
+		idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+		TableColumn<Entity, Integer> energyCol = new TableColumn<Entity, Integer>("Energy");
+		energyCol.setCellValueFactory(new PropertyValueFactory<>("energy"));
+		
+		table.getColumns().add(idCol);
+		table.getColumns().add(energyCol);
+		table.getSortOrder().add(energyCol);
+		
+		root.setCenter(top);
+		root.setRight(table);
 
 		top.getChildren().add(boardCanvas);
 		top.getChildren().add(statusLabel);
@@ -135,7 +161,7 @@ public class FxUI extends Scene implements UI {
 
 		statusLabel.setText("Hier könnte Ihre Werbung stehen");
 
-		final FxUI fxUI = new FxUI(top, boardCanvas, statusLabel);
+		final FxUI fxUI = new FxUI(root, boardCanvas, statusLabel, table);
 
 		fxUI.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -200,84 +226,86 @@ public class FxUI extends Scene implements UI {
 		if (!render) {
 			return;
 		}
-			GraphicsContext gc = boardCanvas.getGraphicsContext2D();
-			gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
-			XY viewSize = view.getSize();
+		GraphicsContext gc = boardCanvas.getGraphicsContext2D();
+		gc.clearRect(0, 0, boardCanvas.getWidth(), boardCanvas.getHeight());
+		XY viewSize = view.getSize();
 
-			gc.setFill(Color.DARKOLIVEGREEN);
-			gc.fillRect(0, 0, viewSize.x * CELL_SIZE, viewSize.y * CELL_SIZE);
+		gc.setFill(Color.DARKOLIVEGREEN);
+		gc.fillRect(0, 0, viewSize.x * CELL_SIZE, viewSize.y * CELL_SIZE);
 
-			for (int y = 0; y < viewSize.y * CELL_SIZE; y += CELL_SIZE) {
-				for (int x = 0; x < viewSize.x * CELL_SIZE; x += CELL_SIZE) {
-					Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
-					if (entity instanceof Wall) {
-						if (sprWall.isError()) {
-							gc.setFill(Color.ORANGE);
-							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprWall, x, y);
-						}
-					} else if (entity instanceof GoodBeast) {
-						if (sprGoodBeast.isError()) {
-							gc.setFill(Color.LIGHTGREEN);
-							gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprGoodBeast, x, y);
-						}
-					} else if (entity instanceof BadBeast) {
-						if (sprBadBeast.isError()) {
-							gc.setFill(Color.DARKRED);
-							gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprBadBeast, x, y);
-						}
-					} else if (entity instanceof GoodPlant) {
-						if (sprGoodPlant.isError()) {
-							gc.setFill(Color.LIGHTGREEN);
-							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprGoodPlant, x, y);
-						}
-					} else if (entity instanceof BadPlant) {
-						if (sprBadPlant.isError()) {
-							gc.setFill(Color.RED);
-							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprBadPlant, x, y);
-						}
-					} else if (entity instanceof MasterSquirrel) {
-						if (sprMasterSquirrel.isError()) {
-							gc.setFill(Color.MAGENTA);
-							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							System.out.println(sprMasterSquirrel);
-							gc.drawImage(sprMasterSquirrel, x, y);
-						}
-						if(moreinfo) {
-							gc.strokeRect(x-(CELL_SIZE*31)/2, y-(CELL_SIZE*31)/2, CELL_SIZE*31, CELL_SIZE*31);
-						}
-					} else if (entity instanceof MiniSquirrel) {
-						if (sprMiniSquirrel.isError()) {
-							gc.setFill(Color.BLUEVIOLET);
-							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprMiniSquirrel, x, y);
-						}
-						if(moreinfo) {
-							gc.strokeOval(x-(CELL_SIZE*10)/2, y-(CELL_SIZE*10)/2, CELL_SIZE*10, CELL_SIZE*10);
-						}
+		for (int y = 0; y < viewSize.y * CELL_SIZE; y += CELL_SIZE) {
+			for (int x = 0; x < viewSize.x * CELL_SIZE; x += CELL_SIZE) {
+				Entity entity = view.getEntityType(x / CELL_SIZE, y / CELL_SIZE);
+				if (entity instanceof Wall) {
+					if (sprWall.isError()) {
+						gc.setFill(Color.ORANGE);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 					} else {
-						if (sprEmpty.isError()) {
-							gc.setFill(Color.DARKOLIVEGREEN);
-							gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-						} else {
-							gc.drawImage(sprEmpty, x, y);
-						}
+						gc.drawImage(sprWall, x, y);
+					}
+				} else if (entity instanceof GoodBeast) {
+					if (sprGoodBeast.isError()) {
+						gc.setFill(Color.LIGHTGREEN);
+						gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprGoodBeast, x, y);
+					}
+				} else if (entity instanceof BadBeast) {
+					if (sprBadBeast.isError()) {
+						gc.setFill(Color.DARKRED);
+						gc.fillOval(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprBadBeast, x, y);
+					}
+				} else if (entity instanceof GoodPlant) {
+					if (sprGoodPlant.isError()) {
+						gc.setFill(Color.LIGHTGREEN);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprGoodPlant, x, y);
+					}
+				} else if (entity instanceof BadPlant) {
+					if (sprBadPlant.isError()) {
+						gc.setFill(Color.RED);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprBadPlant, x, y);
+					}
+				} else if (entity instanceof MasterSquirrel) {
+					if (sprMasterSquirrel.isError()) {
+						gc.setFill(Color.MAGENTA);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						System.out.println(sprMasterSquirrel);
+						gc.drawImage(sprMasterSquirrel, x, y);
+					}
+					if (moreinfo) {
+						gc.strokeRect(x - (CELL_SIZE * 31) / 2, y - (CELL_SIZE * 31) / 2, CELL_SIZE * 31,
+								CELL_SIZE * 31);
+					}
+				} else if (entity instanceof MiniSquirrel) {
+					if (sprMiniSquirrel.isError()) {
+						gc.setFill(Color.BLUEVIOLET);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprMiniSquirrel, x, y);
+					}
+					if (moreinfo) {
+						gc.strokeOval(x - (CELL_SIZE * 10) / 2, y - (CELL_SIZE * 10) / 2, CELL_SIZE * 10,
+								CELL_SIZE * 10);
+					}
+				} else {
+					if (sprEmpty.isError()) {
+						gc.setFill(Color.DARKOLIVEGREEN);
+						gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+					} else {
+						gc.drawImage(sprEmpty, x, y);
 					}
 				}
 			}
-			logger.finest("Updated UI");
-		
+		}
+		logger.finest("Updated UI");
+
 	}
 
 	@Override
@@ -300,5 +328,27 @@ public class FxUI extends Scene implements UI {
 				msgLabel.setText(msg);
 			}
 		});
+	}
+	
+	public void setTable(List<Entity> players) {
+
+		player.removeAll(player);
+		for(Entity e : players) {
+			player.add(e);
+		}
+		SortedList<Entity> sortedList = new SortedList<>( player, 
+			      (Entity entity1, Entity entity2) -> {
+			        if(  entity1.getEnergy()< entity2.getEnergy()) {
+			            return -1;
+			        } else if( entity1.getEnergy() > entity2.getEnergy()) {
+			            return 1;
+			        } else {
+			            return 0;
+			        }
+			    });
+		
+		sortedList.comparatorProperty().bind(table.comparatorProperty());
+		
+		table.setItems(sortedList);	
 	}
 }

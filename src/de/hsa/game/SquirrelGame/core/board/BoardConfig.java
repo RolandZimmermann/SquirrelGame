@@ -181,9 +181,12 @@ public class BoardConfig {
 			prop.setProperty("COUNT_BADBEAST", Integer.toString(COUNT_BADBEAST));
 			prop.setProperty("COUNT_GOODPLANT", Integer.toString(COUNT_GOODPLANT));
 			prop.setProperty("COUNT_BADPLANT", Integer.toString(COUNT_BADPLANT));
+			String bots = "";
 			for (int i = 0; i < COUNT_BOTS.length; i++) {
-				prop.setProperty("COUNT_BOTS", COUNT_BOTS[i]);
+				bots += COUNT_BOTS[i] + ",";
+				
 			}
+			prop.setProperty("COUNT_BOTS", bots);
 			prop.setProperty("GAME_STEPS", Integer.toString(GAME_STEPS));
 			prop.setProperty("WALL_LENGTH", Integer.toString(WALL_LENGTH));
 			prop.setProperty("TRAINING", TRAINING ? "1" : "0");

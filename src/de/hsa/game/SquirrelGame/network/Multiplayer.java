@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.board.State;
@@ -24,7 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class Multiplayer extends Application {
+public class Multiplayer {
 
 	Server server;
 	Thread serverThread;
@@ -38,8 +40,10 @@ public class Multiplayer extends Application {
 	Game game;
 	private boolean started = false;
 	private boolean shouldRun = true;
+	
+	private Logger logger = Logger.getLogger(Multiplayer.class.getName());
 
-	@Override
+
 	public void start(Stage primaryStage) throws Exception {
 		server = new Server(port);
 		serverThread = new Thread(server);
@@ -256,8 +260,13 @@ public class Multiplayer extends Application {
 
 	}
 
-	public void go(String[] args) {
-		Application.launch(args);
+	public void go(String[] args, Stage primaryStage) {
+		try {
+			start(primaryStage);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			e.printStackTrace();
+		}
 	}
 
 }

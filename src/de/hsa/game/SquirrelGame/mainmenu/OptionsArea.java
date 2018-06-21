@@ -96,7 +96,7 @@ public class OptionsArea {
 		AnchorPane.setTopAnchor(gameModeLabel, 150d);
 		AnchorPane.setLeftAnchor(gameModeLabel, 100d);
 		gameModeBox.setTooltip(new Tooltip("Select the gameMode"));
-		gameModeBox.getSelectionModel().select(GameMode.JFX);
+		gameModeBox.getSelectionModel().select(BoardConfig.gameMode);
 
 		AnchorPane.setTopAnchor(gameModeBox, 150d);
 		AnchorPane.setLeftAnchor(gameModeBox, 250d);
@@ -114,8 +114,8 @@ public class OptionsArea {
 		save.setScaleY(1.5d);
 
 		save.setOnMouseEntered(e -> {
-			save.setScaleX(2d);
-			save.setScaleY(2d);
+			save.setScaleX(1.75d);
+			save.setScaleY(1.75d);
 		});
 
 		save.setOnMouseExited(e -> {

@@ -44,7 +44,6 @@ public class Launcher {
 
 		argo = args;
 		BoardConfig.load();
-		gameMode = BoardConfig.gameMode;
 		GameLogger.init();
 		logger.info("START");
 		MainMenu mainMenu = new MainMenu();
@@ -54,9 +53,12 @@ public class Launcher {
 	}
 
 	public static void decide(Stage primaryStage) {
+		
+		gameMode = BoardConfig.gameMode;
+		BoardConfig.load();
     	if(gameMode == GameMode.MULTIPLAYER) {
         	Multiplayer multiplayer = new Multiplayer();
-        	multiplayer.go(argo);
+        	multiplayer.go(argo,primaryStage);
         	return;
         }
         

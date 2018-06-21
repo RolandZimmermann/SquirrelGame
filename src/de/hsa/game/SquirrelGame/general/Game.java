@@ -1,9 +1,11 @@
 package de.hsa.game.SquirrelGame.general;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,14 +15,20 @@ import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.board.BoardFactory;
 import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
 import de.hsa.game.SquirrelGame.core.board.State;
+import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.HandOperatedMasterSquirrel;
+import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.network.ServerConnection;
 import de.hsa.game.SquirrelGame.ui.UI;
+import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Class initialize game
@@ -243,7 +251,7 @@ public abstract class Game {
 
 		return oldbots.get((int) (Math.random() * oldbots.size()));
 	}
-	
+
 	public void endGame() {
 		shouldRun = false;
 		gameSteps = 0;
@@ -324,6 +332,22 @@ public abstract class Game {
 	 */
 	public void update() {
 		if (gameSteps > 0) {
+			if (BoardConfig.gameMode == GameMode.JFX && ui != null) {
+				List<Entity> entitys = new ArrayList<>();
+				if (state.getBoard().getBots() != null) {
+
+					for (MasterSquirrel e : state.getBoard().getBots()) {
+						entitys.add(e);
+					}
+
+				} else if (state.getBoard().getPlayer() != null) {
+					for(HandOperatedMasterSquirrel e : state.getBoard().getPlayer()) {
+						entitys.add(e);
+					}
+				}
+				((FxUI) ui).setTable(entitys);
+
+			}
 			state.update(moveCommand, entityContext);
 			state.getBoard().getBoardView().setGameSteps(gameSteps);
 			boardView.update();
