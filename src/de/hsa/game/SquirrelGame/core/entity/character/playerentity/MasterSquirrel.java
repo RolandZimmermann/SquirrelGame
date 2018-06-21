@@ -1,7 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
 import de.hsa.game.SquirrelGame.core.entity.Entity;
-
 import de.hsa.game.SquirrelGame.gamestats.Energy;
 import de.hsa.games.fatsquirrel.util.XY;
 

@@ -5,13 +5,10 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.hsa.game.SquirrelGame.core.board.Board;
 import de.hsa.game.SquirrelGame.core.board.BoardConfig;
-import de.hsa.game.SquirrelGame.core.board.BoardFactory;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.game.SquirrelGame.log.GameLogger;
-import de.hsa.game.SquirrelGame.mainmenu.MainMenu;
 import de.hsa.game.SquirrelGame.network.Multiplayer;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.jfx.Fx3dUI;

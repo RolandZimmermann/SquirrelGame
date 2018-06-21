@@ -1,7 +1,6 @@
 package de.hsa.game.SquirrelGame.network;
 
 import java.net.ServerSocket;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,8 +9,9 @@ import java.util.Vector;
 import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.core.entity.character.MultiplayerMasterSquirrel;
+import de.hsa.game.SquirrelGame.general.Game;
+import de.hsa.game.SquirrelGame.general.GameImpl;
 import de.hsa.game.SquirrelGame.network.Message.Header;
-import de.hsa.game.SquirrelGame.general.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

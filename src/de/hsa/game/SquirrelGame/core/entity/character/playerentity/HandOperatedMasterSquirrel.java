@@ -1,7 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity.character.playerentity;
 
 import de.hsa.game.SquirrelGame.core.EntityContext;
-import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 /**
  * A class to create a HandOperatedMasterSquirrel.
  */

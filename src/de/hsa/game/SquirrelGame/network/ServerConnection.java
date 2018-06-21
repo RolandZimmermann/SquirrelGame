@@ -7,10 +7,8 @@ import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 import de.hsa.game.SquirrelGame.network.Message.Header;
-import javafx.event.ActionEvent;
 
 public class ServerConnection implements Runnable {
 

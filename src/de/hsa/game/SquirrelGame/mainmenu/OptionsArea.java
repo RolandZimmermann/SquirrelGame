@@ -1,7 +1,5 @@
 package de.hsa.game.SquirrelGame.mainmenu;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
-
 import de.hsa.game.SquirrelGame.core.board.BoardConfig;
 import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import javafx.collections.FXCollections;

@@ -1,11 +1,8 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.ImageIcon;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.board.BoardConfig;
@@ -18,26 +15,19 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.BadPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.GoodPlant;
 import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
-import de.hsa.game.SquirrelGame.general.Game;
 import de.hsa.game.SquirrelGame.ui.UI;
-import de.hsa.games.fatsquirrel.botimpls.*;
-import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.util.XY;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.image.*;
 
 public class FxUI extends Scene implements UI {
 

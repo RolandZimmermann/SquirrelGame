@@ -1,6 +1,5 @@
 package de.hsa.game.SquirrelGame.general;
 
-import java.util.List;
 import java.util.Vector;
 
 import de.hsa.game.SquirrelGame.core.board.State;

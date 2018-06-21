@@ -30,7 +30,6 @@ import de.hsa.game.SquirrelGame.gamestats.XYsupport;
 import de.hsa.game.SquirrelGame.network.ServerConnection;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
-import de.hsa.games.fatsquirrel.core.EntityType;
 import de.hsa.games.fatsquirrel.util.XY;
 
 /**

@@ -1,10 +1,6 @@
 package de.hsa.game.SquirrelGame.general;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -18,7 +14,6 @@ import de.hsa.game.SquirrelGame.core.board.BoardFactory;
 import de.hsa.game.SquirrelGame.core.board.FlattenBoard;
 import de.hsa.game.SquirrelGame.core.board.State;
 import de.hsa.game.SquirrelGame.core.entity.character.MasterSquirrelBot;
-import de.hsa.game.SquirrelGame.core.entity.character.playerentity.MasterSquirrel;
 import de.hsa.game.SquirrelGame.gamemode.GameMode;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.network.ServerConnection;

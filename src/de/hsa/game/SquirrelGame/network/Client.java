@@ -130,6 +130,7 @@ public class Client implements Runnable {
 			} catch (ClassNotFoundException | IOException e) {
 				shouldRun = false;
 				Thread.currentThread().interrupt();
+				
 			}
 		}
 	}
