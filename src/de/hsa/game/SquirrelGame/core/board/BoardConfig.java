@@ -66,6 +66,8 @@ public class BoardConfig {
 	 * an array of bot names to be loaded into the game
 	 */
 	public static String[] COUNT_BOTS = { "HalfRandomBot", "RandomBot", "HalfRandomBot", "HalfRandomBot" };
+	public static String COUNT_BOTS_STRING = "HalfRandomBot2";
+	
 	// public static String[] COUNT_BOTS =
 	// {"testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload","testImpload"};
 	/**
@@ -117,6 +119,7 @@ public class BoardConfig {
 			COUNT_BADBEAST = Integer.parseInt(prop.getProperty("COUNT_BADBEAST"));
 			COUNT_GOODPLANT = Integer.parseInt(prop.getProperty("COUNT_GOODPLANT"));
 			COUNT_BADPLANT = Integer.parseInt(prop.getProperty("COUNT_BADPLANT"));
+			COUNT_BOTS_STRING = prop.getProperty("COUNT_BOTS");
 			COUNT_BOTS = prop.getProperty("COUNT_BOTS").split(",");
 			GAME_STEPS = Integer.parseInt(prop.getProperty("GAME_STEPS"));
 			WALL_LENGTH = Integer.parseInt(prop.getProperty("WALL_LENGTH"));

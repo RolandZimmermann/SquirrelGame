@@ -238,12 +238,10 @@ public class MaToRoMultiplayerClient extends Application {
 		AnchorPane.setBottomAnchor(join, 30d);
 		AnchorPane.setRightAnchor(join, 50d);
 		AnchorPane.setLeftAnchor(join, WINDOW_WIDTH - 170d);
-		AnchorPane.setTopAnchor(join, WINDOW_HEIGHT - 60d);
 
 		AnchorPane.setBottomAnchor(exit, 30d);
 		AnchorPane.setRightAnchor(exit, WINDOW_WIDTH - 170d);
 		AnchorPane.setLeftAnchor(exit, 50d);
-		AnchorPane.setTopAnchor(exit, WINDOW_HEIGHT - 60d);
 
 		AnchorPane.setTopAnchor(ipLabel, 150d);
 		AnchorPane.setLeftAnchor(ipLabel, 450d);

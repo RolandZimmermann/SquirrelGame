@@ -36,7 +36,7 @@ public class StartArea {
 		maToRoLabel.setScaleY(3d);
 		
 		maToRoLabel.setOnMouseEntered(e -> {
-			maToRoLabel.setText("Marion Tobi Roland");
+			maToRoLabel.setText("Marion Tobias Roland");
 		});
 		
 		maToRoLabel.setOnMouseExited(e -> {
