@@ -6,6 +6,11 @@ package de.hsa.game.SquirrelGame.ui.exceptions;
  */
 public class NotEnoughEnergyException extends ScanException {
 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+/**
  * Creates new {@code NotEnoughEnergyException}
  * @param exception
  */

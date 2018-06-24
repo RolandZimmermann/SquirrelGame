@@ -170,6 +170,10 @@ public class MaToRoKiold implements BotController, BotControllerFactory {
 
 class NeuralNetwork implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int inputNodes;
 	private int hiddenNodes;
 	private int hiddenNodes2;
@@ -318,6 +322,10 @@ class NeuralNetwork implements Serializable {
 
 class Matrix implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int rows;
 	private int cols;
 	private double[][] data;
@@ -398,7 +406,6 @@ class Matrix implements Serializable {
 	public void map(Function<Double, Double> call) {
 		for (int i = 0; i < this.cols; i++) {
 			for (int j = 0; j < this.rows; j++) {
-				double value = this.data[i][j];
 				this.data[i][j] = call.apply(this.data[i][j]);
 			}
 		}

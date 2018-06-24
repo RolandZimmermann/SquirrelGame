@@ -13,6 +13,10 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 public class MaToRoKi implements BotController, BotControllerFactory, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Genome genome = start();
 	public static ArrayList<connectionHistory> innovationHistory = new ArrayList<connectionHistory>();
 	
@@ -186,6 +190,10 @@ public class MaToRoKi implements BotController, BotControllerFactory, Serializab
 
 class Genome implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<connectionGene> genes = new ArrayList<connectionGene>();// a list of connections between nodes which
 																		// represent the NN
 	ArrayList<Node> nodes = new ArrayList<Node>();// list of nodes
@@ -594,6 +602,10 @@ class Genome implements Serializable {
 
 class Node implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int number;
 	float inputSum = 0; // current sum i.e. before activiation
 	float outputValue = 0; // after activation function is applied
@@ -653,6 +665,10 @@ class Node implements Serializable {
 }
 
 class connectionGene implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Node fromNode;
 	Node toNode;
 	float weight;
@@ -692,6 +708,10 @@ class connectionGene implements Serializable {
 }
 
 class connectionHistory implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int fromNode;
 	int toNode;
 	int innovationNumber;

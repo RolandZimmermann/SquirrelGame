@@ -239,7 +239,6 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		if (this.getEnergy() < 0) {
 			this.updateEnergy(-this.getEnergy());
 		}
-		XY oldposition = this.getPositionXY();
 		if (wallCounter == 0) {
 			// masterBotController.nextStep(new ControllerContextImpl(entityContext));
 			masterBotController

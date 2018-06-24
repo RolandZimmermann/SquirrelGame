@@ -14,7 +14,6 @@ public class HalfRandomBot implements BotController,BotControllerFactory {
 		double nearest = 999999999;
 		
 		EntityType entity = EntityType.NONE;
-		EntityType targetType = EntityType.NONE;
 		
 		XY target = XY.ZERO_ZERO;
 		XY us = view.locate();
@@ -40,7 +39,6 @@ public class HalfRandomBot implements BotController,BotControllerFactory {
 				}
 				if (entity == EntityType.GOOD_BEAST || entity == EntityType.GOOD_PLANT) {
 					if (Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2)) < nearest) {
-						targetType = entity;
 						nearest = Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2));
 						target = new XY(j, i);
 					}

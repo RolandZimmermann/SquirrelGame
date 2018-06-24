@@ -61,7 +61,7 @@ public class FxUI extends Scene implements UI {
 	private static Image sprMiniSquirrel;
 	private static Image sprEmpty;
 
-	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel, TableView table) {
+	public FxUI(Parent parent, Canvas boardCanvas, Label msgLabel, TableView<Entity> table) {
 		super(parent);
 		this.boardCanvas = boardCanvas;
 		this.msgLabel = msgLabel;
@@ -223,7 +223,6 @@ public class FxUI extends Scene implements UI {
 		});
 	}
 
-	@SuppressWarnings("restriction")
 	private void repaintBoardCanvas(BoardView view) {
 		if (!render) {
 			return;

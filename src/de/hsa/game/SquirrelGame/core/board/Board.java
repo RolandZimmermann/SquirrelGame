@@ -160,12 +160,13 @@ public class Board {
 				logger.log(Level.SEVERE, e.getMessage(), e);
 			}
 
+			@SuppressWarnings("resource")
 			ClassLoader cl = new URLClassLoader(urls);
 
 			BotControllerFactory botControllerFactory = null;
 			try {
 				// Package name needed too
-				Class cls = cl.loadClass("de.hsa.games.fatsquirrel.botimpls." + bots[i]);
+				Class<?> cls = cl.loadClass("de.hsa.games.fatsquirrel.botimpls." + bots[i]);
 				botControllerFactory = (BotControllerFactory) cls.newInstance();
 			} catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
 				logger.log(Level.SEVERE, e.getMessage(), e);
@@ -177,6 +178,7 @@ public class Board {
 			getEntitySet().add(e);
 			getBots().add((MasterSquirrelBot) e);
 			randomlocations.remove(0);
+			
 		}
 
 		for (int i = 0; i < boardHeight; i++) {

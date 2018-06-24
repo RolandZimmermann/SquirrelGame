@@ -27,7 +27,7 @@ public class Server implements Runnable{
 			server = new ServerSocket(port);
 			while (shouldRun) {
 				Socket connection = server.accept();
-				ServerConnection sc = new ServerConnection(connection, this);
+				ServerConnection sc = new ServerConnection(connection);
 				new Thread(sc).start();
 				connections.add(sc);
 			}

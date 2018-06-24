@@ -5,7 +5,10 @@ package de.hsa.game.SquirrelGame.ui.exceptions;
  *
  */
 public class ScanException extends Exception {
-	private String exception;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 /**
  * Creates new {@code ScanException}	
  * @param exception

@@ -13,7 +13,6 @@ import de.hsa.game.SquirrelGame.network.Message.Header;
 public class ServerConnection implements Runnable {
 
 	private Socket socket;
-	private Server server;
 	private String name;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
@@ -27,9 +26,8 @@ public class ServerConnection implements Runnable {
 	private Vector<String> chatMessages = new Vector<>();
 	private Vector<String> events = new Vector<>();
 
-	public ServerConnection(Socket socket, Server server) {
+	public ServerConnection(Socket socket) {
 		this.socket = socket;
-		this.server = server;
 		this.name = socket.getInetAddress().toString();
 
 		try {

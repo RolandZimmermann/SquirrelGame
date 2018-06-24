@@ -236,7 +236,6 @@ public class Multiplayer {
 			Timer t = new Timer();
 			t.schedule(new TimerTask() {
 
-				@SuppressWarnings("unchecked")
 				@Override
 				public void run() {
 					try {

@@ -12,6 +12,7 @@ public class CommandScanner {
 
 	private CommandTypeInfo[] commandTypeInfos;
 	private BufferedReader inputReader;
+	@SuppressWarnings("unused")
 	private PrintStream outputStream;
 
 	public CommandScanner(CommandTypeInfo[] commandTypeInfos, BufferedReader inputReader, PrintStream outputStream) {

@@ -38,7 +38,7 @@ public class MyFavoriteCommandTypeProcessor {
 			MyFavoriteCommandType commandType = (MyFavoriteCommandType) command.getCommandType();
 
 			try {
-				Class[] methodParameters;
+				Class<?>[] methodParameters;
 				if (params != null) {
 					methodParameters = new Class[] { PrintStream.class, params[0].getClass(), params[1].getClass() };
 					Method method = commandType.getClass().getMethod(commandType.getName(), methodParameters);

@@ -52,13 +52,13 @@ public class Fx3dUI extends Scene implements UI {
 	static double mousePosOldX;
 	static double mousePosOldY;
 
-	private Group objWall;
-	private Group objBadPlant;
-	private Group objGoodPlant;
-	private Group objBadBeast;
-	private Group objGoodBeast;
-	private Group objMasterSquirrel;
-	private Group objMiniSquirrel;
+//	private Group objWall;
+//	private Group objBadPlant;
+//	private Group objGoodPlant;
+//	private Group objBadBeast;
+//	private Group objGoodBeast;
+//	private Group objMasterSquirrel;
+//	private Group objMiniSquirrel;
 /**
  * Creates new Fx3dUI
  * @param root
@@ -275,6 +275,7 @@ public class Fx3dUI extends Scene implements UI {
 
 	}
 
+	@SuppressWarnings("static-access")
 	private void setCommand(MoveCommand moveCommand) {
 		this.moveCommand = moveCommand;
 	}
