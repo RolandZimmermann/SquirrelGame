@@ -1,6 +1,7 @@
 package de.hsa.game.SquirrelGame.ui.jfx;
 
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
@@ -276,5 +277,10 @@ public class Fx3dUI extends Scene implements UI {
 
 	private void setCommand(MoveCommand moveCommand) {
 		this.moveCommand = moveCommand;
+	}
+	@Override
+	public void implosions(Map<XY, Integer> implosionMap) {
+		throw new RuntimeException("Method not supported");
+		
 	}
 }

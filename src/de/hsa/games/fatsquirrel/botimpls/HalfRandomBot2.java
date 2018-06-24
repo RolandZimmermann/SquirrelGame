@@ -13,17 +13,36 @@ import de.hsa.games.fatsquirrel.util.XY;
 
 public class HalfRandomBot2 implements BotController, BotControllerFactory {
 
-	int MINI_ENERGY_SAVEAREA = 101;
+	int MINI_ENERGY_SAVEAREA = 100;
+	int MINI_ENERGY_KILL = 200;
 	int STEPS_AHEAD = 8;
-	double saveArea = 5;
+	double saveArea = 4;
 	double MAX_BAD_THINGS = 3;
 	XY direction;
 	boolean allowed = false;
+	boolean saved = false;
+	int savedCounter = 0;
+	int energyGained = 0;
+	int energyLast = 1000;
+	boolean considerEnergy = false;
+	int considerEnergyCounter = 0;
 
 	@Override
 	public void nextStep(ControllerContext view) {
 		double nearest = 999999999;
 		double nearestBadThing = 999999999;
+		int usEnergy = view.getEnergy();
+		energyGained = usEnergy - energyLast;
+		energyLast = usEnergy;
+
+		considerEnergyCounter++;
+		if (considerEnergyCounter > 3) {
+			considerEnergyCounter = 0;
+			considerEnergy = false;
+		}
+		if (energyGained >= MINI_ENERGY_KILL) {
+			considerEnergy = false;
+		}
 
 		List<EntityType> badThings = new ArrayList<>();
 
@@ -32,6 +51,7 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 
 		XY target = XY.ZERO_ZERO;
 		XY badTarget = XY.ZERO_ZERO;
+		XY killTarget = XY.ZERO_ZERO;
 		XY us = view.locate();
 		XY topleft = new XY(view.getViewLowerLeft().x, view.getViewUpperRight().y);
 		XY downright = new XY(view.getViewUpperRight().x, view.getViewLowerLeft().y);
@@ -50,6 +70,17 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 
 				try {
 					entity = view.getEntityAt(new XY(j, i));
+					if (us.x == j && us.y == i) {
+						entityTypeArray[i - topleft.y][j - topleft.x] = true;
+						continue;
+					}
+
+					if (entity == EntityType.MINI_SQUIRREL) {
+						if (view.isMine(new XY(j, i))) {
+							entityTypeArray[i - topleft.y][j - topleft.x] = true;
+							continue;
+						}
+					}
 					switch (entity) {
 					case WALL:
 					case MASTER_SQUIRREL:
@@ -75,40 +106,112 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 				}
 				if (entity == EntityType.GOOD_BEAST || entity == EntityType.GOOD_PLANT) {
 					if (Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2)) < nearest) {
-						targetType = entity;
 						nearest = Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2));
 						target = new XY(j, i);
 					}
 
-					// TODO: MASTERSQUIRREL IN IF
 				} else if (entity == EntityType.BAD_BEAST || entity == EntityType.BAD_PLANT
-						|| entity == EntityType.MINI_SQUIRREL) {
+						|| entity == EntityType.MASTER_SQUIRREL || entity == EntityType.MINI_SQUIRREL) {
 					if (Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2)) < saveArea) {
 						badThings.add(entity);
+						if (entity == EntityType.MASTER_SQUIRREL || entity == EntityType.MINI_SQUIRREL) {
+							targetType = EntityType.MASTER_SQUIRREL;
+							killTarget = new XY(j, i);
+						}
 					}
-
+					savedCounter++;
+					if (savedCounter > 1) {
+						saved = false;
+					}
 					if (Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2)) < nearestBadThing) {
-						targetType = entity;
 						nearestBadThing = Math.sqrt(Math.pow(us.x - j, 2) + Math.pow(us.y - i, 2));
 						badTarget = new XY(j, i);
 					}
 				}
 			}
 		}
+
+		if (targetType != EntityType.NONE) {
+			int directionX = 0;
+			int directionY = 0;
+
+			if (killTarget.x < us.x) {
+				directionX = -1;
+			} else if (killTarget.x > us.x) {
+				directionX = 1;
+			}
+			if (killTarget.y < us.y) {
+				directionY = -1;
+			} else if (killTarget.y < us.y) {
+				directionY = 1;
+			}
+
+			XY destination = new XY(us.x + directionX, us.y + directionY);
+
+			if (considerEnergy) {
+				if (energyGained > MINI_ENERGY_KILL) {
+					if (view.getEntityAt(destination) == EntityType.NONE) {
+						if (usEnergy > MINI_ENERGY_KILL) {
+							saved = true;
+							view.spawnMiniBot(new XY(directionX, directionY), MINI_ENERGY_KILL);
+							considerEnergy = false;
+							return;
+						}
+					} else {
+
+						XY free = freeSaveArea(us, view);
+						if (free != null) {
+							if (usEnergy > MINI_ENERGY_KILL) {
+								saved = true;
+								view.spawnMiniBot(free, MINI_ENERGY_KILL);
+								considerEnergy = false;
+								return;
+							}
+						}
+					}
+				}
+			} else {
+				if (view.getEntityAt(destination) == EntityType.NONE) {
+					if (usEnergy > MINI_ENERGY_KILL) {
+						saved = true;
+						view.spawnMiniBot(new XY(directionX, directionY), MINI_ENERGY_KILL);
+						considerEnergy = true;
+						return;
+					}
+				} else {
+					XY free = freeSaveArea(us, view);
+					if (free != null) {
+						if (usEnergy > MINI_ENERGY_KILL) {
+							saved = true;
+							view.spawnMiniBot(free, MINI_ENERGY_KILL);
+							considerEnergy = true;
+							return;
+						}
+					}
+				}
+			}
+
+		}
+
+		if (badThings.size() >= MAX_BAD_THINGS && !saved) {
+			XY free = freeSaveArea(us, view);
+			if (free != null) {
+				if (usEnergy > MINI_ENERGY_SAVEAREA) {
+					saved = true;
+					view.spawnMiniBot(free, MINI_ENERGY_SAVEAREA);
+					return;
+				}
+			}
+		}
+
 		if (nearest != 999999999) {
 
 			AStar aStar = new AStar(downright.y - topleft.y, downright.x - topleft.x, us.y - topleft.y,
 					us.x - topleft.x, target.y - topleft.y, target.x - topleft.x, entityTypeArray);
 			XY move = aStar.getPath();
-			if (badThings.size() >= MAX_BAD_THINGS) {
-				XY free = freeSaveArea(us, view);
-				if (free != null) {
-					view.spawnMiniBot(free, MINI_ENERGY_SAVEAREA);
-					return;
-				}
-			}
+
 			if (move.x == 2 || move.y == 2) { // TODO: Change it!
-				
+
 				XY halfRandomMove = getHalfRandomMove(us, view);
 				checkallowed(us, view, halfRandomMove);
 				view.move(halfRandomMove);
@@ -118,16 +221,34 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 			return;
 		} else if (nearestBadThing != 999999999) {
 
-			XY halfRandomMove = getHalfRandomMove(us, view);
-			checkallowed(us, view, halfRandomMove);
-			view.move(halfRandomMove);
+			if (Math.sqrt(Math.pow(us.x - badTarget.x, 2) + Math.pow(us.y - badTarget.y, 2)) <= 3) {
+				if (usEnergy > MINI_ENERGY_SAVEAREA) {
+					view.spawnMiniBot(freeSaveArea(us, view), MINI_ENERGY_SAVEAREA);
+					return;
+				}
+			}
+
+			AStar aStar = new AStar(downright.y - topleft.y, downright.x - topleft.x, us.y - topleft.y,
+					us.x - topleft.x, badTarget.y - topleft.y, badTarget.x - topleft.x, entityTypeArray);
+			XY move = aStar.getPath();
+
+			if (move.x == 2 || move.y == 2) { // TODO: Change it!
+
+				XY halfRandomMove = getHalfRandomMove(us, view);
+				checkallowed(us, view, halfRandomMove);
+				view.move(halfRandomMove);
+				return;
+			}
+			view.move(move);
 			return;
 		} else {
 			XY halfRandomMove = getHalfRandomMove(us, view);
 			checkallowed(us, view, halfRandomMove);
 			view.move(halfRandomMove);
 			return;
+
 		}
+
 		// int moveX = 0;
 		// int moveY = 0;
 		//
@@ -157,29 +278,10 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 	}
 
 	private void checkallowed(XY us, ControllerContext view, XY move) {
-		if(view.getEntityAt(new XY(us.x+move.x,us.y+move.y)) != EntityType.NONE) {
+		if (view.getEntityAt(new XY(us.x + move.x, us.y + move.y)) != EntityType.NONE) {
 			allowed = false;
 		}
-		
-	}
 
-	@Override
-	public BotController createMasterBotController() {
-		// TODO Auto-generated method stub
-		return this;
-	}
-
-	@Override
-	public BotController createMiniBotController() {
-		// TODO Auto-generated method stub
-		return new BotController() {
-
-			@Override
-			public void nextStep(ControllerContext view) {
-				view.implode(7);
-
-			}
-		};
 	}
 
 	public XY freeSaveArea(XY us, ControllerContext view) {
@@ -253,7 +355,7 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 				allowed = true;
 				return direction;
 			}
-			
+
 			direction = new XY(1, -1);
 			if (checkDirection(us, view, direction.x, direction.y, STEPS_AHEAD)) {
 				this.direction = direction;
@@ -278,7 +380,7 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 				allowed = true;
 				return direction;
 			}
-			
+
 			direction = new XY(0, -1);
 			if (checkDirection(us, view, direction.x, direction.y, STEPS_AHEAD)) {
 				this.direction = direction;
@@ -483,5 +585,24 @@ public class HalfRandomBot2 implements BotController, BotControllerFactory {
 				return new XY(2, 2);
 			return new XY(2, 2);
 		}
+	}
+
+	@Override
+	public BotController createMasterBotController() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public BotController createMiniBotController() {
+		// TODO Auto-generated method stub
+		return new BotController() {
+
+			@Override
+			public void nextStep(ControllerContext view) {
+				view.implode(7);
+
+			}
+		};
 	}
 }

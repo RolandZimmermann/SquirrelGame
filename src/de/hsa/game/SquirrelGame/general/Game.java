@@ -346,6 +346,7 @@ public abstract class Game {
 					}
 				}
 				((FxUI) ui).setTable(entitys);
+				ui.implosions(boardView.getImplosionMap());
 
 			}
 			state.update(moveCommand, entityContext);

@@ -2,6 +2,7 @@ package de.hsa.game.SquirrelGame.ui.jfx;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,6 +46,7 @@ public class FxUI extends Scene implements UI {
 	private Label msgLabel;
 	private TableView<Entity> table;
 	private ObservableList<Entity> player = FXCollections.observableArrayList();
+	private Map<XY, Integer> implosionMap;
 	private static final int CELL_SIZE = BoardConfig.CELL_SIZE;
 	private static MoveCommand moveCommand;
 	private static boolean render = true;
@@ -145,11 +147,11 @@ public class FxUI extends Scene implements UI {
 		idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
 		TableColumn<Entity, Integer> energyCol = new TableColumn<Entity, Integer>("Energy");
 		energyCol.setCellValueFactory(new PropertyValueFactory<>("energy"));
-		
+
 		table.getColumns().add(idCol);
 		table.getColumns().add(energyCol);
 		table.getSortOrder().add(energyCol);
-		
+
 		root.setCenter(top);
 		root.setRight(table);
 
@@ -304,6 +306,15 @@ public class FxUI extends Scene implements UI {
 				}
 			}
 		}
+		if (implosionMap != null) {
+			for (XY pos : implosionMap.keySet()) {
+				gc.setFill(Color.INDIANRED);
+				gc.fillOval((pos.x - implosionMap.get(pos).intValue() / 2)*CELL_SIZE, (pos.y - implosionMap.get(pos).intValue() / 2)*CELL_SIZE,
+						implosionMap.get(pos).intValue()*CELL_SIZE, implosionMap.get(pos).intValue()*CELL_SIZE);
+				implosionMap.remove(pos);
+			}
+		}
+
 		logger.finest("Updated UI");
 
 	}
@@ -329,26 +340,30 @@ public class FxUI extends Scene implements UI {
 			}
 		});
 	}
-	
+
 	public void setTable(List<Entity> players) {
 
 		player.removeAll(player);
-		for(Entity e : players) {
+		for (Entity e : players) {
 			player.add(e);
 		}
-		SortedList<Entity> sortedList = new SortedList<>( player, 
-			      (Entity entity1, Entity entity2) -> {
-			        if(  entity1.getEnergy()< entity2.getEnergy()) {
-			            return -1;
-			        } else if( entity1.getEnergy() > entity2.getEnergy()) {
-			            return 1;
-			        } else {
-			            return 0;
-			        }
-			    });
-		
+		SortedList<Entity> sortedList = new SortedList<>(player, (Entity entity1, Entity entity2) -> {
+			if (entity1.getEnergy() < entity2.getEnergy()) {
+				return -1;
+			} else if (entity1.getEnergy() > entity2.getEnergy()) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+
 		sortedList.comparatorProperty().bind(table.comparatorProperty());
-		
-		table.setItems(sortedList);	
+
+		table.setItems(sortedList);
+	}
+
+	@Override
+	public void implosions(Map<XY, Integer> implosionMap) {
+		this.implosionMap = implosionMap;
 	}
 }

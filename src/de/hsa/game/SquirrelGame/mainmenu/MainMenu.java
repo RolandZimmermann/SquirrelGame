@@ -1,6 +1,10 @@
 package de.hsa.game.SquirrelGame.mainmenu;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.hsa.game.SquirrelGame.general.Launcher;
+import de.hsa.game.SquirrelGame.network.MaToRoMultiplayerClient;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,6 +18,8 @@ public class MainMenu extends Application {
 	private Stage primaryStage;
 	private int HEIGHT = 720;
 	private int WIDTH = 1280;
+	
+	private Logger logger = Logger.getLogger(MainMenu.class.getName());
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -28,7 +34,7 @@ public class MainMenu extends Application {
 
 	private BorderPane createBorderPane() {
 
-		StartArea startArea = new StartArea(this::startGame, this::setOptions, this::endGame);
+		StartArea startArea = new StartArea(this::startGame,this::startClient, this::setOptions, this::endGame);
 
 		BorderPane root = new BorderPane();
 		root.setCenter(startArea.getNode());
@@ -62,6 +68,16 @@ public class MainMenu extends Application {
 
 	private Void startGame() {
 		Launcher.decide(primaryStage);
+		return null;
+	}
+	
+	private Void startClient() {
+		MaToRoMultiplayerClient client = new MaToRoMultiplayerClient();
+		try {
+			client.start(primaryStage);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 		return null;
 	}
 

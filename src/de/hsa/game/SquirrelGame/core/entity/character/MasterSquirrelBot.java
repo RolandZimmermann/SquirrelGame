@@ -206,8 +206,8 @@ public class MasterSquirrelBot extends MasterSquirrel {
 		 */
 		@Override
 		public boolean isMine(XY xy) {
-			if (!(xy.x > getViewUpperRight().x && xy.x < getViewLowerLeft().x && xy.y > getViewUpperRight().y
-					&& xy.y < getViewUpperRight().y)) {
+			if (!(xy.x <= getViewUpperRight().x && xy.x >= getViewLowerLeft().x && xy.y >= getViewUpperRight().y
+					&& xy.y <= getViewLowerLeft().y)) {
 				throw new OutOfViewException("Out of View!");
 			}
 			Entity e = entityContext.getEntityType(xy);
@@ -248,17 +248,17 @@ public class MasterSquirrelBot extends MasterSquirrel {
 			wallCounter--;
 			this.fitness -= 20;
 		}
-//		if (collectedEnergy < this.getEnergy()) {
-//			totalEnergy += this.getEnergy() - collectedEnergy;
-//			collectedEnergy = this.getEnergy();
-//		} else {
-//			collectedEnergy = this.getEnergy();
-//		}
+		if (collectedEnergy < this.getEnergy()) {
+			totalEnergy += this.getEnergy() - collectedEnergy;
+			collectedEnergy = this.getEnergy();
+		} else {
+			collectedEnergy = this.getEnergy();
+		}
 	}
 
 	public int fitness() {
 		fitness += (totalEnergy)/3;
-	//	fitness += (this.getEnergy()-1000)*2;
+		fitness += (this.getEnergy()-1000)*2;
 		return (fitness / BoardConfig.GAME_STEPS);
 	}
 

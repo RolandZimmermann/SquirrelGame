@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.mockito.internal.runners.RunnerFactory;
 
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
@@ -21,6 +24,7 @@ import de.hsa.game.SquirrelGame.core.entity.noncharacter.Wall;
 import de.hsa.game.SquirrelGame.gamestats.MoveCommand;
 import de.hsa.game.SquirrelGame.ui.UI;
 import de.hsa.game.SquirrelGame.ui.exceptions.ScanException;
+import de.hsa.games.fatsquirrel.util.XY;
 /**
  * Class implements the interface UI
  * @author reich
@@ -161,7 +165,11 @@ public class ConsoleUI implements UI {
 
 	@Override
 	public void message(String msg) {
-		// TODO Auto-generated method stub
+		System.out.println(msg);
 		
+	}
+	@Override
+	public void implosions(Map<XY, Integer> implosionMap) {
+		throw new RuntimeException("Unsuported");
 	}
 }

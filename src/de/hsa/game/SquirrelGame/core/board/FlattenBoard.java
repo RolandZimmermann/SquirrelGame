@@ -1,6 +1,8 @@
 
 package de.hsa.game.SquirrelGame.core.board;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +34,8 @@ public class FlattenBoard implements BoardView, EntityContext {
 	private Entity[][] cells;
 
 	private Board database;
+	
+	private Map<XY, Integer> implosionMap = new HashMap<>();
 	
 	private long gameSteps;
 
@@ -438,6 +442,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 					}
 				}
 			}
+			implosionMap.put(entity.getPositionXY(), impactRadius);
 		}
 		((MiniSquirrel) entity).getMaster().updateEnergy(collectedEnergy);
 		database.kill(entity);
@@ -455,6 +460,10 @@ public class FlattenBoard implements BoardView, EntityContext {
 	@Override
 	public long getRemainingSteps() {
 		return gameSteps;
+	}
+	@Override
+	public Map<XY, Integer> getImplosionMap() {
+		return this.implosionMap;
 	}
 	
 	@Override
