@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,8 +26,6 @@ import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
 import de.hsa.games.fatsquirrel.botapi.BotControllerFactory;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKi;
 import de.hsa.games.fatsquirrel.botimpls.MaToRoKiold;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 /**
  * Class initialize game

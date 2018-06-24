@@ -14,7 +14,6 @@ import de.hsa.game.SquirrelGame.core.entity.character.MultiplayerMasterSquirrel;
 import de.hsa.game.SquirrelGame.general.Game;
 import de.hsa.game.SquirrelGame.general.GameImpl;
 import de.hsa.game.SquirrelGame.network.Message.Header;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

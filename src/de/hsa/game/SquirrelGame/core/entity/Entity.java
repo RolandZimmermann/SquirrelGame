@@ -1,7 +1,6 @@
 package de.hsa.game.SquirrelGame.core.entity;
 
 import de.hsa.games.fatsquirrel.util.XY;
-import javafx.beans.property.StringProperty;
 /**
  * Represents the entities of the game
  * @author reich

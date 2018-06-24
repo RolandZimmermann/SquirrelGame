@@ -1,7 +1,5 @@
 package de.hsa.game.SquirrelGame.mainmenu;
 
-import java.sql.ClientInfoStatus;
-
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

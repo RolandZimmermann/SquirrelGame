@@ -14,7 +14,6 @@ import de.hsa.game.SquirrelGame.network.Multiplayer;
 import de.hsa.game.SquirrelGame.ui.console.ConsoleUI;
 import de.hsa.game.SquirrelGame.ui.jfx.Fx3dUI;
 import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;

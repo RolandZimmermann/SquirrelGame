@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.mockito.internal.runners.RunnerFactory;
-
 import de.hsa.game.SquirrelGame.core.BoardView;
 import de.hsa.game.SquirrelGame.core.entity.Entity;
 import de.hsa.game.SquirrelGame.core.entity.character.BadBeast;
