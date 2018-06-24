@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,7 +58,7 @@ public class BoardConfig {
 	/**
 	 * the amount of master Squirrels controlled by the player
 	 */
-	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 0;
+	public static int COUNT_HANDOPERATED_MASTERSQUIRREL = 1;
 	/**
 	 * the amount of mastersquirrels **only in use for test classes**
 	 */
@@ -198,6 +199,8 @@ public class BoardConfig {
 			prop.setProperty("AI_POPULATION", Integer.toString(AI_POPULATION));
 			prop.setProperty("GAME_MODE", gameMode.name());
 			prop.setProperty("PORT", Integer.toString(PORT));
+			prop.setProperty("NAME", NAME[0]);
+			prop.setProperty("COUNT_HANDOPERATED_MASTERSQUIRREL", Integer.toString(COUNT_HANDOPERATED_MASTERSQUIRREL));
 			prop.store(output, null);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);

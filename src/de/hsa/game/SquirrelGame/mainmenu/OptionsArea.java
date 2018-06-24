@@ -350,6 +350,8 @@ public class OptionsArea {
 
 			BoardConfig.WITH_BOTS = withBotsBox.isSelected();
 
+			BoardConfig.TRAINING = trainingBox.isSelected();
+			
 			BoardConfig.OLD_AI = oldAIBox.isSelected();
 
 			String bots = countBotsField.getText().trim();

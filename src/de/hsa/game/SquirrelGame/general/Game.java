@@ -334,7 +334,7 @@ public abstract class Game {
 		if (gameSteps > 0) {
 			if (BoardConfig.gameMode == GameMode.JFX && ui != null) {
 				List<Entity> entitys = new ArrayList<>();
-				if (state.getBoard().getBots() != null) {
+				if (state.getBoard().getBots() != null && BoardConfig.WITH_BOTS) {
 
 					for (MasterSquirrel e : state.getBoard().getBots()) {
 						entitys.add(e);

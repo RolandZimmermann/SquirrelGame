@@ -4,6 +4,7 @@ package de.hsa.game.SquirrelGame.core.board;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +36,7 @@ public class FlattenBoard implements BoardView, EntityContext {
 
 	private Board database;
 	
-	private Map<XY, Integer> implosionMap = new HashMap<>();
+	private Map<XY, Integer> implosionMap = new ConcurrentHashMap<>();
 	
 	private long gameSteps;
 
