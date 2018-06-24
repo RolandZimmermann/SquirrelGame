@@ -82,9 +82,9 @@ public class BoardConfig {
 
 	public static boolean MULTI_THREAD = true;
 
-	public static int FPS = 1;
+	public static int FPS = 10;
 
-	public static int CELL_SIZE = 32;
+	public static int CELL_SIZE = 16;
 
 	public static boolean WITH_BOTS = true;
 
