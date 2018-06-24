@@ -65,6 +65,7 @@ public class Launcher {
 
         if (gameMode == GameMode.CONSOLE) {
             logger.info("Starting Console Mode");
+            primaryStage.hide();
             game = new GameImpl(new State(), new ConsoleUI(), null);
             startGame(game);
         } else if (gameMode == GameMode.JFX || gameMode == GameMode.JFX3D) {

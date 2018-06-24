@@ -16,9 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 
 public class OptionsArea {
-	
+
 	private boolean okay = true;
-	
+
 	private final AnchorPane root = new AnchorPane();
 
 	private Label optionsLabel = new Label("Options");
@@ -27,7 +27,7 @@ public class OptionsArea {
 
 	private Label gameModeLabel = new Label("Select gameMode:");
 	private ChoiceBox<GameMode> gameModeBox = new ChoiceBox<GameMode>(
-			FXCollections.observableArrayList(GameMode.JFX, GameMode.JFX3D, GameMode.MULTIPLAYER));
+			FXCollections.observableArrayList(GameMode.CONSOLE, GameMode.JFX, GameMode.JFX3D, GameMode.MULTIPLAYER));
 
 	private Label fpsLabel = new Label("FPS:");
 	private TextField fpsInput = new TextField(Integer.toString(BoardConfig.FPS));
@@ -237,122 +237,129 @@ public class OptionsArea {
 		save.setOnAction(e -> {
 			okay = true;
 			BoardConfig.gameMode = gameModeBox.getValue();
-			
+
 			try {
-				int fps = Integer.parseInt(fpsInput.getText());
+				int fps = Math.abs(Integer.parseInt(fpsInput.getText()));
 				BoardConfig.FPS = fps;
 			} catch (NumberFormatException n) {
 				fpsInput.setText("INVALID");
 				okay = false;
 			}
-			
+
 			BoardConfig.MULTI_THREAD = multiThreadedBox.isSelected();
-			
+
 			try {
-				int gameSteps = Integer.parseInt(gameStepsField.getText());
+				int gameSteps = Math.abs(Integer.parseInt(gameStepsField.getText()));
 				BoardConfig.GAME_STEPS = gameSteps;
 			} catch (NumberFormatException n) {
 				gameStepsField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int port = Integer.parseInt(portField.getText());
-				BoardConfig.PORT = port;
+				int port = Math.abs(Integer.parseInt(portField.getText()));
+				if (port < 1024) {
+					portField.setText("MUST BE >= 1024");
+					okay = false;
+				} else
+					BoardConfig.PORT = port;
 			} catch (NumberFormatException n) {
 				portField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int cellSize = Integer.parseInt(cellSizeField.getText());
+				int cellSize = Math.abs(Integer.parseInt(cellSizeField.getText()));
 				BoardConfig.CELL_SIZE = cellSize;
 			} catch (NumberFormatException n) {
 				cellSizeField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int widthSize = Integer.parseInt(widthSizeField.getText());
+				int widthSize = Math.abs(Integer.parseInt(widthSizeField.getText()));
 				BoardConfig.WIDTH_SIZE = widthSize;
 			} catch (NumberFormatException n) {
 				widthSizeField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int heightSize = Integer.parseInt(heightSizeField.getText());
+				int heightSize = Math.abs(Integer.parseInt(heightSizeField.getText()));
 				BoardConfig.HEIGHT_SIZE = heightSize;
 			} catch (NumberFormatException n) {
 				heightSizeField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int wallCount = Integer.parseInt(wallCountField.getText());
+				int wallCount = Math.abs(Integer.parseInt(wallCountField.getText()));
 				BoardConfig.COUNT_WALL = wallCount;
 			} catch (NumberFormatException n) {
 				wallCountField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int wallLength = Integer.parseInt(wallLengthField.getText());
+				int wallLength = Math.abs(Integer.parseInt(wallLengthField.getText()));
 				BoardConfig.WALL_LENGTH = wallLength;
 			} catch (NumberFormatException n) {
 				wallLengthField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int goodBeastCount = Integer.parseInt(goodBeastCountField.getText());
+				int goodBeastCount = Math.abs(Integer.parseInt(goodBeastCountField.getText()));
 				BoardConfig.COUNT_GOODBEAST = goodBeastCount;
 			} catch (NumberFormatException n) {
 				goodBeastCountField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int goodPlantCount = Integer.parseInt(goodPlantCountField.getText());
+				int goodPlantCount = Math.abs(Integer.parseInt(goodPlantCountField.getText()));
 				BoardConfig.COUNT_GOODPLANT = goodPlantCount;
 			} catch (NumberFormatException n) {
 				goodPlantCountField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int badBeastCount = Integer.parseInt(badBeastCountField.getText());
+				int badBeastCount = Math.abs(Integer.parseInt(badBeastCountField.getText()));
 				BoardConfig.COUNT_BADBEAST = badBeastCount;
 			} catch (NumberFormatException n) {
 				badBeastCountField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int badPlantCount = Integer.parseInt(badPlantCountField.getText());
+				int badPlantCount = Math.abs(Integer.parseInt(badPlantCountField.getText()));
 				BoardConfig.COUNT_BADPLANT = badPlantCount;
 			} catch (NumberFormatException n) {
 				badPlantCountField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			try {
-				int aiPopulation = Integer.parseInt(aiPopulationField.getText());
+				int aiPopulation = Math.abs(Integer.parseInt(aiPopulationField.getText()));
 				BoardConfig.AI_POPULATION = aiPopulation;
 			} catch (NumberFormatException n) {
 				aiPopulationField.setText("INVALID");
 				okay = false;
 			}
-			
+
 			BoardConfig.WITH_BOTS = withBotsBox.isSelected();
-			
+
 			BoardConfig.OLD_AI = oldAIBox.isSelected();
-			
+
 			String bots = countBotsField.getText().trim();
 			BoardConfig.COUNT_BOTS_STRING = bots;
 			BoardConfig.COUNT_BOTS = bots.split(",");
-			
-			if(BoardConfig.HEIGHT_SIZE* BoardConfig.WIDTH_SIZE < BoardConfig.COUNT_GOODBEAST+BoardConfig.COUNT_BADPLANT+BoardConfig.COUNT_BADBEAST+BoardConfig.COUNT_GOODPLANT+BoardConfig.COUNT_HANDOPERATED_MASTERSQUIRREL+BoardConfig.COUNT_BOTS.length+BoardConfig.COUNT_WALL*BoardConfig.WALL_LENGTH) {
+
+			if (BoardConfig.HEIGHT_SIZE * BoardConfig.WIDTH_SIZE < BoardConfig.COUNT_GOODBEAST
+					+ BoardConfig.COUNT_BADPLANT + BoardConfig.COUNT_BADBEAST + BoardConfig.COUNT_GOODPLANT
+					+ BoardConfig.COUNT_HANDOPERATED_MASTERSQUIRREL + BoardConfig.COUNT_BOTS.length
+					+ BoardConfig.COUNT_WALL * BoardConfig.WALL_LENGTH) {
 				okay = false;
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setHeaderText("TOO MANY ENITITYS");
@@ -360,7 +367,7 @@ public class OptionsArea {
 				alert.setContentText("Change the size of the board or the amount of entitys");
 				alert.show();
 			}
-			if(okay) {
+			if (okay) {
 				BoardConfig.save();
 			}
 		});
@@ -377,7 +384,7 @@ public class OptionsArea {
 	public Node getNode() {
 		return root;
 	}
-	
+
 	public boolean getOkay() {
 		return okay;
 	}
