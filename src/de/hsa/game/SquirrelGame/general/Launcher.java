@@ -17,7 +17,7 @@ import de.hsa.game.SquirrelGame.ui.jfx.FxUI;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
+ 
 /**
  * Main class of the project
  * 
